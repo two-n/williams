@@ -62,8 +62,10 @@ define ["d3", "underscore", "./graphics", "./map"], (d3, _, graphics, map) ->
       .ease("cubic-out")
       .attr "r", 4
 
-
-    map.call d3.select(".chart")
+    if props.type is "map"
+      map.call d3.select(".chart"), props.split
+    else
+      d3.select(".chart").selectAll("*").remove()
 
 
   d3.select(window)

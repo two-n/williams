@@ -190,8 +190,9 @@ define ["d3", "topojson"], (d3, topojson) ->
   path = d3.geo.path()
     .projection(projection)
 
-  map =  () ->
-    g = @.selectAll("g").data([null]).enter().append("g").attr "id" : "vectorMap"
+  map =  (split) ->
+    g = @.selectAll("g").data([null])
+    g.enter().append("g").attr "id" : "vectorMap"
     regions = g.selectAll(".region").data(_.keys(regionByName))
     regions.enter().append("g").attr
       "class": "region"
@@ -208,13 +209,14 @@ define ["d3", "topojson"], (d3, topojson) ->
 
     g.selectAll(".region")
       .transition()
+      .delay((d,i) -> 250*(5-i))
       .duration(1000)
-      .ease("cubic-out")
-      .attr("opacity", 1)
-      .transition()
       .attr("transform", (d) =>
-        x = regionByName[d].offset[0]
-        y = regionByName[d].offset[1]
-        return "translate(#{x},#{y})"
+        if split
+          x = regionByName[d].offset[0]
+          y = regionByName[d].offset[1]
+          "translate(#{x},#{y})"
+        else
+          "translate(0,0)"
       )
   map

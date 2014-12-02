@@ -9,10 +9,19 @@ define ->
       { value: "#FF0055", label: "SOGI protection*" },
       { value: "#FF7D96", label: "SO protection*" },
       { value: "#FFFFFF", label: "No protection" }
-    ]
+    ],
+    "type": "map"
+    "split": false
   }, {
     "url": "/introduction/3",
-    "heading": "Current Employment Map with Region Overlay"
+    "heading": "Current Employment Map with Region Overlay",
+    "colors": [
+      { value: "#FF0055", label: "SOGI protection*" },
+      { value: "#FF7D96", label: "SO protection*" },
+      { value: "#FFFFFF", label: "No protection" }
+    ],
+    "type": "map"
+    "split": true
   }, {
     "url": "/ethnicity/1",
     "heading": "Region Map with % LGBT Population Overlay"
