@@ -1,0 +1,239 @@
+
+$colors: #EDEDEE #D1D1D4 #A6A6AC #797980 #38383C #FD4D63 #FB9F37 #FDD82B #5BBC77 #007CC5 #8C589E;
+
+/* Border box: http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
+*, *:before, *:after { box-sizing: border-box; }
+
+/* Clear fix: http://davidwalsh.name/css-clear-fix */
+@mixin clear {
+  &::before, &::after { content: " "; display: table; }
+  &::after { clear: both; }
+}
+
+@mixin font-1 {
+  font-family: 'Open Sans', sans-serif;
+}
+@mixin font-2 {
+  font-family: 'Libre Baskerville', serif;
+}
+
+@mixin caption {
+  @include font-2;
+  color: nth($colors, 4);
+  font-style: italic;
+  font-size: 9px;
+  line-height: 15px;
+  letter-spacing: .09em;  // "90px"
+}
+@mixin line {
+  border-width: 0;
+  border-color: nth($colors, 3);
+  border-style: solid;
+}
+
+@mixin trail-off {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+$background-color: nth($colors, 1);
+body {
+  margin: 0;
+  background: $background-color;
+  -webkit-font-smoothing: antialiased;
+}
+
+$story-width: 240px;
+$header-background-color: rgba($background-color, 0.95);
+.story {
+  margin-top: 30px;
+  margin-left: 40px;
+  width: $story-width;
+  position: absolute;
+  top: 0;
+  // bottom: 0;
+
+  &::before {
+    content: " ";
+    height: 30px;
+    width: $story-width;
+    display: block;
+    position: fixed;
+    top: 0;
+    background: $header-background-color;
+  }
+
+  .chapter {
+    margin-bottom: 80px;
+
+    &.current {
+      padding-top: 30px;
+      h1 {
+        position: fixed;
+        top: 30px;
+      }
+    }
+  }
+
+  .introduction {
+    color: nth($colors, 6);
+  }
+  .ethnicity {
+    color: nth($colors, 7);
+  }
+  .education {
+    color: nth($colors, 8);
+  }
+  .economic-insecurity {
+    color: nth($colors, 9);
+  }
+  .health {
+    color: nth($colors, 10);
+  }
+  .conclusion {
+    color: nth($colors, 11);
+  }
+
+  h1 {
+    // color: nth($colors, 6);
+    @include font-1;
+    font-size: 17px;
+    text-transform: uppercase;
+    padding-top: 5px;
+    font-weight: bold;
+    // border-top: 1px solid nth($colors, 3);
+    @include line;
+    border-top-width: 1px;
+    margin-top: 0;
+    letter-spacing: .03em;  // "30px"
+    // margin-bottom: 150px;
+    width: $story-width;
+    height: 36px;
+    background: $header-background-color;
+    box-shadow: $header-background-color 0 0 7px 7px;
+  }
+
+  p {
+    color: nth($colors, 5);
+    @include font-2;
+    font-size: 12px;
+    line-height: 18px;
+    margin: 17px 0 0;
+    letter-spacing: .02em;  // "20px"
+
+  }
+  .show-me {
+    text-transform: uppercase;
+    @include font-1;
+    font-weight: bold;
+    font-size: 13px;
+    text-decoration: none;
+    color: inherit;
+    letter-spacing: .03em;  // "30px"
+
+    &::after {
+      content: "Show me";
+    }
+    &.current::after {
+      content: "As shown";
+      color: nth($colors, 3);
+      cursor: default;
+    }
+  }
+}
+
+.visualization {
+  margin-top: 30px;
+  margin-left: 60px;
+  margin-right: 40px;
+  margin-bottom: 30px;
+  position: fixed;
+  left: 280px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  .header {
+    border-top: 1px solid nth($colors, 3);
+    padding-top: 5px;
+    h2 {
+      color: nth($colors, 4);
+      font-weight: bold;
+      font-size: 12px;
+      margin-top: 0;
+      letter-spacing: .02em;  // "20px"
+    }
+    @include font-1;
+    font-size: 17px;
+
+    .legend {
+      float: right;
+      text-transform: uppercase;
+      color: nth($colors, 3);
+      width: 180px;
+      // position: absolute;
+      // top: 0;
+      // right: 40px;
+      margin: 6px;
+      font-size: 10px;
+      // line-height: 12px;
+      line-height: 10px;
+      font-weight: bold;
+      letter-spacing: .03em;  // "30px"
+
+      .color {
+        @include clear;
+      }
+      .value {
+        width: 11px;
+        height: 11px;
+        float: left;
+        margin: 0 9px 7px 0;
+      }
+    }
+
+    .share-btns {
+      width: 40px;
+      float: right;
+      // position: absolute;
+      // top: 0;
+      // right: 0;
+    }
+  }
+
+  .attribution {
+    @include caption;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+}
+
+
+.nav {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+
+  circle {
+    cursor: pointer;
+    &:not(.current) {
+      fill: nth($colors, 2) !important;
+      transition: fill 300ms;
+    }
+  }
+}
+
+//map
+#vectorMap {
+  fill-opacity: 0;
+  stroke: white;
+  stroke-width: 1;
+}
+
+path {
+  fill-opacity: 0.3;
+  stroke-opacity: 0.5;
+  fill: #444;
+}

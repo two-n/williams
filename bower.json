@@ -1,0 +1,11 @@
+{
+  "name": "throwaway",
+  "version": "0.0.0",
+  "dependencies": {
+    "requirejs": "~2.1.11",
+    "modernizr": "~2.7.2",
+    "d3": "~3.4.11",
+    "underscore": "~1.6.0",
+    "topojson": "~1.6.18"
+  }
+}
