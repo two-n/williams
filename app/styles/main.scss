@@ -227,13 +227,20 @@ $header-background-color: rgba($background-color, 0.95);
 
 //map
 #vectorMap {
-  fill-opacity: 0;
   stroke: white;
   stroke-width: 1;
-}
 
-path {
-  fill-opacity: 0.3;
-  stroke-opacity: 0.5;
-  fill: #444;
+  .no {
+    fill: #FFFFFF;
+    stroke: #DDD
+  }
+
+  .sogi {
+    fill: #FF0055;
+  }
+
+  .so {
+    fill: #FF7D96;
+  }
+
 }
