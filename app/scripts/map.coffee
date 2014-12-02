@@ -1,4 +1,36 @@
 define ["d3", "topojson"], (d3, topojson) ->
+  regionByName = {
+    "Pacific": {
+      states: ["Alaska", "California", "Hawaii", "Oregon", "Washington"]
+      centroid: [-123,39]
+      offset: [-39.48530542559064, -15.370925469394933]
+      value: 39250000
+    }
+    "Mountain": {
+      states: ["Arizona", "Colorado", "Idaho", "Montana", "Nevada", "New Mexico", "Utah", "Wyoming"]
+      centroid: [-111,40]
+      offset: [-7.987967225259922, 1.193425583016392]
+      value: 17160000
+    }
+    "Midwest": {
+      states: ["Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin"]
+      centroid: [-92,43]
+      offset: [17.14660810580267, -5.690153784351679]
+      value: 51810000
+    }
+    "South": {
+      states: ["Alabama", "Arkansas", "Delaware", "Florida", "Georgia", "Kentucky", "Louisiana", "Maryland", "Mississippi", "North Carolina", "Oklahoma", "South Carolina", "Tennessee", "Texas", "Virginia", "District of Columbia", "West Virginia"]
+      centroid: [-89,32]
+      offset: [16.69364734000476, 20.69134832167154]
+      value: 90440000
+    }
+    "Northeast": {
+      states: ["Connecticut", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont"]
+      centroid: [-71,42.5]
+      offset: [31.406069531500407, -3.9391785272940893]
+      value: 43920000
+    }
+  };
 
   index = {
     AL: "Alabama"
@@ -160,11 +192,11 @@ define ["d3", "topojson"], (d3, topojson) ->
 
   map =  () ->
     g = @.selectAll("g").data([null]).enter().append("g").attr "id" : "vectorMap"
-
-    map_path = g.selectAll("path")
-      .data(geometries)
-
-    map_path.enter()
+    regions = g.selectAll(".region").data(_.keys(regionByName))
+    regions.enter().append("g").attr
+      "class": "region"
+      "id": (d) -> d
+    .selectAll("path").data((d) -> geometries.filter (state) -> _.contains regionByName[d].states, index[state.id]).enter()
       .append("path")
       .attr
         "d" : path
@@ -174,7 +206,15 @@ define ["d3", "topojson"], (d3, topojson) ->
           if data[index[d.id]].SO then return "so"
         "id" : (d) -> d.id
 
-
-
-
+    g.selectAll(".region")
+      .transition()
+      .duration(1000)
+      .ease("cubic-out")
+      .attr("opacity", 1)
+      .transition()
+      .attr("transform", (d) =>
+        x = regionByName[d].offset[0]
+        y = regionByName[d].offset[1]
+        return "translate(#{x},#{y})"
+      )
   map
