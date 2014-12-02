@@ -71,15 +71,15 @@ define ["d3", "topojson"], (d3, topojson) ->
       SO: 2009
       SOGI:  2013
     }
-    "Hawai":{
+    "Hawaii":{
       SO: 1991
       SOGI:  2011
     }
-    "Illinoi":{
+    "Illinois":{
       SO: 2005
       SOGI:  2005
     }
-    "Iow":{
+    "Iowa":{
       SO: 2007
       SOGI:  2007
     }
@@ -139,7 +139,7 @@ define ["d3", "topojson"], (d3, topojson) ->
       SO: 1982
       SOGI: null
     }
-    "New Jersey ":{
+    "New Jersey":{
        SO: 1991
        SOGI:  2006
     }
