@@ -1,5 +1,5 @@
-throwaway
-=========
+Williams Interactive Report Summary
+===================================
 
 - `npm install` to initialize project
 - `grunt` for dev server
