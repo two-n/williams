@@ -5,7 +5,7 @@ require.config
     "underscore": "vendor/underscore/underscore"
 
 
-define ["d3", "underscore", "./graphics"], (d3, _, graphics) ->
+define ["d3", "underscore", "./graphics", "./map"], (d3, _, graphics, map) ->
 
   state =
     transitioningScrollTop: false
