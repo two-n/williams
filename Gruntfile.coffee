@@ -114,21 +114,16 @@ module.exports = (grunt) ->
         dest: ".tmp/data"
         src: DATA_FILES
 
-    aws: try grunt.file.readJSON "aws-credentials.json"
-    s3:
+    rsync:
       options:
-        key: "<%= aws.aws_access_key_id %>"
-        secret: "<%= aws.aws_secret_access_key %>"
-        # bucket: "throwaway.dechov.com"
-        gzip: true
-      production:
-        sync: [
-          src: ".tmp/**"
-          dest: "/"
-          rel: ".tmp"
-          options:
-            verify: true
-        ]
+        args: ["-avz"]
+        recursive: true
+      deploy:
+        options:
+          src: ".tmp/"
+          host: "twoninc@two-n.com"
+          dest: "/home/twoninc/prototypes.two-n.com/williams/#{ grunt.option("target") ? "" }"
+
 
   grunt.registerTask "development", [
     "clean"
@@ -157,4 +152,4 @@ module.exports = (grunt) ->
     "autoprefixer:build"
     "coffee:production"
   ]
-  grunt.registerTask "deploy", ["production", "s3"]
+  grunt.registerTask "deploy", ["production", "rsync"]
