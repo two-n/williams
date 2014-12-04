@@ -5,7 +5,7 @@ require.config
     "underscore": "vendor/underscore/underscore"
 
 
-define ["d3", "underscore", "./graphics", "./map"], (d3, _, graphics, map) ->
+define ["d3", "underscore", "./graphics", "./map", "./county_map"], (d3, _, graphics, map, countyMap) ->
 
   state =
     transitioningScrollTop: false
@@ -81,7 +81,10 @@ define ["d3", "underscore", "./graphics", "./map"], (d3, _, graphics, map) ->
     if props.type is "map"
       map.call d3.select(".chart"), props.split
     else
-      d3.select(".chart").selectAll("*").remove()
+      if props.type is "countyMap"
+        setTimeout((() => countyMap.call d3.select(".chart"), props.ethnicity, props.color), 500)
+      else
+        d3.select(".chart").selectAll("*").remove()
 
 
   d3.select(window)

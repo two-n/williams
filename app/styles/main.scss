@@ -234,6 +234,16 @@ $header-background-color: rgba($background-color, 0.95);
   stroke: white;
   stroke-width: 1;
 
+  .county {
+    stroke: none;
+    fill: #ED8F28;
+  }
+
+  .state {
+    fill-opacity: 0;
+    stroke-width: 1.5;
+  }
+
   .no {
     fill: #FFFFFF;
     stroke: #DDD
