@@ -24,28 +24,17 @@ define ->
     "split": true
   }, {
     "url": "/ethnicity/1",
-    "heading": "Black"
-    "type": "countyMap",
-    "ethnicity": "black",
-    "color": "#FF0055"
+    "heading": "Region Map with % LGBT Population Overlay"
+    "type": "countyMap"
   }, {
     "url": "/ethnicity/2",
-    "heading": "Latino",
-    "type": "countyMap",
-    "ethnicity": "latino",
-    "color": "#FF0055"
+    "heading": "Pie Charts of Race/Ethnicity by Region"
   }, {
     "url": "/ethnicity/3",
-    "heading": "White"
-    "type": "countyMap",
-    "ethnicity": "white",
-    "color": "#FF0055"
+    "heading": "Pie Charts of Race/Ethnicity by 21/29"
   }, {
     "url": "/education/1",
-    "heading": "Asian"
-    "type": "countyMap",
-    "ethnicity": "asian",
-    "color": "#FF0055"
+    "heading": "Bar Chart of College Completion by 21/29"
   }, {
     "url": "/education/2",
     "heading": "Bar Chart of College Completion by Region"

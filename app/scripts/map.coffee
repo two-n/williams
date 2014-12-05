@@ -178,7 +178,6 @@ define ["d3", "topojson"], (d3, topojson) ->
   }
 
   vectorMap = null
-  featureSet = null
   stateGeometries = null
   d3.json("./assets/counties.topo.json", (err, _vectorMap) =>
     vectorMap = _vectorMap
@@ -190,7 +189,7 @@ define ["d3", "topojson"], (d3, topojson) ->
 
   map =  (split) ->
     g = @.selectAll("g").data([null])
-    g.enter().append("g").attr "id" : "vectorMap"
+    g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
     regions = g.selectAll(".region").data(_.keys(regionByName))
     regions.enter().append("g").attr
       "class": "region"

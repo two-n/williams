@@ -167,6 +167,7 @@ $header-background-color: rgba($background-color, 0.95);
   .header {
     border-top: 1px solid nth($colors, 3);
     padding-top: 5px;
+    height: 200px;
     h2 {
       color: nth($colors, 4);
       font-weight: bold;
@@ -177,8 +178,12 @@ $header-background-color: rgba($background-color, 0.95);
     @include font-1;
     font-size: 17px;
 
-    .legend {
+    .chartNotation {
       float: right;
+
+    }
+
+    .legend {
       text-transform: uppercase;
       color: nth($colors, 3);
       width: 180px;
@@ -256,4 +261,72 @@ $header-background-color: rgba($background-color, 0.95);
   .so {
     fill: #FF7D96;
   }
+}
+
+//dropdown
+.dropdown {
+  width: 275px;
+
+  cursor: pointer;
+
+  margin: -1px 3px 0;
+  display: inline-block;
+  position: relative;
+  height: 22px;
+
+  ul {
+    margin: 0;
+    padding: 3px 16px 0 7px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+
+    // background-color: rgba($primary, 0.8);
+  }
+
+  &::after {
+    // content: "▾";
+    content: "\25BE";
+    cursor: pointer;
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    z-index: 2;
+    // color: $secondary;
+  }
+  &.collapsed::after {
+    color: inherit
+  }
+
+  .item {
+    @include font-1;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    list-style-type: none;
+    text-transform: uppercase;
+    padding: 2px 0 5px;
+    color: nth($colors, 7);
+    // color: $secondary-muted;
+    height: 23px;
+    transition: all 200ms;
+    overflow: hidden;
+    // @include text-shadow($primary-accented 1px 1px 2px);
+
+    // &:hover {
+    //   color: $secondary;
+    // }
+    // &.active {
+      // color: $tertiary-accented;
+    // }
+  }
+
+  &.collapsed .item:not(.active) {
+    height: 0;
+    padding: 0;
+    opacity: 0;
+  }
+
 }

@@ -20,6 +20,9 @@ define ["d3", "topojson"], (d3, topojson) ->
         black: +d["%afamtot"]
         asian: +d["%asiantot"]
         indian: +d["%aiantot"]
+        pacilander: +d["%whtot"]
+        other: +d["%afamtot"]
+        multi: +d["%asiantot"]
       }
     ,(err, _data) => data = _data )
 

@@ -5,11 +5,12 @@ require.config
     "underscore": "vendor/underscore/underscore"
 
 
-define ["d3", "underscore", "./graphics", "./map", "./county_map"], (d3, _, graphics, map, countyMap) ->
+define ["d3", "underscore", "./graphics", "./map", "./county_map" , "./dropdown"], (d3, _, graphics, map, countyMap, dropdown) ->
 
   state =
     transitioningScrollTop: false
     path: null
+    ethnicity: "black"
 
   route = (path) ->
     if state.path is path then return
@@ -67,6 +68,12 @@ define ["d3", "underscore", "./graphics", "./map", "./county_map"], (d3, _, grap
           .text(d.label)
     sel.exit().remove()
 
+    #dropdown
+    sel = d3.select(".visualization .header .dropdown")
+    sel.call dropdown().on "select", (d) =>
+      state.ethnicity = d
+      countyMap.call d3.select(".chart"), state.ethnicity
+
     # nav
     d3.select(".nav")
       .selectAll("g")
@@ -83,7 +90,7 @@ define ["d3", "underscore", "./graphics", "./map", "./county_map"], (d3, _, grap
       setTimeout((() => map.call d3.select(".chart"), props.split), 500)
     else
       if props.type is "countyMap"
-        setTimeout((() => countyMap.call d3.select(".chart"), props.ethnicity, props.color), 500)
+        setTimeout((() => countyMap.call d3.select(".chart"), state.ethnicity), 500)
 
 
   d3.select(window)
