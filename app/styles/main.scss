@@ -242,9 +242,12 @@ $header-background-color: rgba($background-color, 0.95);
   .county {
     stroke: none;
     fill: #ED8F28;
+    &.hidden {
+      opacity: 0;
+    }
   }
 
-  .state {
+  .nofill {
     fill-opacity: 0;
     stroke-width: 1.5;
   }

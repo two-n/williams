@@ -35,7 +35,7 @@ define ["d3"], (d3) -> ->
     }
   ]
   collapsed = true
-  active = 0
+  active = 2
 
   dispatch = d3.dispatch("select")
 

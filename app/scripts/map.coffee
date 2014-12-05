@@ -1,4 +1,35 @@
 define ["d3", "topojson"], (d3, topojson) ->
+
+  countyGeometries = null
+  stateGeometries = null
+  d3.json("./assets/counties.topo.json", (err, _vectorMap) =>
+    vectorMap = _vectorMap
+    countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
+    stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
+  )
+  path = d3.geo.path()
+    .projection(null)
+
+  data = null
+  d3.csv("./assets/census_race.csv",
+    (d,i) ->
+      {
+        id: +d.stcounty
+        latino: +d["%hisptot"]
+        white: +d["%whtot"]
+        black: +d["%afamtot"]
+        asian: +d["%asiantot"]
+        indian: +d["%aiantot"]
+        pacilander: +d["%whtot"]
+        other: +d["%afamtot"]
+        multi: +d["%asiantot"]
+      }
+    ,(err, _data) => data = _data )
+
+  myScale = d3.scale.threshold()
+    .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+    .range([0,0,0.1,0.4,0.6,0.8,1])
+
   regionByName = {
     "Pacific": {
       states: ["Alaska", "California", "Hawaii", "Oregon", "Washington"]
@@ -30,7 +61,7 @@ define ["d3", "topojson"], (d3, topojson) ->
       offset: [31.406069531500407, -3.9391785272940893]
       value: 43920000
     }
-  };
+  }
 
   index = {
     "01":  { postal: "AL" , fullName: "Alabama"}
@@ -86,7 +117,7 @@ define ["d3", "topojson"], (d3, topojson) ->
     "56":  { postal: "WY" , fullName: "Wyoming"}
   }
 
-  data = {
+  sogiDates = {
     "California":{
       SO: 1999
       SOGI:  2003
@@ -177,17 +208,49 @@ define ["d3", "topojson"], (d3, topojson) ->
     }
   }
 
-  vectorMap = null
-  stateGeometries = null
-  d3.json("./assets/counties.topo.json", (err, _vectorMap) =>
-    vectorMap = _vectorMap
-    stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
-  )
+  modes = {
+    protection : {
+      stateClass: (d) ->
+          if not sogiDates[index[d.id].fullName]? then return "no state"
+          if sogiDates[index[d.id].fullName].SOGI then return "sogi state"
+          if sogiDates[index[d.id].fullName].SO then return "so state"
+      countyClass : "county hidden"
+      stroke: null
+    }
+    ethnicity : {
+      stateClass: (d) -> "state nofill"
+      stroke: (d) ->
+          if sogiDates[index[d.id]?.fullName]? then "white" else "none"
+      countyClass : "county"
+    }
+  }
 
-  path = d3.geo.path()
-    .projection(null)
+  map = (props) ->
+    ethnicity = props.ethnicity
+    split = props.split
+    mode = props.mode
 
-  map =  (split) ->
+    g = @.selectAll("g").data([null])
+    g.enter().append("g").attr("id" : "vectorMap")
+
+    # county definitions
+    countyPaths = g.selectAll("path.county").data(countyGeometries)
+    countyPaths.enter()
+      .append("path")
+      .attr
+        "d" : path
+        "id" : (d) -> d.id
+    countyPaths
+      .attr
+        "class" : modes[mode].countyClass
+        "fill-opacity" : (d) ->
+          entry = _.find(data, (entry) -> entry.id is +d.id )
+          if entry?
+            myScale(entry[ethnicity])
+          else
+            0
+
+    #state definitions
     g = @.selectAll("g").data([null])
     g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
     regions = g.selectAll(".region").data(_.keys(regionByName))
@@ -198,12 +261,14 @@ define ["d3", "topojson"], (d3, topojson) ->
       .append("path")
       .attr
         "d" : path
-        "class" : (d) ->
-          if not data[index[d.id].fullName]? then return "no"
-          if data[index[d.id].fullName].SOGI then return "sogi"
-          if data[index[d.id].fullName].SO then return "so"
+        "class" : "state"
+    g.selectAll(".state")
+      .attr
         "id" : (d) -> d.id
+        "class" : modes[mode].stateClass
+        "stroke": modes[mode].stroke
 
+    #region definitions
     g.selectAll(".region")
       .transition()
       .delay((d,i) -> 250*(5-i))
@@ -216,4 +281,3 @@ define ["d3", "topojson"], (d3, topojson) ->
         else
           "translate(0,0)"
       )
-  map

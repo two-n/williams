@@ -72,7 +72,7 @@ define ["d3", "underscore", "./graphics", "./map", "./county_map" , "./dropdown"
     sel = d3.select(".visualization .header .dropdown")
     sel.call dropdown().on "select", (d) =>
       state.ethnicity = d
-      countyMap.call d3.select(".chart"), state.ethnicity
+      map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: false, mode: "ethnicity"}
 
     # nav
     d3.select(".nav")
@@ -85,12 +85,13 @@ define ["d3", "underscore", "./graphics", "./map", "./county_map" , "./dropdown"
       .transition().duration(600).ease("cubic-out")
         .attr "r", 4
 
-    d3.select(".chart").selectAll("*").remove()
     if props.type is "map"
-      setTimeout((() => map.call d3.select(".chart"), props.split), 500)
+      setTimeout((() => map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: props.split, mode: props.mode}), 500)
     else
-      if props.type is "countyMap"
-        setTimeout((() => countyMap.call d3.select(".chart"), state.ethnicity), 500)
+      d3.select(".chart").selectAll("*").remove()
+    # else
+    #   if props.type is "countyMap"
+    #     setTimeout((() => countyMap.call d3.select(".chart"), {ethnicity: state.ethnicity, split: false, mode: "ethnicity"}), 500)
 
 
   d3.select(window)

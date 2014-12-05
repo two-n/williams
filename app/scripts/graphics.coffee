@@ -12,6 +12,7 @@ define ->
     ],
     "type": "map"
     "split": false
+    "mode": "protection"
   }, {
     "url": "/introduction/3",
     "heading": "Current Employment Map with Region Overlay",
@@ -22,10 +23,12 @@ define ->
     ],
     "type": "map"
     "split": true
+    "mode": "protection"
   }, {
     "url": "/ethnicity/1",
     "heading": "Region Map with % LGBT Population Overlay"
-    "type": "countyMap"
+    "type": "map"
+    "mode": "ethnicity"
   }, {
     "url": "/ethnicity/2",
     "heading": "Pie Charts of Race/Ethnicity by Region"
