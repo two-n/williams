@@ -250,6 +250,7 @@ $header-background-color: rgba($background-color, 0.95);
   .nofill {
     fill-opacity: 0;
     stroke-width: 1.5;
+    pointer-events: none
   }
 
   .no {

@@ -1,4 +1,4 @@
-define ["d3", "topojson"], (d3, topojson) ->
+define ["d3", "topojson", "./callout"], (d3, topojson, callout) ->
 
   countyGeometries = null
   stateGeometries = null
@@ -240,6 +240,7 @@ define ["d3", "topojson"], (d3, topojson) ->
       .attr
         "d" : path
         "id" : (d) -> d.id
+      .on "mouseenter", (d) => callout.call @, path.centroid(d)
     countyPaths
       .attr
         "class" : modes[mode].countyClass
