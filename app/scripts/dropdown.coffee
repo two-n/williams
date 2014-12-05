@@ -22,7 +22,7 @@ define ["d3"], (d3) -> ->
       label: "Asian"
     },
     {
-      dataId: "pacilander"
+      dataId: "pacislander"
       label: "Native Hawaiian-Pacific Islander"
     },
     {
@@ -32,6 +32,10 @@ define ["d3"], (d3) -> ->
     {
       dataId: "multi"
       label: "Multiracial"
+    },
+    {
+      dataId: "asianpac"
+      label: "Asian/Pac-Islander"
     }
   ]
   collapsed = true

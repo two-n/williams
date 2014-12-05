@@ -1,18 +1,34 @@
-define ["d3"], (d3) ->
+define ["d3", "./trailing_bubble"], (d3, TrailingBubble) ->
 
-  callout = (coords) ->
-    callout = d3.select(".callout")
-    if callout.empty()
-      callout = @.append("g").classed("callout", true)
+  trailing = TrailingBubble()
 
-    callout
+  callout = (coords, d) ->
+    bubble = @.selectAll('.trailing-bubble').data d
+    bubble.exit()
+      .remove()
+
+    if d.length? and (d.length is 0)
+      return
+
+    vector = [0.25,-0.5]
+
+    trailing
+      .point([
+          coords[0],coords[1]
+        ])
+      .vector(vector, 18)
+      .color("#999")
+      .text((d) -> d.countyName)
+      # .subSpanText("#{dimension.color.value()(d) || ""}")
+
+    bubble.enter()
+      .append('g')
+      .style('opacity', 0)
       .attr
-        transform: "translate(#{coords[0]},#{coords[1]})"
+        class: "trailing-bubble"
+      .transition()
+      .delay(100)
+      .duration(100)
+      .style('opacity', 1)
 
-    box = callout.select("rect")
-    if box.empty()
-      box = callout.append("rect")
-    box.attr
-      width: 200
-      height: 200
-      fill: "red"
+    bubble.call trailing

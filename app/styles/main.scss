@@ -334,3 +334,19 @@ $header-background-color: rgba($background-color, 0.95);
   }
 
 }
+
+.trailing-bubble {
+  rect {
+    fill: #FFF;
+    stroke: #FF0055;
+    stroke-width: 1px;
+  }
+  path {
+    fill: #FFF;
+    stroke: #FF0055;
+  }
+  text {
+    fill: #888;
+    @include font-1;
+  }
+}

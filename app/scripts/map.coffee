@@ -15,20 +15,54 @@ define ["d3", "topojson", "./callout"], (d3, topojson, callout) ->
     (d,i) ->
       {
         id: +d.stcounty
+        countyName: d["countyname"]
         latino: +d["%hisptot"]
         white: +d["%whtot"]
         black: +d["%afamtot"]
         asian: +d["%asiantot"]
         indian: +d["%aiantot"]
-        pacilander: +d["%whtot"]
-        other: +d["%afamtot"]
-        multi: +d["%asiantot"]
+        pacislander: +d["%nhpitot"]
+        other: +d["%othtot"]
+        multi: +d["%mracetot"]
+        asianpac: +d["%API"]
       }
     ,(err, _data) => data = _data )
 
-  myScale = d3.scale.threshold()
-    .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-    .range([0,0,0.1,0.4,0.6,0.8,1])
+
+  myScale = {
+    latino: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1])
+    black: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1]) 
+    white: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1])
+    asian: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1])
+    indian: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1])
+    pacislander: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1])
+    other: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1])
+    multi: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1])
+    asianpac: d3.scale.threshold()
+      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .range([0,0,0.1,0.4,0.6,0.8,1])
+  }
+  myScale.white.domain(myScale.white.domain().map((d,i) -> if i > 1 then d*5 else d))
+  myScale.asian.domain(myScale.asian.domain().map((d,i) -> if i > 1 then d*0.1 else d))
+  myScale.asianpac.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
+  myScale.other.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
+  console.log myScale.white.domain()
 
   regionByName = {
     "Pacific": {
@@ -208,6 +242,8 @@ define ["d3", "topojson", "./callout"], (d3, topojson, callout) ->
     }
   }
 
+  bubbleTimeout = null
+
   modes = {
     protection : {
       stateClass: (d) ->
@@ -240,14 +276,19 @@ define ["d3", "topojson", "./callout"], (d3, topojson, callout) ->
       .attr
         "d" : path
         "id" : (d) -> d.id
-      .on "mouseenter", (d) => callout.call @, path.centroid(d)
+      .on "mouseenter", (d) =>
+        if bubbleTimeout?
+          clearTimeout(bubbleTimeout)
+        callout.call @, path.centroid(d), [_.find(data, (entry) -> entry.id is +d.id )]
+      .on "mouseleave", (d) =>
+        bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
     countyPaths
       .attr
         "class" : modes[mode].countyClass
         "fill-opacity" : (d) ->
           entry = _.find(data, (entry) -> entry.id is +d.id )
           if entry?
-            myScale(entry[ethnicity])
+            myScale[ethnicity](entry[ethnicity])
           else
             0
 
