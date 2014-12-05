@@ -54,14 +54,14 @@ define ['d3'], (d3) ->
           d: (d, i) ->
             getPath(point, r1, point2, r2)
 
-
       gText = sel.selectAll('g.trailing-bubble-text')
-        .data([null])
-      gTextEnter = gText.enter()
-        .append('g')
-        .attr('class', 'trailing-bubble-text')
+      if gText.empty()
+        gText = sel.append('g').attr('class', 'trailing-bubble-text')
 
-      textEnter = gTextEnter.append('text')
+      mainText = gText.selectAll("text#main")
+      if mainText.empty()
+        mainText = gText.append('text')
+      mainText
         .attr
           fill: '#fff'
           x: 5
@@ -69,24 +69,35 @@ define ['d3'], (d3) ->
           dy: '.8em'
           'font-size': '.8em'
           'pointer-events': 'none'
-      textEnter.append("tspan").attr
-        id: "main"
-        height: height
-      subSpan = textEnter.append("tspan")
-        .attr
-          id: "sub"
-          x: 5
-          y: height+8
-
-      mainSpan = sel.select('tspan#main')
+          id: "main"
+          height: height
         .text(text)
-      subSpan = sel.select('tspan#sub')
-      subSpan
-        .attr
-          height: if subSpanText.length > 0 then height else 0
-        .text(subSpanText)
+      # textEnter = gText.append('text').data
+      #   .attr
+      #     fill: '#fff'
+      #     x: 5
+      #     y: 5
+      #     dy: '.8em'
+      #     'font-size': '.8em'
+      #     'pointer-events': 'none'
+      # textEnter.append("tspan").attr
+      #   id: "main"
+      #   height: height
+      # subSpan = textEnter.append("tspan")
+      #   .attr
+      #     id: "sub"
+      #     x: 5
+      #     y: height+8
 
-      bbox = mainSpan.node().getBBox()
+      # mainSpan = sel.select('tspan#main')
+        # .text(text)
+      # subSpan = sel.select('tspan#sub')
+      # subSpan
+      #   .attr
+      #     height: if subSpanText.length > 0 then height else 0
+      #   .text(subSpanText)
+
+      bbox = gText.node().getBBox()
 
       width = bbox.width + 10
 
@@ -104,7 +115,7 @@ define ['d3'], (d3) ->
       ]
 
       bodyEnter.attr transform: "translate(#{registration})"
-      gTextEnter.attr transform: "translate(#{registration})"
+      # gText.attr transform: "translate(#{registration})"
       prep(body)
         .attr
           transform: "translate(#{registration})"
