@@ -1,5 +1,69 @@
 
-$colors: #EDEDEE #D1D1D4 #A6A6AC #797980 #38383C #FD4D63 #FB9F37 #FDD82B #5BBC77 #007CC5 #8C589E;
+
+
+// @font-face {
+//   font-family: 'Libre Baskerville';
+//   font-style: normal;
+//   font-weight: 400;
+//   src: local('Libre Baskerville'), local('LibreBaskerville-Regular'), url(http://fonts.gstatic.com/s/librebaskerville/v4/pR0sBQVcY0JZc_ciXjFsK5gtRqbDAavNCEBluaoIIJc.woff) format('woff');
+//   // src: url(http://fonts.gstatic.com/s/librebaskerville/v4/pR0sBQVcY0JZc_ciXjFsK5gtRqbDAavNCEBluaoIIJc.woff) format('woff');
+// }
+// @font-face {
+//   font-family: 'Libre Baskerville';
+//   font-style: normal;
+//   font-weight: 700;
+//   src: local('Libre Baskerville Bold'), local('LibreBaskerville-Bold'), url(http://fonts.gstatic.com/s/librebaskerville/v4/kH7K4InNTm7mmOXXjrA5v5HBV7zGPK_SGwFjOykAVjn3rGVtsTkPsbDajuO5ueQw.woff) format('woff');
+//   // src: url(http://fonts.gstatic.com/s/librebaskerville/v4/kH7K4InNTm7mmOXXjrA5v5HBV7zGPK_SGwFjOykAVjn3rGVtsTkPsbDajuO5ueQw.woff) format('woff');
+// }
+// @font-face {
+//   font-family: 'Libre Baskerville';
+//   font-style: italic;
+//   font-weight: 400;
+//   src: local('Libre Baskerville Italic'), local('LibreBaskerville-Italic'), url(http://fonts.gstatic.com/s/librebaskerville/v4/QHIOz1iKF3bIEzRdDFaf5SO-5kXrvlsa0llgP70kI5w.woff) format('woff');
+//   // src: url(http://fonts.gstatic.com/s/librebaskerville/v4/QHIOz1iKF3bIEzRdDFaf5SO-5kXrvlsa0llgP70kI5w.woff) format('woff');
+// }
+
+
+// @font-face {
+//   font-family: 'Open Sans';
+//   font-style: normal;
+//   font-weight: 400;
+//   src: local('Open Sans'), local('OpenSans'), url(http://fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2) format('woff2');
+//   // src: url(http://fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2) format('woff2');
+//   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+// }
+// @font-face {
+//   font-family: 'Open Sans';
+//   font-style: normal;
+//   font-weight: 600;
+//   src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(http://fonts.gstatic.com/s/opensans/v10/MTP_ySUJH_bn48VBG8sNShampu5_7CjHW5spxoeN3Vs.woff2) format('woff2');
+//   // src: url(http://fonts.gstatic.com/s/opensans/v10/MTP_ySUJH_bn48VBG8sNShampu5_7CjHW5spxoeN3Vs.woff2) format('woff2');
+//   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+// }
+// @font-face {
+//   font-family: 'Open Sans';
+//   font-style: normal;
+//   font-weight: 700;
+//   src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzBampu5_7CjHW5spxoeN3Vs.woff2) format('woff2');
+//   // src: url(http://fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzBampu5_7CjHW5spxoeN3Vs.woff2) format('woff2');
+//   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+// }
+// @font-face {
+//   font-family: 'Open Sans';
+//   font-style: italic;
+//   font-weight: 400;
+//   src: local('Open Sans Italic'), local('OpenSans-Italic'), url(http://fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBogp9Q8gbYrhqGlRav_IXfk.woff2) format('woff2');
+//   // src: url(http://fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBogp9Q8gbYrhqGlRav_IXfk.woff2) format('woff2');
+//   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+// }
+
+
+
+
+
+
+
+$colors: #EDEDEE #D1D1D4 #A6A6AC #797980 #38383C #FF0055 #FF9C00 #FFDF00 #00C775 #0075CA #9843A0;
 
 /* Border box: http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
 *, *:before, *:after { box-sizing: border-box; }
@@ -67,12 +131,16 @@ $header-background-color: rgba($background-color, 0.95);
     margin-bottom: 80px;
     position: relative;
     padding-top: 180px;
+    transition: color 450ms;
 
     &.current {
       h1 {
         position: fixed;
         top: 30px;
       }
+    }
+    &:not(.active) {
+      color: nth($colors, 2) !important;
     }
   }
 
@@ -100,7 +168,12 @@ $header-background-color: rgba($background-color, 0.95);
     font-size: 17px;
     text-transform: uppercase;
     padding-top: 5px;
-    font-weight: bold;
+    // font-weight: bold;
+
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+
     @include line;
     border-top-width: 1px;
     margin-top: 0;
@@ -210,6 +283,13 @@ $header-background-color: rgba($background-color, 0.95);
     }
   }
 
+  .chart-container {
+    position: absolute;
+    top: 120px;
+    bottom: 30px;
+    width: 100%;
+  }
+
   .attribution {
     @include caption;
     position: absolute;
@@ -235,9 +315,11 @@ $header-background-color: rgba($background-color, 0.95);
 }
 
 //map
+$_d: 600ms;
 #vectorMap {
   stroke: white;
   stroke-width: 1;
+  transition: fill $_d, stroke $_d, fill-opacity $_d, stroke-opacity $_d;
 
   .county {
     stroke: none;
@@ -348,5 +430,40 @@ $header-background-color: rgba($background-color, 0.95);
   text {
     fill: #888;
     @include font-1;
+  }
+}
+
+// bar-chart
+.chart {
+  .row {
+    @include font-1;
+    font-size: 10px;
+    font-weight: bold;
+    fill: nth($colors, 3);
+    text-transform: uppercase;
+    text-anchor: end;
+    letter-spacing: .03em;
+  }
+
+  .x-axis {
+    path {
+      fill: none;
+      stroke: nth($colors, 3);
+      shape-rendering: crispEdges;
+    }
+    text {
+      @include font-1;
+      fill: nth($colors, 4);
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: .03em;
+    }
+  }
+
+  .label {
+    @include caption;
+    font-size: 11px;
+    fill: nth($colors, 4);
+    letter-spacing: .07em;
   }
 }

@@ -1,4 +1,4 @@
-define ["d3", "topojson", "./callout"], (d3, topojson, callout) ->
+define ["d3", "topojson", "./callout", "./clean"], (d3, topojson, callout, clean) ->
 
   countyGeometries = null
   stateGeometries = null
@@ -7,8 +7,6 @@ define ["d3", "topojson", "./callout"], (d3, topojson, callout) ->
     countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
     stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
   )
-  path = d3.geo.path()
-    .projection(null)
 
   data = null
   d3.csv("./assets/census_race.csv",
@@ -35,7 +33,7 @@ define ["d3", "topojson", "./callout"], (d3, topojson, callout) ->
       .range([0,0,0.1,0.4,0.6,0.8,1])
     black: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-      .range([0,0,0.1,0.4,0.6,0.8,1]) 
+      .range([0,0,0.1,0.4,0.6,0.8,1])
     white: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
@@ -262,64 +260,74 @@ define ["d3", "topojson", "./callout"], (d3, topojson, callout) ->
   }
 
   map = (props) ->
-    ethnicity = props.ethnicity
-    split = props.split
-    mode = props.mode
+    clean.call @, ["#vectorMap"], =>
+      size = [@property("offsetWidth"), @property("offsetHeight")]
 
-    g = @.selectAll("g").data([null])
-    g.enter().append("g").attr("id" : "vectorMap")
+      [xRatio, yRatio] = [0.9, 0.63]
+      projection = d3.geo.albersUsa()
+        .scale Math.min size[0]/xRatio, size[1]/yRatio
+        .translate [size[0] / 2, Math.min(size[1], size[0] * yRatio / xRatio) / 2]
+      path = d3.geo.path().projection(d3.geo.albersUsa())#projection)
+      path = d3.geo.path().projection(null)#projection)
 
-    # county definitions
-    countyPaths = g.selectAll("path.county").data(countyGeometries)
-    countyPaths.enter()
-      .append("path")
-      .attr
-        "d" : path
-        "id" : (d) -> d.id
-      .on "mouseenter", (d) =>
-        if bubbleTimeout?
-          clearTimeout(bubbleTimeout)
-        callout.call @, path.centroid(d), [_.find(data, (entry) -> entry.id is +d.id )]
-      .on "mouseleave", (d) =>
-        bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
-    countyPaths
-      .attr
-        "class" : modes[mode].countyClass
-        "fill-opacity" : (d) ->
-          entry = _.find(data, (entry) -> entry.id is +d.id )
-          if entry?
-            myScale[ethnicity](entry[ethnicity])
+      ethnicity = props.ethnicity
+      split = props.split
+      mode = props.mode
+
+      g = @.selectAll("g").data([null])
+      g.enter().append("g").attr("id" : "vectorMap")
+
+      # county definitions
+      countyPaths = g.selectAll("path.county").data(countyGeometries)
+      countyPaths.enter()
+        .append("path")
+        .attr
+          "d" : path
+          "id" : (d) -> d.id
+        .on "mouseenter", (d) =>
+          if bubbleTimeout?
+            clearTimeout(bubbleTimeout)
+          callout.call @, path.centroid(d), [_.find(data, (entry) -> entry.id is +d.id )]
+        .on "mouseleave", (d) =>
+          bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
+      countyPaths
+        .attr
+          "class" : modes[mode].countyClass
+          "fill-opacity" : (d) ->
+            entry = _.find(data, (entry) -> entry.id is +d.id )
+            if entry?
+              myScale[ethnicity](entry[ethnicity])
+            else
+              0
+
+      #state definitions
+      g = @.selectAll("g").data([null])
+      g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
+      regions = g.selectAll(".region").data(_.keys(regionByName))
+      regions.enter().append("g").attr
+        "class": "region"
+        "id": (d) -> d
+      .selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
+        .append("path")
+        .attr
+          "d" : path
+          "class" : "state"
+      g.selectAll(".state")
+        .attr
+          "id" : (d) -> d.id
+          "class" : modes[mode].stateClass
+          "stroke": modes[mode].stroke
+
+      #region definitions
+      g.selectAll(".region")
+        .transition()
+        .delay((d,i) -> 250*(5-i))
+        .duration(1000)
+        .attr("transform", (d) =>
+          if split
+            x = regionByName[d].offset[0]
+            y = regionByName[d].offset[1]
+            "translate(#{x},#{y})"
           else
-            0
-
-    #state definitions
-    g = @.selectAll("g").data([null])
-    g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
-    regions = g.selectAll(".region").data(_.keys(regionByName))
-    regions.enter().append("g").attr
-      "class": "region"
-      "id": (d) -> d
-    .selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
-      .append("path")
-      .attr
-        "d" : path
-        "class" : "state"
-    g.selectAll(".state")
-      .attr
-        "id" : (d) -> d.id
-        "class" : modes[mode].stateClass
-        "stroke": modes[mode].stroke
-
-    #region definitions
-    g.selectAll(".region")
-      .transition()
-      .delay((d,i) -> 250*(5-i))
-      .duration(1000)
-      .attr("transform", (d) =>
-        if split
-          x = regionByName[d].offset[0]
-          y = regionByName[d].offset[1]
-          "translate(#{x},#{y})"
-        else
-          "translate(0,0)"
-      )
+            "translate(0,0)"
+        )

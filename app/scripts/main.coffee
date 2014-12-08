@@ -5,7 +5,9 @@ require.config
     "underscore": "vendor/underscore/underscore"
 
 
-define ["d3", "underscore", "./graphics", "./map", "./dropdown"], (d3, _, graphics, map, dropdown) ->
+define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"], (d3, _, graphics, map, dropdown, barChart) ->
+
+  colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
 
   state =
     transitioningScrollTop: false
@@ -27,10 +29,13 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown"], (d3, _, graphi
   render = (props) ->
     if not props? then return
 
+    currentColor = null
+
     # story
     lastChapter = null
     d3.select(".story")
       .selectAll(".chapter")
+      .classed("active", false)
       .each ->
         if @offsetTop <= document.body.scrollTop
           lastChapter = d3.select(@).datum()
@@ -42,7 +47,11 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown"], (d3, _, graphi
         d3.select(@).attr("href").slice(1) is props.url
       .classed("current", true)
       .each ->
-        currentChapter = d3.select(@parentNode).datum()
+        currentChapter = d3.select(@parentNode)
+          .classed("active", true)
+          .datum()
+        currentColor = d3.select(@parentNode).attr("data-color")
+
         # if the clicked show-me isn't in view, then transition scrollTop
         offsetTop = @parentNode.offsetTop + @offsetTop
         if offsetTop < document.body.scrollTop or offsetTop > document.body.scrollTop + window.innerHeight or currentChapter isnt lastChapter
@@ -63,9 +72,9 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown"], (d3, _, graphi
     sel.enter().append("div").attr("class", "color")
       .each (d, i) ->
         d3.select(@).append("div").attr("class", "value")
-          .style("background-color", d.value)
         d3.select(@).append("div").attr("class", "label")
-          .text(d.label)
+    sel.select(".value").style("background-color", (d) -> d.value)
+    sel.select(".label").text((d) -> d.label)
     sel.exit().remove()
 
     #dropdown
@@ -85,13 +94,15 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown"], (d3, _, graphi
       .transition().duration(600).ease("cubic-out")
         .attr "r", 4
 
-    if props.type is "map"
-      setTimeout((() => map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: props.split, mode: props.mode}), 500)
-    else
-      d3.select(".chart").selectAll("*").remove()
-    # else
-    #   if props.type is "countyMap"
-    #     setTimeout((() => countyMap.call d3.select(".chart"), {ethnicity: state.ethnicity, split: false, mode: "ethnicity"}), 500)
+    # chart
+    props.color = currentColor
+    switch props.type
+      when "map"
+        setTimeout((() => map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: props.split, mode: props.mode}), 500)
+      when "bar-chart"
+        barChart.call d3.select(".chart"), _.pick props, "bars", "rows", "data", "label", "color"
+      # else
+      #   d3.select(".chart").selectAll("*").remove()
 
 
   d3.select(window)
@@ -121,18 +132,23 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown"], (d3, _, graphi
             # window.location.hash = s.node().attributes.href.value.slice(1)
             route s.node().attributes.href.value.slice(1)
 
-  chapters = d3.selectAll(".chapter").datum ->
-    d3.select(@).attr("class")
-      .replace("chapter", "").replace("current", "").trim()
+  chapters = d3.selectAll(".chapter")
+    .datum ->
+      d3.select(@).attr("class")
+        .replace("chapter", "").replace("current", "").trim()
+    .attr "data-color", (d, i) -> colors[i+5]
+
   nav = d3.select(".nav")
     .attr("width", 25)
     .style("width", 25)
     .attr("height", 21 * chapters.size())
     .style("height", 21 * chapters.size())
+
   chapters.select("a").on "click", ->
     if not d3.event.metaKey and not d3.event.shiftKey
       route @attributes.href.value.slice(1)
       d3.event.preventDefault()
+
   chapters.each (chapter, i) ->
     element = nav.append("g")
       .datum chapter
@@ -143,7 +159,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown"], (d3, _, graphi
       .style "fill", "transparent"
       .attr "r", 8
     element.append("circle").classed("visible", true)
-      .style "fill", d3.select(@).select("h1").style("color")
+      .style "fill", d3.select(@).attr("data-color")
       .attr "r", 4
 
     d3.select(@).select("a").attr "href", "#/#{chapter}"
