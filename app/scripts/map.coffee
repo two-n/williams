@@ -380,6 +380,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         .transition()
         .delay((d,i) -> 250*(5-i))
         .duration(1000)
+
         .attr("transform", (d) =>
           if split
             x = regionByName[d].offset[0]

@@ -504,3 +504,39 @@ $_d: 600ms;
     letter-spacing: .07em;
   }
 }
+
+
+// bar-chart
+.chart {
+  .row {
+    @include font-1;
+    font-size: 10px;
+    font-weight: bold;
+    fill: nth($colors, 3);
+    text-transform: uppercase;
+    text-anchor: end;
+    letter-spacing: .03em;
+  }
+
+  .x-axis {
+    path {
+      fill: none;
+      stroke: nth($colors, 3);
+      shape-rendering: crispEdges;
+    }
+    text {
+      @include font-1;
+      fill: nth($colors, 4);
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: .03em;
+    }
+  }
+
+  .label {
+    @include caption;
+    font-size: 11px;
+    fill: nth($colors, 4);
+    letter-spacing: .07em;
+  }
+}

@@ -8,7 +8,6 @@ require.config
 define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"], (d3, _, graphics, map, dropdown, barChart) ->
 
   colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
-
   currentProps = null
 
   state =
@@ -31,6 +30,8 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"],
   render = (props) ->
     if not props? then return
     currentProps = props
+
+    currentColor = null
 
     currentColor = null
 
