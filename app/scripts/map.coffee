@@ -1,4 +1,4 @@
-define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"], (d3, topojson, callout, clean, _vectorMap) ->
+define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json", "../assets/census_data.json"], (d3, topojson, callout, clean, _vectorMap, data) ->
 
   vectorMap = _vectorMap
   countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
@@ -6,24 +6,27 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   path = d3.geo.path().projection(null)
   scale = 1
 
-  data = null
-  d3.csv("./assets/census_race.csv",
-    (d,i) ->
-      {
-        id: +d.stcounty
-        countyName: d["countyname"]
-        latino: +d["%hisptot"]
-        white: +d["%whtot"]
-        black: +d["%afamtot"]
-        # asian: +d["%asiantot"]
-        indian: +d["%aiantot"]
-        # pacislander: +d["%nhpitot"]
-        # other: +d["%othtot"]
-        # multi: +d["%mracetot"]
-        asianpac: +d["%API"]
-      }
-    ,(err, _data) => data = _data )
+  # data = null
+  # d3.csv("./assets/census_race.csv",
+  #   (d,i) ->
+  #     {
+  #       id: +d.stcounty
+  #       countyName: d["countyname"]
+  #       latino: +d["%hisptot"]
+  #       white: +d["%whtot"]
+  #       black: +d["%afamtot"]
+  #       # asian: +d["%asiantot"]
+  #       indian: +d["%aiantot"]
+  #       # pacislander: +d["%nhpitot"]
+  #       # other: +d["%othtot"]
+  #       # multi: +d["%mracetot"]
+  #       asianpac: +d["%API"]
+  #     }
+  #   ,(err, _data) => 
+  #     data = _data
+  #     console.log JSON.stringify(data)
 
+  #   )
 
   myScale = {
     latino: d3.scale.threshold()
@@ -283,6 +286,8 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   map = (props) ->
     clean.call @, ["#vectorMap"], =>
       size = [@property("offsetWidth"), @property("offsetHeight")]
+
+      console.log props.ethnicity
 
       ethnicity = props.ethnicity
       split = props.split
