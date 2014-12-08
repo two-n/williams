@@ -326,13 +326,14 @@ $_d: 600ms;
     fill: #ED8F28;
     &.hidden {
       opacity: 0;
+      pointer-events: none;
     }
   }
 
   .nofill {
     fill-opacity: 0;
     stroke-width: 1.5;
-    pointer-events: none
+    pointer-events: none;
   }
 
   .no {

@@ -1,8 +1,22 @@
 define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"], (d3, topojson, callout, clean, _vectorMap) ->
 
+<<<<<<< HEAD
   vectorMap = _vectorMap
   countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
   stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
+=======
+  countyGeometries = null
+  stateGeometries = null
+  nationGeometries = null
+  d3.json("./assets/counties.topo.json", (err, _vectorMap) =>
+    vectorMap = _vectorMap
+    countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
+    stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
+    nationGeometries = topojson.feature(vectorMap, vectorMap.objects.nation).features
+  )
+  path = d3.geo.path()
+    .projection(null)
+>>>>>>> lots of half-working features added.
 
   data = null
   d3.csv("./assets/census_race.csv",
@@ -244,6 +258,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           if sogiDates[index[d.id].fullName].SOGI then return "sogi state"
           if sogiDates[index[d.id].fullName].SO then return "so state"
       countyClass : "county hidden"
+      countyMouseEnter : null
       stroke: null
     }
     ethnicity : {
@@ -257,7 +272,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   ethnicities = ["latino", "black", "white", "asianpac", "indian"]
   formatCountyCalloutData = (d, activeEthnicity) ->
     toRet = {}
-    toRet.countyName = d.countyName
+    toRet.name = d.countyName
     toRet.subSpanText = []
     toRet.subSpanText.push {text: "Latino                            #{d3.format(".2f") d.latino}%", bold: false}
     toRet.subSpanText.push {text: "African-American                  #{d3.format(".2f") d.black}%", bold: false}
@@ -265,6 +280,16 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     toRet.subSpanText.push {text: "Asian/Pacific Islander            #{d3.format(".2f") d.asianpac}%", bold: false}
     toRet.subSpanText.push {text: "Native American                   #{d3.format(".2f") d.indian}%", bold: false}
     toRet.subSpanText[_.indexOf(ethnicities, activeEthnicity)].bold = true
+    [toRet]
+
+  formatStateCalloutData = (d) ->
+    toRet = {}
+    toRet.name = index[d.id].fullName
+    toRet.subSpanText = []
+    if sogiDates[index[d.id].fullName]?.SO
+      toRet.subSpanText.push {text: "SO Protection Y", bold: "false"}
+    if sogiDates[index[d.id].fullName]?.SOGI
+      toRet.subSpanText.push {text: "GI Protection Y", bold: "false"}
     [toRet]
 
   map = (props) ->
@@ -284,6 +309,15 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
       g = @.selectAll("g").data([null])
       g.enter().append("g").attr("id" : "vectorMap")
+
+    size = [@property("offsetWidth"), @property("offsetHeight")]
+
+    # [xRatio, yRatio] = [0.9, 0.63]
+    # scale = Math.min 960/size[0], 600/yRatio
+    # console.log scale
+    # g
+    #   .attr
+    #     "transform": "scale(2)"
 
     # county definitions
     countyPaths = g.selectAll("path.county").data(countyGeometries)
@@ -308,57 +342,83 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           else
             0
 
-      # county definitions
-      countyPaths = g.selectAll("path.county").data(countyGeometries)
-      countyPaths.enter()
-        .append("path")
-        .attr
-          "d" : path
-          "id" : (d) -> d.id
-        .on "mouseenter", (d) =>
-          if bubbleTimeout?
-            clearTimeout(bubbleTimeout)
-          callout.call @, path.centroid(d), [_.find(data, (entry) -> entry.id is +d.id )]
-        .on "mouseleave", (d) =>
-          bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
-      countyPaths
-        .attr
-          "class" : modes[mode].countyClass
-          "fill-opacity" : (d) ->
-            entry = _.find(data, (entry) -> entry.id is +d.id )
-            if entry?
-              myScale[ethnicity](entry[ethnicity])
-            else
-              0
+    #state definitions
+    g = @.selectAll("g").data([null])
+    g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
+    regions = g.selectAll(".region").data(_.keys(regionByName))
+    regions.enter().append("g").attr
+      "class": "region"
+      "id": (d) -> d
+    .selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
+      .append("path")
+      .attr
+        "d" : path
+        "class" : "state"
+    g.selectAll(".state")
+      .attr
+        "id" : (d) -> d.id
+        "class" : modes[mode].stateClass
+        "stroke": modes[mode].stroke
+      .on "mouseenter", (d) =>
+        if bubbleTimeout?
+          clearTimeout(bubbleTimeout)
+        callout.call @, path.centroid(d), formatStateCalloutData(d)
+      .on "mouseleave", (d) =>
+        bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
 
-      #state definitions
-      g = @.selectAll("g").data([null])
-      g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
-      regions = g.selectAll(".region").data(_.keys(regionByName))
-      regions.enter().append("g").attr
-        "class": "region"
-        "id": (d) -> d
-      .selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
-        .append("path")
-        .attr
-          "d" : path
-          "class" : "state"
-      g.selectAll(".state")
-        .attr
-          "id" : (d) -> d.id
-          "class" : modes[mode].stateClass
-          "stroke": modes[mode].stroke
+    #region definitions
+    g.selectAll(".region")
+      .transition()
+      .delay((d,i) -> 250*(5-i))
+      .duration(1000)
+      .attr("transform", (d) =>
+        if split
+          x = regionByName[d].offset[0]
+          y = regionByName[d].offset[1]
+          "translate(#{x},#{y})"
+        else
+          "translate(0,0)"
+      )
 
-      #region definitions
-      g.selectAll(".region")
-        .transition()
-        .delay((d,i) -> 100*(i))
-        .duration(1000)
-        .attr("transform", (d) =>
-          if split
-            x = regionByName[d].offset[0]
-            y = regionByName[d].offset[1]
-            "translate(#{x},#{y})"
-          else
-            "translate(0,0)"
-        )
+  map.getColorsForEthnicity = (ethnicity) ->
+    colorSets = {
+      latino : [
+        { value: "#ED8F28", label: "0.80 - 1.00", alpha: 1},
+        { value: "#ED8F28", label: "0.60 - 0.80", alpha: 0.8 },
+        { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
+        { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
+        { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
+      ]
+      black : [
+        { value: "#ED8F28", label: "0.80 - 1.00", alpha: 1},
+        { value: "#ED8F28", label: "0.60 - 0.80", alpha: 0.8 },
+        { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
+        { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
+        { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
+      ]
+      white : [
+        { value: "#ED8F28", label: "4.00 - 5.00", alpha: 1},
+        { value: "#ED8F28", label: "3.00 - 4.00", alpha: 0.8 },
+        { value: "#ED8F28", label: "2.00 - 3.00", alpha: 0.6 },
+        { value: "#ED8F28", label: "1.00 - 2.00", alpha: 0.4 },
+        { value: "#ED8F28", label: "0.01 - 1.00", alpha: 0.1 },
+      ]
+      indian : [
+        { value: "#ED8F28", label: "0.80 - 1.00", alpha: 1},
+        { value: "#ED8F28", label: "0.60 - 0.80", alpha: 0.8 },
+        { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
+        { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
+        { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
+      ]
+      asianpac : [
+        { value: "#ED8F28", label: "0.08 - 0.1", alpha: 1},
+        { value: "#ED8F28", label: "0.06 - 0.08", alpha: 0.8 },
+        { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
+        { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
+        { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
+      ]
+    }
+    return colorSets[ethnicity]
+
+  map
+>>>>>>> lots of half-working features added.

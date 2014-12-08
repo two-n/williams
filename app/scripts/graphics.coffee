@@ -6,9 +6,9 @@ define ->
     "url": "/introduction/2",
     "heading": "Timeline Map of Employment Laws",
     "colors": [
-      { value: "#FF0055", label: "SOGI protection*" },
-      { value: "#FF7D96", label: "SO protection*" },
-      { value: "#FFFFFF", label: "No protection" }
+      { value: "#FF0055", label: "SOGI protection*", alpha: 1},
+      { value: "#FF7D96", label: "SO protection*", alpha: 1 },
+      { value: "#FFFFFF", label: "No protection", alpha: 1 }
     ],
     "type": "map"
     "split": false
@@ -17,9 +17,9 @@ define ->
     "url": "/introduction/3",
     "heading": "Current Employment Map with Region Overlay",
     "colors": [
-      { value: "#FF0055", label: "SOGI protection*" },
-      { value: "#FF7D96", label: "SO protection*" },
-      { value: "#FFFFFF", label: "No protection" }
+      { value: "#FF0055", label: "SOGI protection*", alpha: 1 },
+      { value: "#FF7D96", label: "SO protection*", alpha: 1},
+      { value: "#FFFFFF", label: "No protection", alpha: 1 }
     ],
     "type": "map"
     "split": true

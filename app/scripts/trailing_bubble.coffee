@@ -105,6 +105,7 @@ define ['d3'], (d3) ->
           x2: bbox.width
           y2: 25
           class: "break"
+          display: () => if subSpanText.length > 0 then "inherit" else "none"
 
       prep(body.select('rect'))
         .attr

@@ -83,6 +83,29 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"],
       state.ethnicity = d
       map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: false, mode: "ethnicity"}
 
+      colors = map.getColorsForEthnicity(state.ethnicity)
+
+      sel = d3.select(".visualization .header .legend").selectAll(".color")
+        .data(colors)
+      sel.enter().append("div").attr("class", "color")
+        .each (d, i) ->
+          d3.select(@).append("div").attr("class", "value")
+            .style 
+              "background-color": d.value
+              "opacity": d.alpha
+          d3.select(@).append("div").attr("class", "label")
+            .text(d.label)
+      sel
+        .each (d, i) ->
+            d3.select(@).select("div.value")
+              .style 
+                "background-color": d.value
+                "opacity": d.alpha
+            d3.select(@).select("div.label")
+              .text(d.label)
+
+      sel.exit().remove()
+
     # nav
     d3.select(".nav")
       .selectAll("g")
