@@ -335,10 +335,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           "id" : (d) -> d.id
           "class" : modes[mode].stateClass
           "stroke": modes[mode].stroke
+          "vector-effect": "non-scaling-stroke"
         .on "mouseenter", (d) =>
           if bubbleTimeout?
             clearTimeout(bubbleTimeout)
-          callout.call @, path.centroid(d).map((d) -> d * scale, formatStateCalloutData(d)
+          callout.call @, path.centroid(d).map((d) -> d * scale), formatStateCalloutData(d)
         .on "mouseleave", (d) =>
           bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
 
