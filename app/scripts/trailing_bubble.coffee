@@ -58,7 +58,7 @@ define ['d3'], (d3) ->
       if gText.empty()
         gText = sel.append('g').attr('class', 'trailing-bubble-text')
 
-      mainText = gText.selectAll("text#main")
+      mainText = gText.selectAll("text.main")
       if mainText.empty()
         mainText = gText.append('text')
       mainText
@@ -69,39 +69,41 @@ define ['d3'], (d3) ->
           dy: '.8em'
           'font-size': '.8em'
           'pointer-events': 'none'
-          id: "main"
+          class: "main"
           height: height
         .text(text)
-      # textEnter = gText.append('text').data
-      #   .attr
-      #     fill: '#fff'
-      #     x: 5
-      #     y: 5
-      #     dy: '.8em'
-      #     'font-size': '.8em'
-      #     'pointer-events': 'none'
-      # textEnter.append("tspan").attr
-      #   id: "main"
-      #   height: height
-      # subSpan = textEnter.append("tspan")
-      #   .attr
-      #     id: "sub"
-      #     x: 5
-      #     y: height+8
 
-      # mainSpan = sel.select('tspan#main')
-        # .text(text)
-      # subSpan = sel.select('tspan#sub')
-      # subSpan
-      #   .attr
-      #     height: if subSpanText.length > 0 then height else 0
-      #   .text(subSpanText)
+      subText = gText.selectAll("text.sub").data(["butt", "butt2"])
+      subText.enter().append("text")
+        .attr
+          fill: '#fff'
+          x: 5
+          dy: '.8em'
+          'font-size': '.8em'
+          'pointer-events': 'none'
+          class: "main"
+          height: height
+      subText
+        .attr
+          y: (d,i) -> 28 + 13 * i
+        .text (d) -> d
+      subText.exit().remove()
 
       bbox = gText.node().getBBox()
 
       width = bbox.width + 10
+      totalHeight = bbox.height + 3
 
-      totalHeight = height + (if subSpanText.length > 0 then height else 0)
+      breakLine = gText.selectAll("line.break")
+      if breakLine.empty()
+        breakLine = gText.append('line')
+      breakLine
+        .attr
+          x1: 0
+          y1: 25
+          x2: bbox.width
+          y2: 25
+          class: "break"
 
       prep(body.select('rect'))
         .attr
