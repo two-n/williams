@@ -429,10 +429,14 @@ $_d: 600ms;
   }
   text {
     fill: #888;
+    stroke: none;
     @include font-1;
   }
   .break{
     stroke: #FF0055;
+  }
+  .bold{
+    font-weight: bold;
   }
 }
 

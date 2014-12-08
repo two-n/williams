@@ -19,7 +19,7 @@ define ["d3", "./trailing_bubble"], (d3, TrailingBubble) ->
       .vector(vector, 18)
       .color("#999")
       .text(d[0].countyName)
-      # .subSpanText("#{dimension.color.value()(d) || ""}")
+      .subSpanText(d[0].subSpanText)
 
     bubble.enter()
       .append('g')

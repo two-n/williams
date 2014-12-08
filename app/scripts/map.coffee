@@ -13,11 +13,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         latino: +d["%hisptot"]
         white: +d["%whtot"]
         black: +d["%afamtot"]
-        asian: +d["%asiantot"]
+        # asian: +d["%asiantot"]
         indian: +d["%aiantot"]
-        pacislander: +d["%nhpitot"]
-        other: +d["%othtot"]
-        multi: +d["%mracetot"]
+        # pacislander: +d["%nhpitot"]
+        # other: +d["%othtot"]
+        # multi: +d["%mracetot"]
         asianpac: +d["%API"]
       }
     ,(err, _data) => data = _data )
@@ -33,30 +33,29 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     white: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
-    asian: d3.scale.threshold()
-      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-      .range([0,0,0.1,0.4,0.6,0.8,1])
+    # asian: d3.scale.threshold()
+    #   .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+    #   .range([0,0,0.1,0.4,0.6,0.8,1])
     indian: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
-    pacislander: d3.scale.threshold()
-      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-      .range([0,0,0.1,0.4,0.6,0.8,1])
-    other: d3.scale.threshold()
-      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-      .range([0,0,0.1,0.4,0.6,0.8,1])
-    multi: d3.scale.threshold()
-      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-      .range([0,0,0.1,0.4,0.6,0.8,1])
+    # pacislander: d3.scale.threshold()
+    #   .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+    #   .range([0,0,0.1,0.4,0.6,0.8,1])
+    # other: d3.scale.threshold()
+    #   .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+    #   .range([0,0,0.1,0.4,0.6,0.8,1])
+    # multi: d3.scale.threshold()
+    #   .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+    #   .range([0,0,0.1,0.4,0.6,0.8,1])
     asianpac: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
   }
   myScale.white.domain(myScale.white.domain().map((d,i) -> if i > 1 then d*5 else d))
-  myScale.asian.domain(myScale.asian.domain().map((d,i) -> if i > 1 then d*0.1 else d))
+  # myScale.asian.domain(myScale.asian.domain().map((d,i) -> if i > 1 then d*0.1 else d))
   myScale.asianpac.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
-  myScale.other.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
-  console.log myScale.white.domain()
+  # myScale.other.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
 
   regionByName = {
     "Pacific": {
@@ -255,6 +254,19 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     }
   }
 
+  ethnicities = ["latino", "black", "white", "asianpac", "indian"]
+  formatCountyCalloutData = (d, activeEthnicity) ->
+    toRet = {}
+    toRet.countyName = d.countyName
+    toRet.subSpanText = []
+    toRet.subSpanText.push {text: "Latino                            #{d3.format(".2f") d.latino}%", bold: false}
+    toRet.subSpanText.push {text: "African-American                  #{d3.format(".2f") d.black}%", bold: false}
+    toRet.subSpanText.push {text: "White                             #{d3.format(".2f") d.white}%", bold: false}
+    toRet.subSpanText.push {text: "Asian/Pacific Islander            #{d3.format(".2f") d.asianpac}%", bold: false}
+    toRet.subSpanText.push {text: "Native American                   #{d3.format(".2f") d.indian}%", bold: false}
+    toRet.subSpanText[_.indexOf(ethnicities, activeEthnicity)].bold = true
+    [toRet]
+
   map = (props) ->
     clean.call @, ["#vectorMap"], =>
       size = [@property("offsetWidth"), @property("offsetHeight")]
@@ -272,6 +284,29 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
       g = @.selectAll("g").data([null])
       g.enter().append("g").attr("id" : "vectorMap")
+
+    # county definitions
+    countyPaths = g.selectAll("path.county").data(countyGeometries)
+    countyPaths.enter()
+      .append("path")
+      .attr
+        "d" : path
+        "id" : (d) -> d.id
+      .on "mouseleave", (d) =>
+        bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
+    countyPaths
+      .on "mouseenter", (d) =>
+        if bubbleTimeout?
+          clearTimeout(bubbleTimeout)
+        callout.call @, path.centroid(d), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
+      .attr
+        "class" : modes[mode].countyClass
+        "fill-opacity" : (d) ->
+          entry = _.find(data, (entry) -> entry.id is +d.id )
+          if entry?
+            myScale[ethnicity](entry[ethnicity])
+          else
+            0
 
       # county definitions
       countyPaths = g.selectAll("path.county").data(countyGeometries)

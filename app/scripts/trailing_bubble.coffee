@@ -73,7 +73,7 @@ define ['d3'], (d3) ->
           height: height
         .text(text)
 
-      subText = gText.selectAll("text.sub").data(["butt", "butt2"])
+      subText = gText.selectAll("text.sub").data(subSpanText)
       subText.enter().append("text")
         .attr
           fill: '#fff'
@@ -85,8 +85,9 @@ define ['d3'], (d3) ->
           height: height
       subText
         .attr
-          y: (d,i) -> 28 + 13 * i
-        .text (d) -> d
+          y: (d,i) -> 28 + 14 * i
+        .text (d) -> d.text
+        .classed("bold",(d) -> d.bold)
       subText.exit().remove()
 
       bbox = gText.node().getBBox()

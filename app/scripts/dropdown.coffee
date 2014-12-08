@@ -17,22 +17,22 @@ define ["d3"], (d3) -> ->
       dataId: "indian"
       label: "American Indian-Alaskan Native"
     },
-    {
-      dataId: "asian"
-      label: "Asian"
-    },
-    {
-      dataId: "pacislander"
-      label: "Native Hawaiian-Pacific Islander"
-    },
-    {
-      dataId: "other"
-      label: "Other"
-    },
-    {
-      dataId: "multi"
-      label: "Multiracial"
-    },
+    # {
+    #   dataId: "asian"
+    #   label: "Asian"
+    # },
+    # {
+    #   dataId: "pacislander"
+    #   label: "Native Hawaiian-Pacific Islander"
+    # },
+    # {
+    #   dataId: "other"
+    #   label: "Other"
+    # },
+    # {
+    #   dataId: "multi"
+    #   label: "Multiracial"
+    # },
     {
       dataId: "asianpac"
       label: "Asian/Pac-Islander"
