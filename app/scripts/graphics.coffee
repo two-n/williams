@@ -1,7 +1,24 @@
 define ->
   [{
     "url": "/introduction/1",
-    "heading": "Graph of Opinions on Marriage/Employment/Sin"
+    "heading": "Graph of Opinions on Marriage/Employment/Sin",
+    "colors": [
+      { value: "#FF0055", label: "Not Wrong at All" },
+      { value: "#A6A5AC", label: "Always Wrong" },
+      { value: "#C0C0C4", label: "Almost Always Wrong" },
+      { value: "#D8D8DA", label: "Sometimes Wrong" }
+    ],
+    "type": "timeline",
+    "lines": ["Not Wrong at All", "Always Wrong", "Almost Always Wrong", "Sometimes Wrong"],
+    "data": """
+      ,1973,1974,1976,1977,1980,1982,1984,1985,1987,1988,1989,1990,1991,1993,1994,1996,1998,2000,2002,2004,2006,2008,2010,2012
+      Always Wrong,73,70,70,73,74,74,76,75,77,77,77,76,77,66,68,61,59,59,56,58,56,52,46,46
+      Almost Always Wrong,7,6,6,6,6,5,5,4,4,4,4,5,4,4,4,5,6,4,5,5,5,3,4,3
+      Sometimes Wrong,8,9,8,8,6,7,6,7,7,6,6,6,4,8,6,6,7,8,7,7,7,7,8,8
+      Not Wrong at All,11,13,16,14,14,14,13,14,12,13,15,13,15,22,23,28,28,29,32,30,32,38,43,44
+      N,1448,1412,1426,1453,1397,1771,1412,1484,1750,937,980,872,926,1012,1884,1784,1753,1697,884,868,1908,1269,1223,1239
+    """,
+    "label": "\"What about sexual relations\nbetween two adults of the same sex?\""
   }, {
     "url": "/introduction/2",
     "heading": "Timeline Map of Employment Laws",

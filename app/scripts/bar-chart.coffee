@@ -61,7 +61,7 @@ define ["d3", "./clean"], (d3, clean) ->
                 .attr "width", 0
                 .attr "height", barHeight
                 .attr "transform", (d, i) -> "translate(0, #{ i * barHeight })"
-                .attr "fill", (d, i) -> if i is 0 then props.color else "#D1D1D4"
+                .attr "fill", (d, i) -> if i is 0 then props.colors[0].value else "#D1D1D4"
 
       sel.transition()
         .attr "transform", (d, i) -> "translate(0, #{ yScale(i) })"
@@ -75,7 +75,7 @@ define ["d3", "./clean"], (d3, clean) ->
             .duration(600)
             .attr "width", (d, i) ->
               xScale parseFloat(row[d])
-            .attr "fill", (d, i) -> if i is 0 then props.color else "#D1D1D4"
+            .attr "fill", (d, i) -> if i is 0 then props.colors[0].value else "#D1D1D4"
 
       sel.exit()
         # .transition()

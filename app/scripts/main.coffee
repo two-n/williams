@@ -5,7 +5,7 @@ require.config
     "underscore": "vendor/underscore/underscore"
 
 
-define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"], (d3, _, graphics, map, dropdown, barChart) ->
+define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline"], (d3, _, graphics, map, dropdown, barChart, timeline) ->
 
   colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
   currentProps = null
@@ -133,12 +133,14 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"],
         .attr "r", 4
 
     # chart
-    props.color = currentColor
+    # props.color = currentColor
     switch props.type
       when "map"
         map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: props.split, mode: props.mode}
       when "bar-chart"
-        barChart.call d3.select(".chart"), _.pick props, "bars", "rows", "data", "label", "color"
+        barChart.call d3.select(".chart"), _.pick props, "bars", "rows", "data", "label", "colors"
+      when "timeline"
+        timeline.call d3.select(".chart"), _.pick props, "lines", "data", "label", "colors"
       # else
       #   d3.select(".chart").selectAll("*").remove()
 
