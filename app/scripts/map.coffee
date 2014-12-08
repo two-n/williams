@@ -1,12 +1,8 @@
-define ["d3", "topojson", "./callout", "./clean"], (d3, topojson, callout, clean) ->
+define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"], (d3, topojson, callout, clean, _vectorMap) ->
 
-  countyGeometries = null
-  stateGeometries = null
-  d3.json("./assets/counties.topo.json", (err, _vectorMap) =>
-    vectorMap = _vectorMap
-    countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
-    stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
-  )
+  vectorMap = _vectorMap
+  countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
+  stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
 
   data = null
   d3.csv("./assets/census_race.csv",
@@ -321,7 +317,7 @@ define ["d3", "topojson", "./callout", "./clean"], (d3, topojson, callout, clean
       #region definitions
       g.selectAll(".region")
         .transition()
-        .delay((d,i) -> 250*(5-i))
+        .delay((d,i) -> 100*(i))
         .duration(1000)
         .attr("transform", (d) =>
           if split

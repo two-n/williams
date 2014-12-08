@@ -98,7 +98,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"],
     props.color = currentColor
     switch props.type
       when "map"
-        setTimeout((() => map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: props.split, mode: props.mode}), 500)
+        map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: props.split, mode: props.mode}
       when "bar-chart"
         barChart.call d3.select(".chart"), _.pick props, "bars", "rows", "data", "label", "color"
       # else
