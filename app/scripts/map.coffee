@@ -296,9 +296,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       g = @.selectAll("g").data([null])
       g.enter().append("g").attr("id" : "vectorMap")
 
+      padding = 0.03 * size[0]
+      size[0] = size[0] - padding - 100
       scale = Math.min size[0]/960, size[1]/600
       g.attr
-        transform: "scale(#{scale})"
+        transform: "scale(#{scale}) translate(#{padding},0)"
 
       # county definitions
       countyPaths = g.selectAll("path.county").data(countyGeometries)
@@ -313,7 +315,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         .on "mouseenter", (d) =>
           if bubbleTimeout?
             clearTimeout(bubbleTimeout)
-          callout.call @, path.centroid(d).map((d) -> d * scale), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
+          callout.call g, path.centroid(d), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
         .attr
           "class" : modes[mode].countyClass
           "fill-opacity" : (d) ->
@@ -344,7 +346,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         .on "mouseenter", (d) =>
           if bubbleTimeout?
             clearTimeout(bubbleTimeout)
-          callout.call @, path.centroid(d).map((d) -> d * scale), formatStateCalloutData(d)
+          callout.call g, path.centroid(d).map((d) -> d), formatStateCalloutData(d)
         .on "mouseleave", (d) =>
           bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
 
