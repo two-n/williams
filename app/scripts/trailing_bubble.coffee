@@ -34,7 +34,7 @@ define ['d3'], (d3) ->
         .append('rect')
           .attr
             fill: color
-            rx: r2
+            # rx: r2
             stroke: 'white'
             'stroke-width': 1.5
 
@@ -48,28 +48,23 @@ define ['d3'], (d3) ->
           "pointer-events": "none"
           "stroke":         (d, i) -> if i == 0 then 'white' else 'none'
           "stroke-width":   (d, i) -> if i == 0 then 2 else 0
-      prep(path)
-        .attr
-          fill: color
-          d: (d, i) ->
-            getPath(point, r1, point2, r2)
 
       gText = sel.selectAll('g.trailing-bubble-text')
       if gText.empty()
         gText = sel.append('g').attr('class', 'trailing-bubble-text')
 
-      mainText = gText.selectAll("text.main")
+      mainText = gText.selectAll("text.mainText")
       if mainText.empty()
         mainText = gText.append('text')
       mainText
         .attr
-          fill: '#fff'
+          # fill: '#fff'
           x: 5
-          y: 5
+          y: 6
           dy: '.8em'
           'font-size': '.8em'
           'pointer-events': 'none'
-          class: "main"
+          class: "mainText"
           height: height
         .text(text)
 
@@ -81,11 +76,11 @@ define ['d3'], (d3) ->
           dy: '.8em'
           'font-size': '.8em'
           'pointer-events': 'none'
-          class: "main"
+          class: "sub"
           height: height
       subText
         .attr
-          y: (d,i) -> 28 + 14 * i
+          y: (d,i) -> 30 + 17 * i
         .text (d) -> d.text
         .classed("bold",(d) -> d.bold)
       subText.exit().remove()
@@ -95,17 +90,19 @@ define ['d3'], (d3) ->
       width = bbox.width + 10
       totalHeight = bbox.height + 3
 
-      breakLine = gText.selectAll("line.break")
+      breakLine = body.selectAll("line.break")
       if breakLine.empty()
-        breakLine = gText.append('line')
+        breakLine = body.append('line')
       breakLine
         .attr
           x1: 0
           y1: 25
-          x2: bbox.width
           y2: 25
           class: "break"
           display: () => if subSpanText.length > 0 then "inherit" else "none"
+      prep(breakLine)
+        .attr
+          x2: bbox.width + 10
 
       prep(body.select('rect'))
         .attr
@@ -126,7 +123,11 @@ define ['d3'], (d3) ->
       prep(gText)
         .attr
           transform: "translate(#{registration})"
-
+      prep(path)
+        .attr
+          fill: color
+          d: (d, i) ->
+            getPath(point, r1, point2, r2)
 
     bubble.point = (pt) ->
       return point if arguments.length == 0
