@@ -322,6 +322,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         .attr
           "d" : path
           "id" : (d) -> d.id
+          "fill-opacity": 0
         .on "mouseleave", (d) =>
           bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
       countyPaths
@@ -331,6 +332,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           callout.call g, path.centroid(d), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
         .attr
           "class" : modes[mode].countyClass
+        .transition().duration(1500).attr
           "fill-opacity" : (d) ->
             entry = _.find(data, (entry) -> entry.id is +d.id )
             if entry?
