@@ -508,7 +508,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           .attr("x", timeScale(currentTime))
         label = slider.append("text")
           .attr
-            "class": "label"
+            "class": "sliderLabel"
             "transform": "translate(4," + 5 + ")"
             "text-anchor": "middle"
             "x": timeScale(currentTime)
