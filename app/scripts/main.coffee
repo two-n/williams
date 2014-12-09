@@ -80,17 +80,12 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"],
     sel.select(".label").text((d) -> d.label)
     sel.exit().remove()
 
-    #dropdown
-    sel = d3.select(".visualization .header .dropdown")
-    sel.call dropdown().on "select", (d) =>
-      state.ethnicity = d
-      map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: false, mode: "ethnicity"}
-
+    constructLegend = () ->
       colors = map.getColorsForEthnicity(state.ethnicity)
 
-      sel = d3.select(".visualization .header .legend").selectAll(".color")
+      legendSel = d3.select(".visualization .header .legend").selectAll(".color")
         .data(colors)
-      sel.enter().append("div").attr("class", "color")
+      legendSel.enter().append("div").attr("class", "color")
         .each (d, i) ->
           d3.select(@).append("div").attr("class", "value")
             .style 
@@ -98,7 +93,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"],
               "opacity": d.alpha
           d3.select(@).append("div").attr("class", "label")
             .text(d.label)
-      sel
+      legendSel
         .each (d, i) ->
             d3.select(@).select("div.value")
               .style 
@@ -107,7 +102,23 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart"],
             d3.select(@).select("div.label")
               .text(d.label)
 
-      sel.exit().remove()
+      legendSel.exit().remove()
+
+    #dropdown
+    sel = d3.select(".visualization .header .dropdown")
+    if props.mode is "ethnicity"
+      if sel.empty()
+        sel = d3.select(".visualization .header").append("div")
+          .classed("dropdown", true)
+        constructLegend()
+    else
+      sel.remove()
+
+    sel.call dropdown().on "select", (d) =>
+      state.ethnicity = d
+      map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: false, mode: "ethnicity"}
+
+      constructLegend()
 
     # nav
     d3.select(".nav")

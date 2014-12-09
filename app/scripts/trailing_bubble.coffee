@@ -98,7 +98,7 @@ define ['d3'], (d3) ->
       subTextValue
         .attr
           y: (d,i) -> 30 + 17 * i
-          x: () => Math.max mainText.node().getBBox().width - 30, 140
+          x: () => Math.max mainText.node().getBBox().width - 30, 150
           "text-anchor": "right"
         .style
           fill: (d) -> if d.highlightValue then "#FF0055"

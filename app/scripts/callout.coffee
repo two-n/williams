@@ -13,7 +13,7 @@ define ["d3", "./trailing_bubble"], (d3, TrailingBubble) ->
     if coords[0] < this.node().getBBox().width/2
       vector = [0.25,-0.5]
     else
-      vector= [-0.25,-0.5]
+      vector = [-0.25,-0.5]
 
     trailing
       .point([
