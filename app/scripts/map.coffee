@@ -512,7 +512,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
             "transform": "translate(4," + 5 + ")"
             "text-anchor": "middle"
             "x": timeScale(currentTime)
-          .text(timeScale(currentTime))
+          .text(currentTime)
         brush.on("brush", () =>
           value = timeScale.invert(d3.mouse(slider.node())[0])
           currentTime =  Math.round(value)
