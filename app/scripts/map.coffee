@@ -251,12 +251,26 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
   bubbleTimeout = null
 
+  isSOProtected = (id) ->
+    if not sogiDates[index[id].fullName]? then return false
+    if sogiDates[index[id].fullName].SO?
+      if sogiDates[index[id].fullName].SO <= currentTime
+        return true
+    false
+
+  isSOGIProtected = (id) ->
+    if not sogiDates[index[id].fullName]? then return false
+    if sogiDates[index[id].fullName].SOGI?
+      if sogiDates[index[id].fullName].SOGI <= currentTime
+        return true
+    false
+
   modes = {
     protection : {
       stateClass: (d) ->
-          if not sogiDates[index[d.id].fullName]? then return "no state"
-          if sogiDates[index[d.id].fullName].SOGI then return "sogi state"
-          if sogiDates[index[d.id].fullName].SO then return "so state"
+          if not isSOProtected(d.id) then return "no state"
+          if isSOGIProtected(d.id) then return "sogi state"
+          if isSOProtected(d.id) then return "so state"
       countyClass : "county hidden"
       stroke: null
     }
@@ -296,6 +310,16 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     if sogiDates[index[d.id].fullName]?.SOGI
       toRet.subSpanText.push {label: "GI Protection", value: "Y", bold: "false", highlightValue: true}
     [toRet]
+
+
+  timeScale = d3.scale.linear()
+      .domain([1977, 2014])
+      .range([0, 200])
+      .clamp(true)
+  brush = d3.svg.brush()
+      .x(timeScale)
+      .extent([0, 0])
+  currentTime = 2014
 
   map = (props) ->
     clean.call @, ["#vectorMap"], =>
@@ -453,6 +477,46 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
             "opacity": 1
       regionPercent.exit().remove()
 
+
+      #timescale
+      timeAxis = g.select(".timeAxis")
+      if timeAxis.empty()
+        timeAxis = g.append("g")
+            .attr
+              "class": "timeAxis"
+              "transform": "translate(#{g.node().getBBox().width/2 - 100},#{g.node().getBBox().height * 1.1})"
+            .call(d3.svg.axis()
+              .scale(timeScale)
+              .orient("bottom")
+              .tickValues([1977,2014])
+              .tickFormat(d3.format(".0f"))
+            )
+        slider = timeAxis.append("g")
+            .attr
+              "class": "slider"
+              "transform": "translate(-2,-16)"
+            .call(brush)
+        slider.selectAll(".extent,.resize")
+            .remove()
+        slider.select(".background")
+            .attr("height", 30)
+        handle = slider.append("rect")
+          .attr("class", "handle")
+          .attr("transform", "translate(0," + 11 + ")")
+          .attr("width", 6)
+          .attr("height", 11)
+          .attr("x", timeScale(currentTime))
+        brush.on("brush", () =>
+          value = timeScale.invert(d3.mouse(slider.node())[0])
+          currentTime =  Math.round(value)
+          brush.extent([value, value])
+          handle.attr("x", timeScale(value))
+          g.selectAll(".state")
+            .attr
+              "id" : (d) -> d.id
+              "class" : modes[mode].stateClass
+        )
+      timeAxis.attr("display", if mode is "protection" then "inherit" else "none")
 
 
   map.getColorsForEthnicity = (ethnicity) ->
