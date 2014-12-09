@@ -249,14 +249,19 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           if sogiDates[index[d.id].fullName].SOGI then return "sogi state"
           if sogiDates[index[d.id].fullName].SO then return "so state"
       countyClass : "county hidden"
+      stroke: null
+    }
+    bubble : {
+      stateClass: "no state"
+      countyClass : "county hidden"
       countyMouseEnter : null
       stroke: null
     }
     ethnicity : {
       stateClass: (d) -> "state nofill"
-      stroke: (d) ->
-          if sogiDates[index[d.id]?.fullName]? then "white" else "none"
       countyClass : "county"
+      stroke: (d) ->
+        if sogiDates[index[d.id]?.fullName]? then "white" else "none"
     }
   }
 
@@ -286,8 +291,6 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   map = (props) ->
     clean.call @, ["#vectorMap"], =>
       size = [@property("offsetWidth"), @property("offsetHeight")]
-
-      console.log props.ethnicity
 
       ethnicity = props.ethnicity
       split = props.split
@@ -329,10 +332,13 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       g = @.selectAll("g").data([null])
       g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
       regions = g.selectAll(".region").data(_.keys(regionByName))
-      regions.enter().append("g").attr
-        "class": "region"
-        "id": (d) -> d
-      .selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
+      regions.enter().append("g")
+        .attr
+          "class": "region"
+          "id": (d) -> d
+      # .append("text")
+      #   .att"
+      regions.selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
         .append("path")
         .attr
           "d" : path
@@ -363,6 +369,8 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           else
             "translate(0,0)"
         )
+
+
 
   map.getColorsForEthnicity = (ethnicity) ->
     colorSets = {

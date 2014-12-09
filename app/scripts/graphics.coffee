@@ -28,13 +28,16 @@ define ->
     "url": "/ethnicity/1",
     "heading": "Region Map with % LGBT Population Overlay"
     "type": "map"
-    "mode": "ethnicity"
+    "split": true
+    "mode": "bubble"
   }, {
     "url": "/ethnicity/2",
     "heading": "Pie Charts of Race/Ethnicity by Region"
   }, {
     "url": "/ethnicity/3",
     "heading": "Pie Charts of Race/Ethnicity by 21/29"
+    "type": "map"
+    "mode": "ethnicity"
   }, {
     "url": "/education/1",
     "heading": "Bar Chart of College Completion by 21/29"

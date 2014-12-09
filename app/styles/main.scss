@@ -330,23 +330,28 @@ $_d: 600ms;
     }
   }
 
-  .nofill {
-    fill-opacity: 0;
-    stroke-width: 1.5;
-    pointer-events: none;
+  .state{
+    fill: #FFF;
+    stroke: nth($colors, 1);
+    &.no {
+      fill: #FFFFFF;
+      stroke: #DDD
+    }
+    &.sogi {
+      fill: #FF0055;
+    }
+    &.so {
+      fill: #FF7D96;
+    }
+    &.nofill {
+      fill-opacity: 0;
+      stroke-width: 1.5;
+      pointer-events: none;
+    }
   }
 
-  .no {
-    fill: #FFFFFF;
-    stroke: #DDD
-  }
-
-  .sogi {
-    fill: #FF0055;
-  }
-
-  .so {
-    fill: #FF7D96;
+  .regionLabel {
+    fill: black;
   }
 }
 
@@ -439,7 +444,6 @@ $_d: 600ms;
   .bold{
     font-weight: bold;
   }
-
   .mainText{
     text-transform: uppercase;
     font-weight: bold;
