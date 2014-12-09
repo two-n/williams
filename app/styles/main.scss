@@ -351,8 +351,24 @@ $_d: 600ms;
   }
 
   .regionLabel {
-    fill: black;
+    fill: #A56623;
+    text-anchor: middle;
     stroke: none;
+    font-size: 12px;
+    font-weight:bold;
+    @include font-1;
+    text-transform: uppercase;
+  }
+  .regionPercent {
+    text-anchor: middle;
+    fill: white;
+    stroke: none;
+    font-size: 32px;
+    @include font-2;
+  }
+  .regionBubble {
+    fill: nth($colors, 7);
+    fill-opacity: 0.75;
   }
 }
 

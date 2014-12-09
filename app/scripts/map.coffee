@@ -69,30 +69,35 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       states: ["Alaska", "California", "Hawaii", "Oregon", "Washington"]
       centroid: [-123,39]
       offset: [-39.48530542559064, -15.370925469394933]
+      percentage: 17
       value: 39250000
     }
     "Mountain": {
       states: ["Arizona", "Colorado", "Idaho", "Montana", "Nevada", "New Mexico", "Utah", "Wyoming"]
       centroid: [-111,40]
       offset: [-7.987967225259922, 1.193425583016392]
+      percentage: 8
       value: 17160000
     }
     "Midwest": {
       states: ["Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin"]
       centroid: [-92,43]
       offset: [17.14660810580267, -5.690153784351679]
+      percentage: 20
       value: 51810000
     }
     "South": {
       states: ["Alabama", "Arkansas", "Delaware", "Florida", "Georgia", "Kentucky", "Louisiana", "Maryland", "Mississippi", "North Carolina", "Oklahoma", "South Carolina", "Tennessee", "Texas", "Virginia", "District of Columbia", "West Virginia"]
       centroid: [-89,32]
       offset: [16.69364734000476, 20.69134832167154]
+      percentage: 35
       value: 90440000
     }
     "Northeast": {
       states: ["Connecticut", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont"]
       centroid: [-71,42.5]
       offset: [31.406069531500407, -3.9391785272940893]
+      percentage: 19
       value: 43920000
     }
   }
@@ -377,17 +382,48 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         )
 
 
-      regions.enter()
-        .append("text")
+      regionOverlay = g.selectAll(".regionOverlay")
+      if regionOverlay.empty()
+        regionOverlay = g.append("g").classed("regionOverlay",true)
+
+      #bubble
+      regionOverlay.selectAll(".regionBubble").data(_.keys(regionByName))
+        .enter().append("circle")
+          .attr
+            "class": "regionBubble"
+      regionBubble = d3.selectAll(".regionBubble")
+        .attr
+          "cx": (d) => projection(regionByName[d].centroid)[0]
+          "cy": (d) => projection(regionByName[d].centroid)[1]
+          "r": 100
+
+      #name
+      regionOverlay.selectAll(".regionLabel").data(_.keys(regionByName))
+        .enter().append("text")
           .attr
             "class": "regionLabel"
       regionLabel = d3.selectAll(".regionLabel")
-          .attr
-            "x": (d) => projection(regionByName[d].centroid)[0]
-            "y": (d) => projection(regionByName[d].centroid)[1]
+        .attr
+          "x": (d) => projection(regionByName[d].centroid)[0]
+          "y": (d) => projection(regionByName[d].centroid)[1] + 15
         .text((d) -> d)
 
-      console.log regionLabel
+      #percentage
+      regionOverlay.selectAll(".regionPercent").data(_.keys(regionByName))
+        .enter().append("text")
+          .attr
+            "class": "regionPercent"
+      regionPercent = d3.selectAll(".regionPercent")
+        .attr
+          "x": (d) => projection(regionByName[d].centroid)[0]
+          "y": (d) => projection(regionByName[d].centroid)[1] - 5
+        .text((d) => "#{regionByName[d].percentage}\%")
+
+
+
+
+      console.log regionLabel,regionOverlay
+
 
   map.getColorsForEthnicity = (ethnicity) ->
     colorSets = {
