@@ -68,7 +68,7 @@ define ['d3'], (d3) ->
           height: height
         .text(text)
 
-      subText = gText.selectAll("text.sub").data(subSpanText)
+      subText = gText.selectAll("text.subLabel").data(subSpanText)
       subText.enter().append("text")
         .attr
           fill: '#fff'
@@ -76,14 +76,35 @@ define ['d3'], (d3) ->
           dy: '.8em'
           'font-size': '.8em'
           'pointer-events': 'none'
-          class: "sub"
+          class: "subLabel"
           height: height
       subText
         .attr
           y: (d,i) -> 30 + 17 * i
-        .text (d) -> d.text
+        .text (d) -> d.label
         .classed("bold",(d) -> d.bold)
       subText.exit().remove()
+
+      subTextValue = gText.selectAll("text.subValue").data(subSpanText)
+      subTextValue.enter().append("text")
+        .attr
+          fill: '#fff'
+          x: 5
+          dy: '.8em'
+          'font-size': '.8em'
+          'pointer-events': 'none'
+          class: "subValue"
+          height: height
+      subTextValue
+        .attr
+          y: (d,i) -> 30 + 17 * i
+          x: () => Math.max mainText.node().getBBox().width - 30, 140
+          "text-anchor": "right"
+        .style
+          fill: (d) -> if d.highlightValue then "#FF0055"
+        .text (d) -> d.value
+        .classed("bold",(d) -> d.bold)
+      subTextValue.exit().remove()
 
       bbox = gText.node().getBBox()
 

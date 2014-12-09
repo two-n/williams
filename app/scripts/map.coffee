@@ -279,11 +279,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     toRet = {}
     toRet.name = d.countyName
     toRet.subSpanText = []
-    toRet.subSpanText.push {text: "Latino                            #{d3.format(".2f") d.latino}%", bold: false}
-    toRet.subSpanText.push {text: "African-American                  #{d3.format(".2f") d.black}%", bold: false}
-    toRet.subSpanText.push {text: "White                             #{d3.format(".2f") d.white}%", bold: false}
-    toRet.subSpanText.push {text: "Asian/Pacific Islander            #{d3.format(".2f") d.asianpac}%", bold: false}
-    toRet.subSpanText.push {text: "Native American                   #{d3.format(".2f") d.indian}%", bold: false}
+    toRet.subSpanText.push {label: "Latino                 ", value: "#{d3.format(".2f") d.latino}%", bold: false}
+    toRet.subSpanText.push {label: "African-American       ", value: "#{d3.format(".2f") d.black}%", bold: false}
+    toRet.subSpanText.push {label: "White                  ", value: "#{d3.format(".2f") d.white}%", bold: false}
+    toRet.subSpanText.push {label: "Asian/Pacific Islander ", value: "#{d3.format(".2f") d.asianpac}%", bold: false}
+    toRet.subSpanText.push {label: "Native American        ", value: "#{d3.format(".2f") d.indian}%", bold: false}
     toRet.subSpanText[_.indexOf(ethnicities, activeEthnicity)].bold = true
     [toRet]
 
@@ -292,9 +292,9 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     toRet.name = index[d.id].fullName
     toRet.subSpanText = []
     if sogiDates[index[d.id].fullName]?.SO
-      toRet.subSpanText.push {text: "SO Protection Y", bold: "false"}
+      toRet.subSpanText.push {label: "SO Protection", value: "Y", bold: "false", highlightValue: true}
     if sogiDates[index[d.id].fullName]?.SOGI
-      toRet.subSpanText.push {text: "GI Protection Y", bold: "false"}
+      toRet.subSpanText.push {label: "GI Protection", value: "Y", bold: "false", highlightValue: true}
     [toRet]
 
   map = (props) ->
