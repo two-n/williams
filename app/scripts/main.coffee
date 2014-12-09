@@ -72,6 +72,10 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
     # header
     d3.select(".visualization .header h2").text props.heading
 
+    legendSel = d3.select(".visualization .header .legend").selectAll(".color")
+    if not legendSel.empty()
+      legendSel.remove()
+
     # legend
     sel = d3.select(".visualization .header .legend")
       .classed "timeline", props.type is "timeline"
@@ -96,12 +100,16 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         .data(colors)
       legendSel.enter().append("div").attr("class", "color")
         .each (d, i) ->
-          d3.select(@).append("div").attr("class", "value")
-            .style 
-              "background-color": d.value
-              "opacity": d.alpha
+          d3.select(@).append("div").attr("class", "values")
+          # d3.select(@).append("div").attr("class", "value")
+          #   .style 
+          #     "background-color": d.value
+          #     "opacity": d.alpha
           d3.select(@).append("div").attr("class", "label")
             .text(d.label)
+      value_sel = legendSel.select(".values").selectAll(".value")
+        .data((d) -> [].concat d.value)
+      value_sel.enter().append("div").attr("class", "value")
       legendSel
         .each (d, i) ->
             d3.select(@).select("div.value")
@@ -111,11 +119,10 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
             d3.select(@).select("div.label")
               .text(d.label)
 
-      legendSel.exit().remove()
-
     #dropdown
     sel = d3.select(".visualization .header .dropdown")
     if props.mode is "ethnicity"
+      console.log "ethnicity", sel.empty()
       if sel.empty()
         sel = d3.select(".visualization .header").append("div")
           .classed("dropdown", true)
