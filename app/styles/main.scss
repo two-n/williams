@@ -332,7 +332,7 @@ $_d: 600ms;
 
   .state{
     fill: #FFF;
-    stroke: nth($colors, 1);
+    // stroke: nth($colors, 1);
     &.no {
       fill: #FFFFFF;
       stroke: #DDD

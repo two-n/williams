@@ -270,7 +270,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       stateClass: (d) -> "state nofill"
       countyClass : "county"
       stroke: (d) ->
-        if sogiDates[index[d.id]?.fullName]? then "white" else "none"
+        if sogiDates[index[d.id]?.fullName]? then "#000" else "none"
     }
   }
 
@@ -337,6 +337,17 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
             else
               0
 
+      stateBackdrop = g.selectAll("path.stateBackdrop").data(stateGeometries)
+      stateBackdrop.enter().append("path")
+        .attr
+          "d" : path
+          "class" : "stateBackdrop"
+      stateBackdrop
+        .attr
+          "fill" : "none"
+          "stroke" : "#AAA"
+          "display" : if mode isnt "ethnicity" then "none" else "inherit"
+
       #state definitions
       g = @.selectAll("g").data([null])
       g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
@@ -345,17 +356,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         .attr
           "class": "region"
           "id": (d) -> d
-      # .append("text")
-      #   .attr
-      #     "class": "regionLabel"
-      #     "x": (d) => projection(regionByName[d].centroid)[0]
-      #     "y": (d) => projection(regionByName[d].centroid)[1]
-      #   .text((d) -> d)
       regions.selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
         .append("path")
-        .attr
-          "d" : path
-          "class" : "state"
+          .attr
+            "d" : path
+            "class" : "state"
       g.selectAll(".state")
         .attr
           "id" : (d) -> d.id
