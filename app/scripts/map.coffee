@@ -368,6 +368,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           "stroke": modes[mode].stroke
           "vector-effect": "non-scaling-stroke"
         .on "mouseenter", (d) =>
+          if mode is "bubble" then return
           if bubbleTimeout?
             clearTimeout(bubbleTimeout)
           callout.call g, path.centroid(d).map((d) -> d), formatStateCalloutData(d)
@@ -387,7 +388,6 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           else
             "translate(0,0)"
         )
-
 
       regionOverlay = g.selectAll(".regionOverlay")
       if regionOverlay.empty()
