@@ -5,15 +5,17 @@ require.config
     "underscore": "vendor/underscore/underscore"
 
 
-define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline"], (d3, _, graphics, map, dropdown, barChart, timeline) ->
-
-  colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
+define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies"], (d3, _, graphics, map, dropdown, barChart, timeline, pies) ->
+  # colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
+  colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#ECD000", "#00C775", "#0075CA", "#9843A0"]
   currentProps = null
 
   state =
     transitioningScrollTop: false
     path: null
     ethnicity: "black"
+
+  prevNav = null
 
   route = (path) ->
     if state.path is path then return
@@ -71,14 +73,20 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
     d3.select(".visualization .header h2").text props.heading
 
     # legend
-    sel = d3.select(".visualization .header .legend").selectAll(".color")
+    sel = d3.select(".visualization .header .legend")
+      .classed "timeline", props.type is "timeline"
+      .selectAll(".color")
       .data(props.colors ? [])
     sel.enter().append("div").attr("class", "color")
-      .each (d, i) ->
-        d3.select(@).append("div").attr("class", "value")
+      .each ->
+        d3.select(@).append("div").attr("class", "values")
         d3.select(@).append("div").attr("class", "label")
-    sel.select(".value").style("background-color", (d) -> d.value)
-    sel.select(".label").text((d) -> d.label)
+    value_sel = sel.select(".values").selectAll(".value")
+      .data((d) -> [].concat d.value)
+    value_sel.enter().append("div").attr("class", "value")
+    value_sel.style("background-color", String)
+    value_sel.exit().remove()
+    label_sel = sel.select(".label").text((d) -> d.label)
     sel.exit().remove()
 
     constructLegend = () ->
@@ -122,18 +130,19 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
       constructLegend()
 
     # nav
-    d3.select(".nav")
-      .selectAll("g")
-      .classed("current", false)
-      .data [props.url.match(/\/([^\/]+)\//)[1]], String
-      .classed("current", true)
-      .select(".visible")
-        .attr "r", 8
-      .transition().duration(600).ease("cubic-out")
-        .attr "r", 4
+    currNav = props.url.match(/\/([^\/]+)\//)[1]
+    if currNav isnt prevNav
+      d3.select(".nav")
+        .selectAll("g")
+        .classed("current", false)
+        .data [currNav], String
+        .classed("current", true)
+        .select(".visible")
+          .attr "r", 8
+        .transition().duration(600).ease("cubic-out")
+          .attr "r", 4
+      prevNav = currNav
 
-    # chart
-    # props.color = currentColor
     switch props.type
       when "map"
         map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: props.split, mode: props.mode}
@@ -141,6 +150,12 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         barChart.call d3.select(".chart"), _.pick props, "bars", "rows", "data", "label", "colors"
       when "timeline"
         timeline.call d3.select(".chart"), _.pick props, "lines", "data", "label", "colors"
+      when "pies"
+        pies
+          .on "hover", (ethnicity) ->
+            state.hoverEthnicity = ethnicity
+            render props
+          .call d3.select(".chart"), _.extend ethnicity: state.hoverEthnicity, _.pick props, "pies", "slices", "outer-slices", "data", "colors"
       # else
       #   d3.select(".chart").selectAll("*").remove()
 

@@ -12,7 +12,7 @@ define ["d3", "./clean"], (d3, clean) ->
       margin =
         left: 105
         right: 90
-        top: 60
+        top: 90
         bottom: 60
 
       innerWidth = width - margin.left - margin.right
@@ -42,39 +42,50 @@ define ["d3", "./clean"], (d3, clean) ->
       sel.enter()
         .append("g")
         .attr("class", "row")
-        # .attr "transform", (d, i) -> "translate(0, #{ yScale(i) })"
+        .attr "transform", (d, i) -> "translate(0, #{ yScale(i) })"
         .attr "fill-opacity", 0
-        .each (d) ->
-          row_sel = d3.select(@)
+      sel.each (d) ->
+        row_sel = d3.select(@)
 
-          if d?
+        if d?
+          text_sel = row_sel.select("text")
+          if text_sel.empty()
             text_sel = row_sel.append("text").attr "y", "-0.4em"
-            text_sel.selectAll("tspan").data(d[""].split(/\s/g))
-              .enter().append("tspan")
-                .text String
-                .attr "x", 0
-                .attr "dx", -10
-                .attr "dy", "1.2em"
+          tspan_sel = text_sel.selectAll("tspan").data(d[""].split(/\s/g))
+          tspan_sel.enter().append("tspan")
+              .text String
+              .attr "x", 0
+              .attr "dx", -10
+              .attr "dy", "1.2em"
+          tspan_sel.exit().remove()
 
-            row_sel.selectAll(".bar").data(props.bars)
-              .enter().append("rect").attr("class", "bar")
-                .attr "width", 0
-                .attr "height", barHeight
-                .attr "transform", (d, i) -> "translate(0, #{ i * barHeight })"
-                .attr "fill", (d, i) -> if i is 0 then props.colors[0].value else "#D1D1D4"
+          bar_sel = row_sel.selectAll(".bar").data(props.bars)
+          bar_sel.enter().append("rect").attr("class", "bar")
+            .attr "width", 0
+            .attr "height", barHeight
+            .attr "transform", (d, i) -> "translate(0, #{ i * barHeight })"
+            .attr "fill", (d, i) -> if i is 0 then props.colors[0].value else "#D1D1D4"
+          bar_sel.exit()
+            .classed "exiting", true
+            .transition().duration(600)
+            .attr "width", 0
+            .remove()
 
-      sel.transition()
+      sel
+        .transition().duration(600)
         .attr "transform", (d, i) -> "translate(0, #{ yScale(i) })"
         .attr "fill-opacity", 1
 
       sel.each (row) ->
         d3.select(@)
-          .selectAll(".bar")
+          .selectAll(".bar:not(.exiting)")
             .transition()
-            .ease("cubic-out")
             .duration(600)
+            .ease("cubic-out")
             .attr "width", (d, i) ->
               xScale parseFloat(row[d])
+            .attr "height", barHeight
+            .attr "transform", (d, i) -> "translate(0, #{ i * barHeight })"
             .attr "fill", (d, i) -> if i is 0 then props.colors[0].value else "#D1D1D4"
 
       sel.exit()
@@ -92,6 +103,8 @@ define ["d3", "./clean"], (d3, clean) ->
             "transform": "translate(#{ margin.left }, #{ margin.top + innerHeight })"
             "fill-opacity": 0
             "stroke-opacity": 0
+      else
+        axis_sel.select(".halfway-line").remove()
 
       axis_sel.transition().duration(600).call(xAxis)
         .attr

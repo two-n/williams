@@ -49,7 +49,30 @@ define ->
     "mode": "bubble"
   }, {
     "url": "/ethnicity/2",
-    "heading": "Pie Charts of Race/Ethnicity by Region"
+    "heading": "Pie Charts of Race/Ethnicity by Region",
+    "colors": [
+      { label: "LGBT Ethnicity\nDistribution", value: ["#FF9C00", "#FFAE48", "#FCBF75", "#F5D6B3"] },
+      { label: "Non-LGBT Ethnicity\nDistribution", value: ["#B4B3B9", "#C5C5C9", "#D1D1D4", "#E2E2E3"] }
+    ],
+    "type": "pies",
+    "pies": ["Northeast", "Mountain", "Midwest", "Pacific", "South"],
+    # "slices": ["White LGBT", "African-American LGBT", "Latino/a2 LGBT", Asian/Pacific Islander LGBT"],
+    "slices": ["White LGBT", "African-American LGBT", "Latino/a2 LGBT", "Asian/Pacific Islander LGBT"],
+    # "outer-slices": ["White Non-LGBT", "African-American Non-LGBT", "Latino/a2 Non-LGBT", "American Indian/Alaska Native Non-LGBT", "Asian/Pacific Islander Non-LGBT"],
+    "outer-slices": ["White Non-LGBT", "African-American Non-LGBT", "Latino/a2 Non-LGBT", "Asian/Pacific Islander Non-LGBT"],
+    "data": """
+      ,White LGBT,White Non-LGBT,African-American LGBT,African-American Non-LGBT,Latino/a2 LGBT,Latino/a2 Non-LGBT,American Indian/Alaska Native LGBT,American Indian/Alaska Native Non-LGBT,Asian/Pacific Islander LGBT,Asian/Pacific Islander Non-LGBT
+      Individuals,,,,,,,,,,
+      All Individuals in the US,63%,72%,15%,12%,18%,13%,n/d,n/d,2%,1%
+      21 Protective States,61%,69%,12%,9%,23%,17%,n/d,n/d,3%,3%
+      29 Non-Protective States,65%,74%,18%,13%,14%,10%,n/d,n/d,1%,1%
+      ,,,,,,,,,,
+      Northeast,65%,74%,15%,11%,16%,12%,n/d,n/d,2%,2%
+      Midwest,74%,82%,13%,10%,10%,6%,n/d,n/d,1%,1%
+      South,59%,67%,22%,17%,16%,13%,n/d,n/d,1%,1%
+      Mountain,66%,77%,4%,3%,26%,17%,n/d,n/d,2%,1%
+      Pacific,55%,61%,7%,6%,30%,26%,n/d,n/d,4%,5%
+    """
   }, {
     "url": "/ethnicity/3",
     "heading": "Pie Charts of Race/Ethnicity by 21/29"
@@ -57,19 +80,53 @@ define ->
     "mode": "ethnicity"
   }, {
     "url": "/education/1",
-    "heading": "Bar Chart of College Completion by 21/29"
+    "heading": "Bar Chart of College Completion by 21/29",
+    "colors": [
+      { value: "#FFDF00", label: "LGBT" }
+    ],
+    "type": "bar-chart",
+    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "bars": ["LGBT"],
+    "data": """
+      ,LGBT,Non-LGBT
+      All Individuals in the US,34%,34%
+      21 Protective States,39%,38%
+      29 Non-Protective States,31%,31%
+      ,,
+      Northeast,39%,39%
+      Midwest,29%,32%
+      South,33%,32%
+      Mountain,34%,35%
+      Pacific,39%,35%
+    """,
+    "label": "Percentage of individuals\nover age 25 with a college degree (%)"
   }, {
     "url": "/education/2",
-    "heading": "Bar Chart of College Completion by Region"
-    # "label":
-    #   [
-    #     "Percentage of population"
-    #     "that completes college education (%)"
-    #   ]
+    "heading": "Bar Chart of College Completion by Region",
+    "colors": [
+      { value: "#FFDF00", label: "LGBT" },
+      { value: "#D1D1D4", label: "Non-LGBT" }
+    ],
+    "type": "bar-chart",
+    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "bars": ["LGBT", "Non-LGBT"],
+    "data": """
+      ,LGBT,Non-LGBT
+      All Individuals in the US,34%,34%
+      21 Protective States,39%,38%
+      29 Non-Protective States,31%,31%
+      ,,
+      Northeast,39%,39%
+      Midwest,29%,32%
+      South,33%,32%
+      Mountain,34%,35%
+      Pacific,39%,35%
+    """,
+    "label": "Percentage of individuals\nover age 25 with a college degree (%)"
   }, {
-    "url": "/education/3",
-    "heading": "Bar Chart of College Completion by Region & SS/DS"
-  }, {
+  #   "url": "/education/3",
+  #   "heading": "Bar Chart of College Completion by Region & SS/DS"
+  # }, {
     "url": "/economic-insecurity/1",
     "heading": "Bar Chart of <$24,000 by Region & SS/DS",
     "colors": [
@@ -116,7 +173,26 @@ define ->
     "label": "Percentage of individuals\nreporting not having enough money for food (%)"
   }, {
     "url": "/health/1",
-    "heading": "Bar Chart of No Money for Healthcare by Region & SS/DS"
+    "heading": "Bar Chart of No Money for Healthcare by Region & SS/DS",
+    "colors": [
+      { value: "#0075CA", label: "LGBT" },
+      { value: "#D1D1D4", label: "Non-LGBT" }
+    ],
+    "type": "bar-chart",
+    "rows": ["21 State Law States", "29 Non-State Law States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "bars": ["LGBT", "Non-LGBT"],
+    "data": """
+      ,LGBT,Non-LGBT,Odds Ratio of Not Having Enough Money for Health Care (LGBT: Non-LGBT)
+      All Individuals ,26,18,1.4515104577
+      21 State Law States,23,16,1.45
+      29 Non-State Law States,28,19,1.47
+      Northeast,22,15,1.5
+      Midwest,26,17,1.57
+      South,28,20,1.38
+      Mountain,27,17,1.57
+      Pacific,25,17,1.41
+    """,
+    "label": "Percentage of individuals\nreporting not having enough money for health care (%)"
   }, {
     "url": "/health/2",
     "heading": "Bar Chart of Health Insurance by Region & SS/DS",
@@ -138,10 +214,26 @@ define ->
       Mountain,81%,86%,0.93
       Pacific,84%,87%,0.97
     """,
-    "label": "Percent of individuals\nover age 18 with health insurance (%)"
+    "label": "Percentage of individuals\nover age 18 with health insurance (%)"
   }, {
     "url": "/health/3",
-    "heading": "Rates of HIV Infection by Region & SS/DS"
+    "heading": "Rates of HIV Infection by Region & SS/DS",
+    "colors": [
+      { value: "#0075CA", label: "MSM* population" },
+      { value: "#D1D1D4", label: "All population" }
+    ],
+    "type": "bar-chart",
+    "rows": ["Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "bars": ["MSM* population", "All population"]
+    "data": """
+      ,MSM* population,All population
+      Midwest,25.3807333693,10.6737091979
+      Mountain,61.6291914618,10.6892735371
+      South,53.9237776197,25.1307924563
+      Northeast,47.2310998196,21.6339402335
+      Pacific,56.0973474114,16.214802417
+    """,
+    "label": "HIV diagnoses by region, rates per 100k\n4 year average"
   }, {
     "url": "/health/4",
     "heading": "Rates of HIV Occurrence by Region & SS/DS"
