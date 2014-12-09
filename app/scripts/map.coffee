@@ -506,11 +506,20 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           .attr("width", 6)
           .attr("height", 11)
           .attr("x", timeScale(currentTime))
+        label = slider.append("text")
+          .attr
+            "class": "label"
+            "transform": "translate(4," + 5 + ")"
+            "text-anchor": "middle"
+            "x": timeScale(currentTime)
+          .text(timeScale(currentTime))
         brush.on("brush", () =>
           value = timeScale.invert(d3.mouse(slider.node())[0])
           currentTime =  Math.round(value)
           brush.extent([value, value])
           handle.attr("x", timeScale(value))
+          label.attr("x", timeScale(value))
+          label.text(currentTime)
           g.selectAll(".state")
             .attr
               "id" : (d) -> d.id

@@ -393,6 +393,13 @@ $_d: 600ms;
     cursor: pointer;
   }
 
+  .slider .label {
+    stroke: none;
+    fill: #FF0055;
+    @include font-1;
+    font-size: 12px;
+  }
+
   .timeAxis {
     fill: none;
     stroke: black;
