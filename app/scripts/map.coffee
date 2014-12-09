@@ -430,7 +430,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       regionLabel
         .attr
           "x": (d) => projection(regionByName[d].centroid)[0]
-          "y": (d) => projection(regionByName[d].centroid)[1] + 20
+          "y": (d) => projection(regionByName[d].centroid)[1] + 18
         .text((d) -> d)
         .transition().delay((d,i) -> 1000 + 250*(5-i))
           .attr
@@ -446,7 +446,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       regionPercent
         .attr
           "x": (d) => projection(regionByName[d].centroid)[0]
-          "y": (d) => projection(regionByName[d].centroid)[1] - 5
+          "y": (d) => projection(regionByName[d].centroid)[1]
         .text((d) => "#{regionByName[d].percentage}\%")
         .transition().delay((d,i) -> 1000 + 250*(5-i))
           .attr

@@ -363,11 +363,12 @@ $_d: 600ms;
   }
 
   .regionLabel {
-    fill: #A56623;
+    fill: #a47440;
     text-anchor: middle;
     stroke: none;
-    font-size: 12px;
+    font-size: 11px;
     font-weight:bold;
+    letter-spacing: .05em;
     @include font-1;
     text-transform: uppercase;
   }
@@ -375,7 +376,8 @@ $_d: 600ms;
     text-anchor: middle;
     fill: white;
     stroke: none;
-    font-size: 32px;
+    font-size: 24px;
+    letter-spacing: .03em;
     @include font-2;
   }
   .regionBubble {
