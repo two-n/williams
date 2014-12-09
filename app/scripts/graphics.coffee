@@ -43,10 +43,14 @@ define ->
     "mode": "protection"
   }, {
     "url": "/ethnicity/1",
-    "heading": "Region Map with % LGBT Population Overlay"
-    "type": "map"
-    "split": true
-    "mode": "bubble"
+    "heading": "Region Map with % LGBT Population Overlay",
+    "type": "map",
+    "split": true,
+    "mode": "bubble",
+    "colors": [
+      { value: "#FFFFFF", label: "US map by region" },
+      { value: "#FFDF00", label: "LGBT population" }
+    ]
   }, {
     "url": "/ethnicity/2",
     "heading": "Pie Charts of Race/Ethnicity by Region",
