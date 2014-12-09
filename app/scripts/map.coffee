@@ -68,7 +68,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   regionByName = {
     "Pacific": {
       states: ["Alaska", "California", "Hawaii", "Oregon", "Washington"]
-      centroid: [-123,39]
+      centroid: [-118.5,32.9]
       offset: [-39.48530542559064, -15.370925469394933]
       percentage: 17
       value: 39250000
@@ -308,11 +308,12 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       g = @.selectAll("g").data([null])
       g.enter().append("g").attr("id" : "vectorMap")
 
-      padding = 0.03 * size[0]
-      size[0] = size[0] - padding - 100
+      padding = 0.1 * size[0]
+
+      size[0] = size[0] - padding
       scale = Math.min size[0]/960, size[1]/600
       g.attr
-        transform: "scale(#{scale}) translate(#{padding},0)"
+        transform: "scale(#{scale}) translate(#{padding*0.5},0)"
 
       # county definitions
       countyPaths = g.selectAll("path.county").data(countyGeometries)
