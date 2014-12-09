@@ -362,6 +362,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           .attr
             "d" : path
             "class" : "state"
+          .each (d) -> d.parentRegion = @.parentNode
       g.selectAll(".state")
         .attr
           "id" : (d) -> d.id
@@ -372,7 +373,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           if mode is "bubble" then return
           if bubbleTimeout?
             clearTimeout(bubbleTimeout)
-          callout.call g, path.centroid(d).map((d) -> d), formatStateCalloutData(d)
+          adjustedCentroid = path.centroid(d)
+          offset = d3.select(d.parentRegion).attr("transform")?.match(/[0-9., -]+/)?[0].split(",") || ["0","0"]
+          adjustedCentroid[0] += +offset[0]
+          adjustedCentroid[1] += +offset[1]
+          callout.call g, adjustedCentroid.map((d) -> d), formatStateCalloutData(d)
         .on "mouseleave", (d) =>
           bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
 
