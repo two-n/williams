@@ -7,6 +7,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   scale = 1
 
   projection = d3.geo.albersUsa().scale(1280).translate([960/2,600/2])
+  circleScale = d3.scale.sqrt().domain([0,100]).range([0,200])
 
   # data = null
   # d3.csv("./assets/census_race.csv",
@@ -101,6 +102,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       value: 43920000
     }
   }
+
 
   index = {
     "01":  { postal: "AL" , fullName: "Alabama"}
@@ -386,43 +388,57 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       if regionOverlay.empty()
         regionOverlay = g.append("g").classed("regionOverlay",true)
 
+      regionBubbleData = []
+      if mode is "bubble"
+        regionBubbleData = _.keys(regionByName)
+
       #bubble
-      regionOverlay.selectAll(".regionBubble").data(_.keys(regionByName))
-        .enter().append("circle")
+      regionBubble = regionOverlay.selectAll(".regionBubble").data(regionBubbleData)
+      regionBubble.enter().append("circle")
           .attr
             "class": "regionBubble"
-      regionBubble = d3.selectAll(".regionBubble")
+            "r": 0
+      regionBubble
         .attr
           "cx": (d) => projection(regionByName[d].centroid)[0]
           "cy": (d) => projection(regionByName[d].centroid)[1]
-          "r": 100
+        .transition().delay((d,i) -> 1000 + 250*(5-i))
+          .attr
+            "r": (d) => circleScale(regionByName[d].percentage)
+      regionBubble.exit().remove()
 
       #name
-      regionOverlay.selectAll(".regionLabel").data(_.keys(regionByName))
-        .enter().append("text")
+      regionLabel = regionOverlay.selectAll(".regionLabel").data(regionBubbleData)
+      regionLabel.enter().append("text")
           .attr
             "class": "regionLabel"
-      regionLabel = d3.selectAll(".regionLabel")
+            "opacity": 0
+      regionLabel
         .attr
           "x": (d) => projection(regionByName[d].centroid)[0]
-          "y": (d) => projection(regionByName[d].centroid)[1] + 15
+          "y": (d) => projection(regionByName[d].centroid)[1] + 20
         .text((d) -> d)
+        .transition().delay((d,i) -> 1000 + 250*(5-i))
+          .attr
+            "opacity": 1
+      regionLabel.exit().remove()
 
       #percentage
-      regionOverlay.selectAll(".regionPercent").data(_.keys(regionByName))
-        .enter().append("text")
+      regionPercent = regionOverlay.selectAll(".regionPercent").data(regionBubbleData)
+      regionPercent.enter().append("text")
           .attr
             "class": "regionPercent"
-      regionPercent = d3.selectAll(".regionPercent")
+            "opacity": 0
+      regionPercent
         .attr
           "x": (d) => projection(regionByName[d].centroid)[0]
           "y": (d) => projection(regionByName[d].centroid)[1] - 5
         .text((d) => "#{regionByName[d].percentage}\%")
+        .transition().delay((d,i) -> 1000 + 250*(5-i))
+          .attr
+            "opacity": 1
+      regionPercent.exit().remove()
 
-
-
-
-      console.log regionLabel,regionOverlay
 
 
   map.getColorsForEthnicity = (ethnicity) ->
