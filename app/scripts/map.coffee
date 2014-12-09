@@ -6,6 +6,8 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   path = d3.geo.path().projection(null)
   scale = 1
 
+  projection = d3.geo.albersUsa().scale(1280).translate([960/2,600/2])
+
   # data = null
   # d3.csv("./assets/census_race.csv",
   #   (d,i) ->
@@ -337,7 +339,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           "class": "region"
           "id": (d) -> d
       # .append("text")
-      #   .att"
+      #   .attr
+      #     "class": "regionLabel"
+      #     "x": (d) => projection(regionByName[d].centroid)[0]
+      #     "y": (d) => projection(regionByName[d].centroid)[1]
+      #   .text((d) -> d)
       regions.selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
         .append("path")
         .attr
@@ -371,6 +377,17 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         )
 
 
+      regions.enter()
+        .append("text")
+          .attr
+            "class": "regionLabel"
+      regionLabel = d3.selectAll(".regionLabel")
+          .attr
+            "x": (d) => projection(regionByName[d].centroid)[0]
+            "y": (d) => projection(regionByName[d].centroid)[1]
+        .text((d) -> d)
+
+      console.log regionLabel
 
   map.getColorsForEthnicity = (ethnicity) ->
     colorSets = {
