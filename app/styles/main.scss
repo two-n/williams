@@ -501,20 +501,17 @@ $_d: 600ms;
 .trailing-bubble {
   rect {
     fill: #FFF;
-    stroke: nth($colors, 7);
+    // stroke: nth($colors, 7);
     stroke-width: 1px;
   }
   path {
     fill: #FFF;
-    stroke: nth($colors, 7);
+    // stroke: nth($colors, 7);
   }
   text {
     fill: #888;
     stroke: none;
     @include font-1;
-  }
-  .break{
-    stroke: nth($colors, 7);
   }
   .bold{
     font-weight: bold;

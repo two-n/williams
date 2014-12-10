@@ -350,6 +350,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     toRet.subSpanText.push {label: "Asian/Pacific Islander ", value: "#{d3.format(".2f") d.asianpac}%", bold: false}
     toRet.subSpanText.push {label: "Native American        ", value: "#{d3.format(".2f") d.indian}%", bold: false}
     toRet.subSpanText[_.indexOf(ethnicities, activeEthnicity)].bold = true
+    toRet.stroke = "#FFDF00"
     [toRet]
 
   formatStateCalloutData = (d) ->
@@ -357,9 +358,10 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     toRet.name = index[d.id].fullName
     toRet.subSpanText = []
     if sogiDates[index[d.id].fullName]?.SO
-      toRet.subSpanText.push {label: "SO Protection", value: "Y", bold: "false", highlightValue: true}
+      toRet.subSpanText.push {label: "SO Protection", value: "Y", bold: "false", bold: false}
     if sogiDates[index[d.id].fullName]?.SOGI
-      toRet.subSpanText.push {label: "GI Protection", value: "Y", bold: "false", highlightValue: true}
+      toRet.subSpanText.push {label: "GI Protection", value: "Y", bold: "false", bold: false}
+    toRet.stroke = "#FF0055"
     [toRet]
 
 

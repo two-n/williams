@@ -23,6 +23,7 @@ define ["d3", "./trailing_bubble"], (d3, TrailingBubble) ->
       .color("#999")
       .text(d[0].name)
       .subSpanText(d[0].subSpanText)
+      .stroke(d[0].stroke)
 
     bubble.enter()
       .append('g')

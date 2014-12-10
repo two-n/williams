@@ -7,6 +7,7 @@ define ['d3'], (d3) ->
     text = "bubble"
     subSpanText = ""
     color = '#888'
+    stroke = null
 
     deg90 = Math.PI / 2
     r1 = .5
@@ -46,7 +47,7 @@ define ['d3'], (d3) ->
         .attr
           "fill":           color
           "pointer-events": "none"
-          "stroke":         (d, i) -> if i == 0 then 'white' else 'none'
+          "stroke":         (d, i) -> if i == 0 then stroke else 'none'
           "stroke-width":   (d, i) -> if i == 0 then 2 else 0
 
       gText = sel.selectAll('g.trailing-bubble-text')
@@ -65,13 +66,11 @@ define ['d3'], (d3) ->
           class: "mainText"
         .text(text)
 
-
       positionSubTextLine = (d,i) -> mainTextHeight + 16 + 15 * i
-      subText = gText.selectAll("text.subText").data(subSpanText)
+      subText = gText.selectAll("text.subText.subLabel").data(subSpanText)
       subText.enter().append("text")
         .attr
           class: "subLabel subText"
-          height: mainTextHeight
       subText
         .attr
           x: 9
@@ -92,14 +91,14 @@ define ['d3'], (d3) ->
           x: () => Math.max mainText.node().getBBox().width - 30, 170
         .style
           fill: (d) -> if d.highlightValue then "#FF0055"
-        .text (d) -> d.value
+        .text (d) ->  d.value
         .classed("highlight",(d) -> d.bold)
       subTextValue.exit().remove()
 
       bbox = gText.node().getBBox()
 
       width = bbox.width + 19
-      totalHeight = bbox.height + 10
+      totalHeight = bbox.height + 9
 
       breakLine = body.selectAll("line.break")
       if breakLine.empty()
@@ -110,6 +109,7 @@ define ['d3'], (d3) ->
           y1: mainTextHeight + 1
           y2: mainTextHeight + 1
           class: "break"
+          stroke: stroke
           display: () => if subSpanText.length > 0 then "inherit" else "none"
       prep(breakLine)
         .attr
@@ -138,6 +138,7 @@ define ['d3'], (d3) ->
           fill: color
           width: width
           height: totalHeight
+          stroke:  stroke
 
       registration = [
         point2[0] - (if vector[0] > 0 then r2+1 else width - r2-1)
@@ -175,6 +176,11 @@ define ['d3'], (d3) ->
     bubble.text = (t) ->
       return text if arguments.length == 0
       text = t
+      bubble
+
+    bubble.stroke = (s) ->
+      return stroke if arguments.length == 0
+      stroke = s
       bubble
 
     bubble.color = (c) ->
