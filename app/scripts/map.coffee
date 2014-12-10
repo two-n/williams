@@ -3,6 +3,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   vectorMap = _vectorMap
   countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
   stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
+  nationGeometries = topojson.feature(vectorMap, vectorMap.objects.nation).features
   path = d3.geo.path().projection(null)
   scale = 1
 
@@ -272,19 +273,15 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           if isSOGIProtected(d.id) then return "sogi state"
           if isSOProtected(d.id) then return "so state"
       countyClass : "county hidden"
-      stroke: null
     }
     bubble : {
       stateClass: "no state"
       countyClass : "county hidden"
       countyMouseEnter : null
-      stroke: null
     }
     ethnicity : {
-      stateClass: (d) -> "state nofill"
+      stateClass: (d) -> if sogiDates[index[d.id]?.fullName]? then "state nofill protected" else "state nofill"
       countyClass : "county"
-      stroke: (d) ->
-        if sogiDates[index[d.id]?.fullName]? then "#000" else "none"
     }
   }
 
@@ -364,15 +361,25 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
             else
               0
 
-      stateBackdrop = g.selectAll("path.stateBackdrop").data(stateGeometries)
-      stateBackdrop.enter().append("path")
+      #backdrop construction
+      nationBackdrop = d3.select("path.nationBackdrop")
+      if nationBackdrop.empty()
+        nationBackdrop = g.append("path").datum(topojson.mesh(vectorMap, vectorMap.objects.states, (a, b) -> return a is b))
+          .attr
+            "d" : path
+            "class" : "nationBackdrop"
+      nationBackdrop
         .attr
-          "d" : path
-          "class" : "stateBackdrop"
+          "display" : if mode isnt "ethnicity" then "none" else "inherit"
+
+      stateBackdrop = d3.select("path.stateBackdrop")
+      if stateBackdrop.empty()
+        stateBackdrop = g.append("path").datum(topojson.mesh(vectorMap, vectorMap.objects.states, (a, b) -> return a isnt b))
+          .attr
+            "d" : path
+            "class" : "stateBackdrop"
       stateBackdrop
         .attr
-          "fill" : "none"
-          "stroke" : "#AAA"
           "display" : if mode isnt "ethnicity" then "none" else "inherit"
 
       #state definitions
@@ -393,7 +400,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         .attr
           "id" : (d) -> d.id
           "class" : modes[mode].stateClass
-          "stroke": modes[mode].stroke
+          # "stroke": modes[mode].stroke
           "vector-effect": "non-scaling-stroke"
         .on "mouseenter", (d) =>
           if mode is "bubble" then return

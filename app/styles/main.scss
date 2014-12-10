@@ -359,6 +359,11 @@ $_d: 600ms;
       fill-opacity: 0;
       stroke-width: 1.5;
       pointer-events: none;
+      stroke: none;
+      &.protected {
+        stroke: black;
+        stroke-width: 1;
+      }
     }
   }
 
@@ -414,6 +419,15 @@ $_d: 600ms;
     fill: black;
   }
 
+  .nationBackdrop {
+    fill: none;
+    stroke: nth($colors, 3);
+  }
+
+  .stateBackdrop {
+    fill: none;
+    stroke: nth($colors, 2);
+  }
 }
 
 //dropdown
