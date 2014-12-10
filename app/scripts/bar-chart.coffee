@@ -5,7 +5,7 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
 
       index = _.indexBy d3.csv.parse(props.data), ""
 
-      [width, height] = [@property("offsetWidth"), @property("offsetHeight")]
+      [width, height] = props.size
 
       rows = props.rows.map (d) -> index[d]
       max = d3.max(rows, (d) -> d3.max(props.bars.map (bar) -> parseFloat(d?[bar])))

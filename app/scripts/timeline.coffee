@@ -7,7 +7,7 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
     clean.call @, [".lines", ".x-axis", ".y-axis", ".label"], =>
       index = _.indexBy d3.csv.parse(props.data), ""
 
-      [width, height] = [@property("offsetWidth"), @property("offsetHeight")]
+      [width, height] = props.size
 
       lines = props.lines.map (d) ->
         line = _.clone(index[d])

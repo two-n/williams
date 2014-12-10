@@ -1,4 +1,4 @@
-define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json", "../assets/census_data.json"], (d3, topojson, callout, clean, _vectorMap, data) ->
+define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "assets/census_data.json"], (d3, topojson, callout, clean, _vectorMap, data) ->
 
   vectorMap = _vectorMap
   countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
@@ -24,7 +24,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   #       indian: +d["SSaian_1000_edit"]
   #       asianpac: +d["SSapi_1000_edit"]
   #     }
-  #   ,(err, _data) => 
+  #   ,(err, _data) =>
   #     tempData = _data
   #     console.log JSON.stringify(tempData)
   #   )
@@ -366,12 +366,12 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       g = @.selectAll("g").data([null])
       g.enter().append("g").attr("id" : "vectorMap")
 
-      horizonalPadding = 0.1 * size[0]
-      size[0] = size[0] - horizonalPadding
+      horizonalPadding = 0.1 * props.size[0]
+      props.size[0] = props.size[0] - horizonalPadding
 
       verticalPadding = 180
-      horizonalPadding = size[0] * 0.1
-      scale = Math.min (size[0] - horizonalPadding * 1)/960, (size[1] - verticalPadding * 1.5)/600
+      horizonalPadding = props.size[0] * 0.1
+      scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
 
       g
         .attr
@@ -590,7 +590,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     shades = [0.1,0.4,0.6,0.8]
     colors = []
     domain = myScale[ethnicity].domain()
-    [1..4].forEach (i) -> 
+    [1..4].forEach (i) ->
       colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[i]} - #{myScale[ethnicity].domain()[i+1]}", alpha: shades[i-1] }
     colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[5]}+", alpha: 1}
     return colors.reverse()

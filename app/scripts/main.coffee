@@ -102,7 +102,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         .each (d, i) ->
           d3.select(@).append("div").attr("class", "values")
           # d3.select(@).append("div").attr("class", "value")
-          #   .style 
+          #   .style
           #     "background-color": d.value
           #     "opacity": d.alpha
           d3.select(@).append("div").attr("class", "label")
@@ -113,7 +113,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
       legendSel
         .each (d, i) ->
             d3.select(@).select("div.value")
-              .style 
+              .style
                 "background-color": d.value
                 "opacity": d.alpha
             d3.select(@).select("div.label")
@@ -154,19 +154,25 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
           .attr "r", 4
       prevNav = currNav
 
+    # chart
+    container_sel = d3.select(".chart-container")
+    size = [container_sel.property("offsetWidth"), container_sel.property("offsetHeight")]
     switch props.type
       when "map"
-        map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: props.split, mode: props.mode}
+        map.call d3.select(".chart"), { size, ethnicity: state.ethnicity, split: props.split, mode: props.mode}
       when "bar-chart"
-        barChart.call d3.select(".chart"), _.pick props, "bars", "rows", "data", "label", "colors"
+        barChart.call d3.select(".chart"), _.extend { size }, _.pick props, "bars", "rows", "data", "label", "colors"
       when "timeline"
-        timeline.call d3.select(".chart"), _.pick props, "lines", "data", "label", "colors"
+        timeline.call d3.select(".chart"), _.extend { size }, _.pick props, "lines", "data", "label", "colors"
       when "pies"
         pies
           .on "hover", (ethnicity) ->
             state.hoverEthnicity = ethnicity
             render props
-          .call d3.select(".chart"), _.extend ethnicity: state.hoverEthnicity, _.pick props, "pies", "slices", "outer-slices", "data", "colors"
+          .call d3.select(".chart"),
+            _.extend ethnicity: state.hoverEthnicity,
+              { size }
+              _.pick props, "pies", "slices", "outer-slices", "data", "colors"
       # else
       #   d3.select(".chart").selectAll("*").remove()
 

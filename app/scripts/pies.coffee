@@ -4,7 +4,7 @@ define ["d3", "./clean"], (d3, clean) ->
 
   pies = (props) ->
     clean.call @, [".pies"], =>
-      [width, height] = [@property("offsetWidth"), @property("offsetHeight")]
+      [width, height] = props.size
 
       index = _.indexBy d3.csv.parse(props.data), ""
       pies = props.pies.map (d) -> index[d]
