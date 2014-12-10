@@ -159,6 +159,60 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     "56":  { postal: "WY" , fullName: "Wyoming"}
   }
 
+  stateNameAbbreviations = {
+    "Alabama":"AL"
+    "Alaska":"AK"
+    "Arizona":"AZ"
+    "Arkansas":"AR"
+    "California":"CA"
+    "Colorado":"CO"
+    "Connecticut":"CT"
+    "Delaware":"DE"
+    "Washington DC":"DC"
+    "Florida":"FL"
+    "Georgia":"GA"
+    "Hawaii":"HI"
+    "Idaho":"ID"
+    "Illinois":"IL"
+    "Indiana":"IN"
+    "Iowa":"IA"
+    "Kansas":"KS"
+    "Kentucky":"KY"
+    "Louisiana":"LA"
+    "Maine":"ME"
+    "Maryland":"MD"
+    "Massachusetts":"MA"
+    "Michigan":"MI"
+    "Minnesota":"MN"
+    "Mississippi":"MS"
+    "Missouri":"MO"
+    "Montana":"MT"
+    "Nebraska":"NE"
+    "Nevada":"NV"
+    "New Hampshire":"NH"
+    "New Jersey":"NJ"
+    "New Mexico":"NM"
+    "New York":"NY"
+    "North Carolina":"NC"
+    "North Dakota":"ND"
+    "Ohio":"OH"
+    "Oklahoma":"OK"
+    "Oregon":"OR"
+    "Pennsylvania":"PA"
+    "Rhode Island":"RI"
+    "South Carolina":"SC"
+    "South Dakota":"SD"
+    "Tennessee":"TN"
+    "Texas":"TX"
+    "Utah":"UT"
+    "Vermont":"VT"
+    "Virginia":"VA"
+    "Washington":"WA"
+    "West Virginia":"WV"
+    "Wisconsin":"WI"
+    "Wyoming":"WY"
+  }
+
   sogiDates = {
     "California":{
       SO: 1999
@@ -288,7 +342,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   ethnicities = ["latino", "black", "white", "asianpac", "indian"]
   formatCountyCalloutData = (d, activeEthnicity) ->
     toRet = {}
-    toRet.name = d.countyName
+    toRet.name = d.countyName.split(",")[0].trim()+", "+stateNameAbbreviations[d.countyName.split(",")[1].trim()]
     toRet.subSpanText = []
     toRet.subSpanText.push {label: "Latino                 ", value: "#{d3.format(".2f") d.latino}%", bold: false}
     toRet.subSpanText.push {label: "African-American       ", value: "#{d3.format(".2f") d.black}%", bold: false}

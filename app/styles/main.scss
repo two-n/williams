@@ -361,7 +361,7 @@ $_d: 600ms;
       pointer-events: none;
       stroke: none;
       &.protected {
-        stroke: black;
+        stroke: nth($colors, 4);
         stroke-width: 1;
       }
     }
@@ -421,7 +421,7 @@ $_d: 600ms;
 
   .nationBackdrop {
     fill: none;
-    stroke: nth($colors, 3);
+    stroke: nth($colors, 2);
   }
 
   .stateBackdrop {
@@ -524,7 +524,17 @@ $_d: 600ms;
     font-weight: bold;
   }
   .subText{
-    whitespace: pre
+    text-anchor: right;
+    font-weight: bold;
+    font-size: 10px;
+    pointer-events: none;
+    x: 5;
+    &.subValue{
+      text-anchor: right;
+    }
+    &.subText{
+      text-anchor: right;
+    }
   }
 }
 
