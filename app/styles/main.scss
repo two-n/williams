@@ -501,12 +501,12 @@ $_d: 600ms;
 .trailing-bubble {
   rect {
     fill: #FFF;
-    stroke: #FF0055;
+    stroke: nth($colors, 7);
     stroke-width: 1px;
   }
   path {
     fill: #FFF;
-    stroke: #FF0055;
+    stroke: nth($colors, 7);
   }
   text {
     fill: #888;
@@ -514,7 +514,7 @@ $_d: 600ms;
     @include font-1;
   }
   .break{
-    stroke: #FF0055;
+    stroke: nth($colors, 7);
   }
   .bold{
     font-weight: bold;
@@ -522,6 +522,8 @@ $_d: 600ms;
   .mainText{
     text-transform: uppercase;
     font-weight: bold;
+    font-size: 10px;
+    height: 5;
   }
   .subText{
     text-anchor: right;
@@ -532,8 +534,8 @@ $_d: 600ms;
     &.subValue{
       text-anchor: right;
     }
-    &.subText{
-      text-anchor: right;
+    &.highlight{
+      fill: nth($colors, 7)
     }
   }
 }

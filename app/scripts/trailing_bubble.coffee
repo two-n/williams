@@ -3,7 +3,7 @@ define ['d3'], (d3) ->
     point = null
     vector = [-20, -20]
     width = 4#80
-    height = 20
+    mainTextHeight = 18
     text = "bubble"
     subSpanText = ""
     color = '#888'
@@ -58,51 +58,50 @@ define ['d3'], (d3) ->
         mainText = gText.append('text')
       mainText
         .attr
-          x: 5
+          x: 9
           y: 6
-          dy: '.8em'
+          dy: 7
           'font-size': '.8em'
           'pointer-events': 'none'
           class: "mainText"
-          height: height
+          height: mainTextHeight
         .text(text)
 
+
+      positionSubTextLine = (d,i) -> mainTextHeight + 16 + 15 * i
       subText = gText.selectAll("text.subText").data(subSpanText)
       subText.enter().append("text")
         .attr
-          x: 5
-          dy: '.8em'
           class: "subLabel subText"
-          height: height
+          height: mainTextHeight
       subText
         .attr
-          y: (d,i) -> 30 + 17 * i
+          x: 9
+          y: positionSubTextLine
         .text (d) -> d.label
-        .classed("bold",(d) -> d.bold)
+        .classed("highlight",(d) -> d.bold)
       subText.exit().remove()
 
       subTextValue = gText.selectAll("text.subValue").data(subSpanText)
       subTextValue.enter().append("text")
         .attr
           fill: '#fff'
-          x: 5
-          dy: '.8em'
           class: "subValue subText"
-          height: height
+          height: mainTextHeight
       subTextValue
         .attr
-          y: (d,i) -> 30 + 17 * i
+          y: positionSubTextLine
           x: () => Math.max mainText.node().getBBox().width - 30, 150
         .style
           fill: (d) -> if d.highlightValue then "#FF0055"
         .text (d) -> d.value
-        .classed("bold",(d) -> d.bold)
+        .classed("highlight",(d) -> d.bold)
       subTextValue.exit().remove()
 
       bbox = gText.node().getBBox()
 
-      width = bbox.width + 10
-      totalHeight = bbox.height + 3
+      width = bbox.width + 19
+      totalHeight = bbox.height + 10
 
       breakLine = body.selectAll("line.break")
       if breakLine.empty()
@@ -110,13 +109,13 @@ define ['d3'], (d3) ->
       breakLine
         .attr
           x1: 0
-          y1: 25
-          y2: 25
+          y1: mainTextHeight + 1
+          y2: mainTextHeight + 1
           class: "break"
           display: () => if subSpanText.length > 0 then "inherit" else "none"
       prep(breakLine)
         .attr
-          x2: bbox.width + 10
+          x2: bbox.width + 19
 
       prep(body.select('rect'))
         .attr
