@@ -524,15 +524,24 @@ $_d: 600ms;
     font-weight: bold;
     font-size: 10px;
     height: 5;
+    stroke: none;
+  }
+  .mainValue{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 10px;
+    height: 5;
+    stroke: none;
+    text-anchor: end;
+    fill: nth($colors, 7);
   }
   .subText{
-    text-anchor: right;
     font-weight: bold;
     font-size: 10px;
     pointer-events: none;
     x: 5;
     &.subValue{
-      text-anchor: right;
+      text-anchor: end;
     }
     &.highlight{
       fill: nth($colors, 7)

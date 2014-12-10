@@ -61,10 +61,8 @@ define ['d3'], (d3) ->
           x: 9
           y: 6
           dy: 7
-          'font-size': '.8em'
           'pointer-events': 'none'
           class: "mainText"
-          height: mainTextHeight
         .text(text)
 
 
@@ -91,7 +89,7 @@ define ['d3'], (d3) ->
       subTextValue
         .attr
           y: positionSubTextLine
-          x: () => Math.max mainText.node().getBBox().width - 30, 150
+          x: () => Math.max mainText.node().getBBox().width - 30, 170
         .style
           fill: (d) -> if d.highlightValue then "#FF0055"
         .text (d) -> d.value
@@ -116,6 +114,24 @@ define ['d3'], (d3) ->
       prep(breakLine)
         .attr
           x2: bbox.width + 19
+
+      titleSplit = mainText.text().split(',')
+      if titleSplit.length is 2
+        mainValueData = [titleSplit[1]]
+        mainText.text titleSplit[0]
+      else
+        mainValueData = []
+      mainValue = gText.selectAll("text.mainValue").data(mainValueData)
+      mainValue.enter().append("text")
+        .attr
+          "class" : "mainValue"
+      mainValue
+        .attr
+          x: 170
+          y: 6
+          dy: 7
+          'pointer-events': 'none'
+        .text (d) -> d
 
       prep(body.select('rect'))
         .attr
