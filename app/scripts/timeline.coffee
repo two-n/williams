@@ -58,15 +58,19 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
             "fill-opacity": 0
             "stroke-opacity": 0
 
-      halfwayline_sel = axis_sel.append("line").attr("class", "halfway-line")
+      halfwayline_sel = axis_sel.select(".halfway-line")
+      if halfwayline_sel.empty()
+        halfwayline_sel = axis_sel.append("line")
+          .attr("class", "halfway-line")
+          .attr("opacity", 0)
+      halfwayline_sel
         .attr
           "x1": 0
           "x2": innerWidth
           "y1": -innerHeight / 2
           "y2": -innerHeight / 2
-          "opacity": 0
 
-      axis_sel.transition().duration(600).call(xAxis)
+      axis_sel.transition().duration(600).ease("cubic-out").call(xAxis)
         .attr
           "transform": "translate(#{ margin.left }, #{ margin.top + innerHeight })"
           "fill-opacity": 1
@@ -80,7 +84,7 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
             "fill-opacity": 0
             "stroke-opacity": 0
 
-      axis_sel.transition().duration(600).call(yAxis)
+      axis_sel.transition().duration(600).ease("cubic-out").call(yAxis)
         .attr
           "transform": "translate(#{ margin.left }, #{ margin.top })"
           "fill-opacity": 1
@@ -89,9 +93,9 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
       fifty_label = axis_sel.selectAll(".tick").filter (d, i) -> i is 5
         .attr "opacity", 0
 
-      halfwayline_sel.transition().delay(1000).duration(300)
+      halfwayline_sel.transition("opacity").delay(1000).duration(300)
         .each "start", ->
-          fifty_label.transition().duration(300).attr "opacity", 1
+          fifty_label.transition("opacity").duration(300).attr "opacity", 1
         .attr "opacity": 1
 
       label_sel = @select(".label")
@@ -123,25 +127,27 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
       generate_line = d3.svg.line()
         .x (d) -> xScale(+d[0])
         .y (d) -> yScale(+d[1])
-      sel.enter()
-        .append("path")
-        .attr("class", "line")
-        .attr("d", (d) -> generate_line(d.points))
-        .attr("stroke-width", 4)
-        .attr("stroke", (d) -> _.findWhere(props.colors, label: d.label).value)
-        .attr("fill", "none")
+      sel.enter().append("path")
+        .attr "class", "line"
+        .attr "fill", "none"
+        .attr "stroke", (d) -> _.findWhere(props.colors, label: d.label).value
+        .attr "stroke-width", 4
         .attr "stroke-opacity", 0
+        .attr "d", (d) -> generate_line(d.points)
         .each ->
           length = @getTotalLength()
           d3.select(@).attr
             "stroke-dasharray": "#{length}px #{length}px"
             "stroke-dashoffset": "#{length}px"
 
-      sel.transition().duration(2000).ease("cubic-out")
+      sel.transition("dasharray").duration(2000).ease("cubic-out")
         .attr "stroke-opacity", 1
         .attr "stroke-dashoffset", 0
         .each "end", ->
           d3.select(@).attr "stroke-dasharray", null
+
+      sel.transition("d").duration(600).ease("cubic-out")
+        .attr "d", (d) -> generate_line(d.points)
 
       sel.exit().remove()
 
