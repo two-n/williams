@@ -390,6 +390,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
       size[0] = size[0] - padding
       scale = Math.min size[0]/960, size[1]/600
+      verticalMargin = 90
       g.attr
         transform: "scale(#{scale}) translate(#{padding*0.5},0)"
 

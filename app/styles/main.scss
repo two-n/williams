@@ -63,7 +63,7 @@
 
 
 
-$colors: #EDEDEE #D1D1D4 #A6A6AC #797980 #38383C #FF0055 #FF9C00 #fadc52 #00C775 #0075CA #9843A0;
+$colors: #EDEDEE #D1D1D4 #A6A6AC #797980 #38383C #FF0055 #FF9C00 #EDD000 #00C775 #0075CA #9843A0;
 
 /* Border box: http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
 *, *:before, *:after { box-sizing: border-box; }
@@ -297,7 +297,7 @@ $header-background-color: rgba($background-color, 0.95);
 
   .chart-container {
     position: absolute;
-    top: 90px;
+    top: 0px;
     bottom: 30px;
     width: 100%;
   }
@@ -332,6 +332,7 @@ $_d: 600ms;
   stroke: white;
   stroke-width: 1;
   transition: fill $_d, stroke $_d, fill-opacity $_d, stroke-opacity $_d;
+  y: 90;
 
   .county {
     stroke: none;
