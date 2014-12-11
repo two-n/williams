@@ -2,6 +2,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
   vectorMap = _vectorMap
   countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
+  countyGeometries.forEach (d) -> d.entry = _.find(data, (entry) -> entry.id is +d.id )
   stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
   nationGeometries = topojson.feature(vectorMap, vectorMap.objects.nation).features
   path = d3.geo.path().projection(null)
@@ -409,13 +410,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           callout.call g, path.centroid(d), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
         .attr
           "class" : modes[mode].countyClass
-        .transition().duration(1500).attr
-          "fill-opacity" : (d) ->
-            entry = _.find(data, (entry) -> entry.id is +d.id )
-            if entry?
-              myScale[ethnicity](entry[ethnicity])
-            else
-              0
+          "fill-opacity" : (d,i) -> myScale[ethnicity](d.entry?[ethnicity])
 
       #backdrop construction
       nationBackdrop = d3.select("path.nationBackdrop")
