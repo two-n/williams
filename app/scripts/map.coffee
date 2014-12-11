@@ -11,60 +11,48 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   projection = d3.geo.albersUsa().scale(1280).translate([960/2,600/2])
   circleScale = d3.scale.sqrt().domain([0,100]).range([0,200])
 
-  # data = null
+  # tempData = null
   # d3.csv("./assets/census_race.csv",
   #   (d,i) ->
   #     {
   #       id: +d.stcounty
+  #       stateId: +d.st
   #       countyName: d["countyname"]
-  #       latino: +d["%hisptot"]
-  #       white: +d["%whtot"]
-  #       black: +d["%afamtot"]
+  #       latino: +d["hisptot_adj"]
+  #       white: +d["whtot_adj"]
+  #       black: +d["afamtot_adj"]
   #       # asian: +d["%asiantot"]
-  #       indian: +d["%aiantot"]
+  #       indian: +d["aiantot_adj"]
   #       # pacislander: +d["%nhpitot"]
   #       # other: +d["%othtot"]
   #       # multi: +d["%mracetot"]
-  #       asianpac: +d["%API"]
+  #       asianpac: +d["API"]
   #     }
   #   ,(err, _data) => 
-  #     data = _data
-  #     console.log JSON.stringify(data)
-
+  #     tempData = _data
+  #     console.log JSON.stringify(tempData)
   #   )
 
   myScale = {
+    black: d3.scale.threshold()
+      .domain([0, 0.01, 0.1, 0.2, 0.3, 0.7, 1])
+      .range([0, 0, 0.1, 0.4, 0.6, 0.8, 1, 1])
+    white: d3.scale.threshold()
+      .domain([0, 0.01, 0.1, 0.2, 0.3, 0.7, 1])
+      .range([0, 0, 0.1, 0.4, 0.6, 0.8, 1, 1])
     latino: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
-    black: d3.scale.threshold()
-      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-      .range([0,0,0.1,0.4,0.6,0.8,1])
-    white: d3.scale.threshold()
-      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-      .range([0,0,0.1,0.4,0.6,0.8,1])
-    # asian: d3.scale.threshold()
-    #   .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-    #   .range([0,0,0.1,0.4,0.6,0.8,1])
     indian: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
-    # pacislander: d3.scale.threshold()
-    #   .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-    #   .range([0,0,0.1,0.4,0.6,0.8,1])
-    # other: d3.scale.threshold()
-    #   .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-    #   .range([0,0,0.1,0.4,0.6,0.8,1])
-    # multi: d3.scale.threshold()
-    #   .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-    #   .range([0,0,0.1,0.4,0.6,0.8,1])
     asianpac: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
   }
-  myScale.white.domain(myScale.white.domain().map((d,i) -> if i > 1 then d*5 else d))
+  # myScale.white.domain(myScale.white.domain().map((d,i) -> if i > 1 then d*5 else d))
   # myScale.asian.domain(myScale.asian.domain().map((d,i) -> if i > 1 then d*0.1 else d))
-  myScale.asianpac.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
+  # myScale.asianpac.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
   # myScale.other.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
 
   regionByName = {
@@ -345,11 +333,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     toRet = {}
     toRet.name = d.countyName.split(",")[0].trim()+", "+stateNameAbbreviations[d.countyName.split(",")[1].trim()]
     toRet.subSpanText = []
-    toRet.subSpanText.push {label: "Latino                 ", value: "#{d3.format(".2f") d.latino}%", bold: false}
-    toRet.subSpanText.push {label: "African-American       ", value: "#{d3.format(".2f") d.black}%", bold: false}
-    toRet.subSpanText.push {label: "White                  ", value: "#{d3.format(".2f") d.white}%", bold: false}
-    toRet.subSpanText.push {label: "Asian/Pacific Islander ", value: "#{d3.format(".2f") d.asianpac}%", bold: false}
-    toRet.subSpanText.push {label: "Native American        ", value: "#{d3.format(".2f") d.indian}%", bold: false}
+    toRet.subSpanText.push {label: "Latino                 ", value: "#{d3.format(".2f") d.latino}", bold: false}
+    toRet.subSpanText.push {label: "African-American       ", value: "#{d3.format(".2f") d.black}", bold: false}
+    toRet.subSpanText.push {label: "White                  ", value: "#{d3.format(".2f") d.white}", bold: false}
+    toRet.subSpanText.push {label: "Asian/Pacific Islander ", value: "#{d3.format(".2f") d.asianpac}", bold: false}
+    toRet.subSpanText.push {label: "Native American        ", value: "#{d3.format(".2f") d.indian}", bold: false}
     toRet.subSpanText[_.indexOf(ethnicities, activeEthnicity)].bold = true
     toRet.stroke = "#FB9F37"
     [toRet]
@@ -386,13 +374,24 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       g = @.selectAll("g").data([null])
       g.enter().append("g").attr("id" : "vectorMap")
 
-      padding = 0.1 * size[0]
+      horizonalPadding = 0.1 * size[0]
+      size[0] = size[0] - horizonalPadding
 
-      size[0] = size[0] - padding
-      scale = Math.min size[0]/960, size[1]/600
-      verticalMargin = 90
-      g.attr
-        transform: "scale(#{scale}) translate(#{padding*0.5},0)"
+      verticalPadding = 180
+      horizonalPadding = size[0] * 0.1
+      scale = Math.min (size[0] - horizonalPadding)/960, (size[1] - verticalPadding)/600
+
+      g
+        .attr
+          "transform": "translate(#{horizonalPadding*0.5}, #{verticalPadding}) scale(#{scale}) "
+          "y": 200
+          "x": 200
+
+      calloutSurface = @
+      calloutTransform = (coords) ->
+        coords[0] = coords[0] * scale + horizonalPadding*0.5
+        coords[1] = coords[1] * scale + verticalPadding
+        coords
 
       # county definitions
       countyPaths = g.selectAll("path.county").data(countyGeometries)
@@ -403,12 +402,12 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
           "id" : (d) -> d.id
           "fill-opacity": 0
         .on "mouseleave", (d) =>
-          bubbleTimeout = setTimeout((() => callout.call @, path.centroid(d), []), 500)
+          bubbleTimeout = setTimeout((() => callout.call calloutSurface, path.centroid(d), []), 500)
       countyPaths
         .on "mouseenter", (d) =>
           if bubbleTimeout?
             clearTimeout(bubbleTimeout)
-          callout.call g, path.centroid(d), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
+          callout.call calloutSurface, calloutTransform(path.centroid(d)), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
         .attr
           "class" : modes[mode].countyClass
           "fill-opacity" : (d,i) -> myScale[ethnicity](d.entry?[ethnicity])
@@ -589,35 +588,36 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
   map.getColorsForEthnicity = (ethnicity) ->
     colorSets = {
-      latino : [
+      latino : () -> [
         { value: "#ED8F28", label: "0.80 - 1.00", alpha: 1},
         { value: "#ED8F28", label: "0.60 - 0.80", alpha: 0.8 },
         { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
         { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
         { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
       ]
-      black : [
-        { value: "#ED8F28", label: "0.80 - 1.00", alpha: 1},
-        { value: "#ED8F28", label: "0.60 - 0.80", alpha: 0.8 },
-        { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
-        { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
-        { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
-      ]
-      white : [
+      black : () ->
+          [
+            { value: "#ED8F28", label: "#{myScale["black"].domain()[5]}+", alpha: 1},
+            { value: "#ED8F28", label: "#{myScale["black"].domain()[4]} - #{myScale["black"].domain()[5]}", alpha: 0.8 },
+            { value: "#ED8F28", label: "#{myScale["black"].domain()[3]} - #{myScale["black"].domain()[4]}", alpha: 0.6 },
+            { value: "#ED8F28", label: "#{myScale["black"].domain()[2]} - #{myScale["black"].domain()[3]}", alpha: 0.4 },
+            { value: "#ED8F28", label: "#{myScale["black"].domain()[1]} - #{myScale["black"].domain()[2]}", alpha: 0.1 },
+        ]
+      white : () ->  [
         { value: "#ED8F28", label: "4.00 - 5.00", alpha: 1},
         { value: "#ED8F28", label: "3.00 - 4.00", alpha: 0.8 },
         { value: "#ED8F28", label: "2.00 - 3.00", alpha: 0.6 },
         { value: "#ED8F28", label: "1.00 - 2.00", alpha: 0.4 },
         { value: "#ED8F28", label: "0.01 - 1.00", alpha: 0.1 },
       ]
-      indian : [
+      indian : () ->  [
         { value: "#ED8F28", label: "0.80 - 1.00", alpha: 1},
         { value: "#ED8F28", label: "0.60 - 0.80", alpha: 0.8 },
         { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
         { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
         { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
       ]
-      asianpac : [
+      asianpac : () ->  [
         { value: "#ED8F28", label: "0.08 - 0.1", alpha: 1},
         { value: "#ED8F28", label: "0.06 - 0.08", alpha: 0.8 },
         { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
@@ -625,6 +625,6 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
       ]
     }
-    return colorSets[ethnicity]
+    return colorSets[ethnicity]()
 
   map
