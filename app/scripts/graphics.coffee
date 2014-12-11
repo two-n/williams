@@ -59,7 +59,7 @@ define ->
       { label: "Non-LGBT Ethnicity\nDistribution", value: ["#B4B3B9", "#C5C5C9", "#D1D1D4", "#E2E2E3"] }
     ],
     "type": "pies",
-    "pies": ["Northeast", "Mountain", "Midwest", "Pacific", "South"],
+    "pies": ["Pacific", "Mountain", "Midwest", "South", "Northeast"],
     # "slices": ["White LGBT", "African-American LGBT", "Latino/a2 LGBT", Asian/Pacific Islander LGBT"],
     "slices": ["White LGBT", "African-American LGBT", "Latino/a2 LGBT", "Asian/Pacific Islander LGBT"],
     # "outer-slices": ["White Non-LGBT", "African-American Non-LGBT", "Latino/a2 Non-LGBT", "American Indian/Alaska Native Non-LGBT", "Asian/Pacific Islander Non-LGBT"],

@@ -13,7 +13,7 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
       margin =
         left: 105
         right: 90
-        top: 90
+        top: 180
         bottom: 60
 
       innerWidth = width - margin.left - margin.right
@@ -148,17 +148,17 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
         label_sel = @append("text").attr("class", "label")
           .attr "fill-opacity": 0
           .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
-      label_sel.selectAll("tspan").remove()
+      label_sel.remove()
       label_sel.transition().duration(600)
         .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
         .attr "text-anchor", "middle"
-        .attr "y", 14
+        .attr "y", 23
         .attr "fill-opacity": 1
 
-      props.label.split("\n").forEach (text) ->
-        label_sel
-          .append("tspan")
-          .text text
-          .attr "dy", 15
-          .attr "x", 0
+      tspan_sel = label_sel.selectAll("tspan").data props.label.split("\n"), Math.random
+      tspan_sel.enter().append("tspan")
+        .text String
+        .attr "dy", 15
+        .attr "x", 0
+      tspan_sel.exit().remove()
 

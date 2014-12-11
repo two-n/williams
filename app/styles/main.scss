@@ -242,11 +242,12 @@ $header-background-color: rgba($background-color, 0.95);
     padding-top: 5px;
     height: 200px;
     h2 {
-      color: nth($colors, 4);
-      font-weight: bold;
-      font-size: 12px;
       margin-top: 0;
-      letter-spacing: .02em;
+      color: nth($colors, 4);
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 16px;
+      letter-spacing: .03em;
     }
     @include font-1;
     font-size: 17px;
@@ -313,8 +314,8 @@ $header-background-color: rgba($background-color, 0.95);
 
 .nav {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: 21px;
+  top: 50%;
   user-select: none;
 
   g {
@@ -652,9 +653,9 @@ $_d: 600ms;
   }
 
 
-  .arc {
-    transition: fill 150ms;
-  }
+  // .arc {
+  //   transition: fill 150ms;
+  // }
 
   .ethnicity-stats {
     line {

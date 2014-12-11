@@ -8,6 +8,7 @@ module.exports = (grunt) ->
     "d3/d3.min.js"
     "topojson/topojson.js"
     "underscore/underscore.js"
+    "hammerjs/hammer.min.js"
   ]
 
 

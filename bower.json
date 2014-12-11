@@ -6,6 +6,7 @@
     "modernizr": "~2.7.2",
     "d3": "~3.5",
     "underscore": "~1.6.0",
-    "topojson": "~1.6.18"
+    "topojson": "~1.6.18",
+    "hammerjs": "~2.0.4"
   }
 }

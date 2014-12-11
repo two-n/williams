@@ -3,6 +3,7 @@ require.config
     "d3": "vendor/d3/d3.min"
     "topojson": "vendor/topojson/topojson"
     "underscore": "vendor/underscore/underscore"
+    "hammer": "vendor/hammerjs/hammer.min"
 
 
 define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies"], (d3, _, graphics, map, dropdown, barChart, timeline, pies) ->
@@ -149,9 +150,9 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         .data [currNav], String
         .classed("current", true)
         .select(".visible")
-          .attr "r", 8
+          .attr "r", 6
         .transition().duration(600).ease("cubic-out")
-          .attr "r", 4
+          .attr "r", 3
       prevNav = currNav
 
     # chart
@@ -210,11 +211,13 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         .replace("chapter", "").replace("current", "").trim()
     .attr "data-color", (d, i) -> colors[i+5]
 
+  nav_separation = 16
   nav = d3.select(".nav")
     .attr("width", 25)
     .style("width", 25)
-    .attr("height", 21 * chapters.size())
-    .style("height", 21 * chapters.size())
+    .attr("height", nav_separation * chapters.size())
+    .style("height", nav_separation * chapters.size())
+    .style("margin-top", -nav_separation * chapters.size() / 2 + "px")
 
   chapters.select("a").on "click", ->
     if not d3.event.metaKey and not d3.event.shiftKey
@@ -224,7 +227,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
   chapters.each (chapter, i) ->
     element = nav.append("g")
       .datum chapter
-      .attr "transform", "translate(15, #{ 7 + i*21 })"
+      .attr "transform", "translate(15, #{ 7 + i*nav_separation })"
       .on "click", (d) ->
         route "/#{d}"
     element.append("circle")
@@ -232,7 +235,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
       .attr "r", 8
     element.append("circle").classed("visible", true)
       .style "fill", d3.select(@).attr("data-color")
-      .attr "r", 4
+      .attr "r", 3
 
     d3.select(@).select("a").attr "href", "#/#{chapter}"
     d3.select(@).selectAll(".show-me")

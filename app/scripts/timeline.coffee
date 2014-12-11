@@ -1,5 +1,4 @@
-define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, TrailingBubble) ->
-
+define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, Hammer, clean, TrailingBubble) ->
   trailing = TrailingBubble()
 
   timeline = (props, focusedYear) ->
@@ -21,7 +20,7 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
       margin =
         left: 45
         right: 62
-        top: 50
+        top: 140
         bottom: 60
 
       innerWidth = width - margin.left - margin.right
@@ -107,7 +106,7 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
       label_sel.transition().duration(600)
         .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
         .attr "text-anchor", "middle"
-        .attr "y", 14
+        .attr "y", 23
         .attr "fill-opacity": 1
 
       props.label.split("\n").forEach (text) ->
@@ -177,6 +176,18 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
       overlay_sel = lines_sel.select(".overlay")
       if overlay_sel.empty()
         overlay_sel = lines_sel.append("rect").attr("class", "overlay")
+          .on "mousemove", ->
+            year = _.min years, (year) => Math.abs(year - xScale.invert(d3.mouse(@)[0]))
+            timeline.call(context, props, year)
+          .on "mouseleave", ->
+            timeline.call(context, props, null)
+          # .each ->
+          #   mc = Hammer(@, {preventDefault: true})
+          #   mc.on "panmove", (event) ->
+          #     year = _.min years, (year) => Math.abs(year - xScale.invert(event.center.pageX))
+          #     timeline.call(context, props, year)
+          #   mc.on "panend", ->
+          #     timeline.call(context, props, null)
       overlay_sel
         .attr
           "fill": "transparent"
