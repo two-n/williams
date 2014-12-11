@@ -377,19 +377,19 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       horizonalPadding = 0.1 * size[0]
       size[0] = size[0] - horizonalPadding
 
-      verticalPadding = 180
+      verticalPadding = 90
       horizonalPadding = size[0] * 0.1
-      scale = Math.min (size[0] - horizonalPadding)/960, (size[1] - verticalPadding)/600
+      scale = Math.min (size[0] - horizonalPadding * 2)/960, (size[1] - verticalPadding * 1.5)/600
 
       g
         .attr
-          "transform": "translate(#{horizonalPadding*0.5}, #{verticalPadding}) scale(#{scale}) "
+          "transform": "translate(#{horizonalPadding}, #{verticalPadding}) scale(#{scale}) "
           "y": 200
           "x": 200
 
       calloutSurface = @
       calloutTransform = (coords) ->
-        coords[0] = coords[0] * scale + horizonalPadding*0.5
+        coords[0] = coords[0] * scale + horizonalPadding
         coords[1] = coords[1] * scale + verticalPadding
         coords
 
@@ -537,7 +537,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
 
       #timescale
-      timeAxis = g.select(".timeAxis")
+      timeAxis = calloutSurface.select(".timeAxis")
       if timeAxis.empty()
         timeAxis = g.append("g")
             .attr
