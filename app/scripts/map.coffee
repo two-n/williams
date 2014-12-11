@@ -346,9 +346,9 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     toRet = {}
     toRet.name = index[d.id].fullName
     toRet.subSpanText = []
-    if sogiDates[index[d.id].fullName]?.SO
+    if isSOProtected(d.id)
       toRet.subSpanText.push {label: "SO Protection", value: "Y", bold: "false", bold: false}
-    if sogiDates[index[d.id].fullName]?.SOGI
+    if isSOGIProtected(d.id)
       toRet.subSpanText.push {label: "GI Protection", value: "Y", bold: "false", bold: false}
     toRet.stroke = "#FF0055"
     [toRet]
