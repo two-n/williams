@@ -350,7 +350,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
     toRet.subSpanText.push {label: "Asian/Pacific Islander ", value: "#{d3.format(".2f") d.asianpac}%", bold: false}
     toRet.subSpanText.push {label: "Native American        ", value: "#{d3.format(".2f") d.indian}%", bold: false}
     toRet.subSpanText[_.indexOf(ethnicities, activeEthnicity)].bold = true
-    toRet.stroke = "#FFDF00"
+    toRet.stroke = "#FB9F37"
     [toRet]
 
   formatStateCalloutData = (d) ->
