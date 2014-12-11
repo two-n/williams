@@ -391,12 +391,28 @@ $_d: 600ms;
     fill-opacity: 0.75;
   }
 
-  .slider .handle {
-    fill: #FF0055;
-    stroke: #fff;
-    stroke-opacity: 1;
-    stroke-width: 1px;
-    cursor: pointer;
+  .nationBackdrop {
+    fill: none;
+    stroke: nth($colors, 2);
+  }
+
+  .stateBackdrop {
+    fill: none;
+    stroke: nth($colors, 2);
+  }
+}
+
+.timeAxis {
+  fill: none;
+  stroke: black;
+  stroke-width: 1;
+  cursor: pointer;
+
+ .tick {
+    @include font-1;
+    font-size: 12px;
+    stroke: none;
+    fill: black;
   }
 
   .slider .sliderLabel {
@@ -406,28 +422,12 @@ $_d: 600ms;
     font-size: 12px;
   }
 
-  .timeAxis {
-    fill: none;
-    stroke: black;
-    stroke-width: 1;
+  .slider .handle {
+    fill: #FF0055;
+    stroke: #fff;
+    stroke-opacity: 1;
+    stroke-width: 1px;
     cursor: pointer;
-  }
-
-  .timeAxis .tick {
-    @include font-1;
-    font-size: 12px;
-    stroke: none;
-    fill: black;
-  }
-
-  .nationBackdrop {
-    fill: none;
-    stroke: nth($colors, 2);
-  }
-
-  .stateBackdrop {
-    fill: none;
-    stroke: nth($colors, 2);
   }
 }
 

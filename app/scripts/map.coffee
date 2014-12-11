@@ -377,9 +377,9 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       horizonalPadding = 0.1 * size[0]
       size[0] = size[0] - horizonalPadding
 
-      verticalPadding = 90
+      verticalPadding = 180
       horizonalPadding = size[0] * 0.1
-      scale = Math.min (size[0] - horizonalPadding * 2)/960, (size[1] - verticalPadding * 1.5)/600
+      scale = Math.min (size[0] - horizonalPadding * 1)/960, (size[1] - verticalPadding * 1.5)/600
 
       g
         .attr
@@ -539,10 +539,9 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       #timescale
       timeAxis = calloutSurface.select(".timeAxis")
       if timeAxis.empty()
-        timeAxis = g.append("g")
+        timeAxis = calloutSurface.append("g")
             .attr
               "class": "timeAxis"
-              "transform": "translate(#{g.node().getBBox().width/2 - 100},#{g.node().getBBox().height * 1.1})"
             .call(d3.svg.axis()
               .scale(timeScale)
               .orient("bottom")
@@ -583,7 +582,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
               "id" : (d) -> d.id
               "class" : modes[mode].stateClass
         )
-      timeAxis.attr("display", if mode is "protection" then "inherit" else "none")
+      timeAxis.attr
+        "display": if mode is "protection" then "inherit" else "none"
+        "transform": "translate(#{0},#{g.node().getBBox().height})"
+
+      console.log g.node().getBBox().height
 
 
   map.getColorsForEthnicity = (ethnicity) ->
