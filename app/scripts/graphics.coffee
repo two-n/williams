@@ -86,7 +86,7 @@ define ->
     "url": "/education/1",
     "heading": "Bar Chart of College Completion by 21/29",
     "colors": [
-      { value: "#FFDF00", label: "LGBT" }
+      { value: "#fadc52", label: "LGBT" }
     ],
     "type": "bar-chart",
     "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
@@ -108,7 +108,7 @@ define ->
     "url": "/education/2",
     "heading": "Bar Chart of College Completion by Region",
     "colors": [
-      { value: "#FFDF00", label: "LGBT" },
+      { value: "#fadc52", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
     "type": "bar-chart",
