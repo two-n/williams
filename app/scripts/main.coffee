@@ -124,6 +124,9 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
     if props.mode is "ethnicity"
       console.log "ethnicity", sel.empty()
       if sel.empty()
+        d3.select(".visualization .header").append("div")
+          .attr "class" : "dropdownLabel"
+          .text "Please select"
         sel = d3.select(".visualization .header").append("div")
           .classed("dropdown", true)
         constructLegend()

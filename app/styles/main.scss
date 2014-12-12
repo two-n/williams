@@ -431,6 +431,17 @@ $_d: 600ms;
 }
 
 //dropdown
+.dropdownLabel {
+  @include font-2;
+  font-style: italic;
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  color: nth($colors, 4);
+  padding-left: 4px;
+  padding-bottom: 4px;
+  padding-top: 90px;
+}
+
 .dropdown {
   width: 275px;
 
@@ -439,7 +450,8 @@ $_d: 600ms;
   margin: -1px 3px 0;
   display: inline-block;
   position: relative;
-  height: 22px;
+  border-top: 1px solid nth($colors, 3);
+  border-bottom: 1px solid nth($colors, 3);
 
   ul {
     margin: 0;
@@ -455,7 +467,7 @@ $_d: 600ms;
 
   &::after {
     // content: "▾";
-    content: "\25BE";
+    // content: "\25B3";
     cursor: pointer;
     position: absolute;
     top: 4px;
@@ -464,20 +476,21 @@ $_d: 600ms;
     // color: $secondary;
   }
   &.collapsed::after {
-    color: inherit
+    color: inherit;
+    // content: "\25BD";
   }
 
   .item {
     @include font-1;
     display: block;
-    font-size: 16px;
+    font-size: 11px;
     font-weight: bold;
     list-style-type: none;
     text-transform: uppercase;
-    padding: 2px 0 5px;
+    letter-spacing: 0.05em;
+    padding: 0px 0 0px;
     color: nth($colors, 7);
-    // color: $secondary-muted;
-    height: 23px;
+    height: 16px;
     transition: all 200ms;
     overflow: hidden;
     // @include text-shadow($primary-accented 1px 1px 2px);
@@ -499,6 +512,8 @@ $_d: 600ms;
 }
 
 .trailing-bubble {
+  pointer-events: none;
+
   rect {
     fill: #FFF;
     // stroke: nth($colors, 7);
