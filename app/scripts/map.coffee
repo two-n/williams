@@ -537,17 +537,13 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
 
       #timescale
+      timeScale.range ([0,size[0] * 0.5])
       timeAxis = calloutSurface.select(".timeAxis")
+      handle = calloutSurface.select(".handle")
       if timeAxis.empty()
         timeAxis = calloutSurface.append("g")
             .attr
               "class": "timeAxis"
-            .call(d3.svg.axis()
-              .scale(timeScale)
-              .orient("bottom")
-              .tickValues([1977,2014])
-              .tickFormat(d3.format(".0f"))
-            )
         slider = timeAxis.append("g")
             .attr
               "class": "slider"
@@ -557,25 +553,27 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
             .remove()
         slider.select(".background")
             .attr("height", 30)
-        handle = slider.append("rect")
-          .attr("class", "handle")
-          .attr("transform", "translate(0," + 11 + ")")
-          .attr("width", 6)
-          .attr("height", 11)
-          .attr("x", timeScale(currentTime))
-        label = slider.append("text")
+        handle = slider.append("g")
+          .attr
+            "class": "handle"
+            # "x": timeScale(currentTime)
+            "transform": "translate(#{timeScale(currentTime)}," + 0 + ")"
+        handle.append("rect")
+          .attr
+              "transform": "translate(0," + 11 + ")"
+              "width": 6
+              "height": 11
+        label = handle.append("text")
           .attr
             "class": "sliderLabel"
             "transform": "translate(4," + 5 + ")"
             "text-anchor": "middle"
-            "x": timeScale(currentTime)
           .text(currentTime)
         brush.on("brush", () =>
           value = timeScale.invert(d3.mouse(slider.node())[0])
           currentTime =  Math.round(value)
           brush.extent([value, value])
-          handle.attr("x", timeScale(value))
-          label.attr("x", timeScale(value))
+          handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
           label.text(currentTime)
           g.selectAll(".state")
             .attr
@@ -584,7 +582,14 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
         )
       timeAxis.attr
         "display": if mode is "protection" then "inherit" else "none"
-        "transform": "translate(#{0},#{g.node().getBBox().height})"
+        "transform": "translate(#{size[0] * 0.25},#{size[1] * 0.9})"
+      .call(d3.svg.axis()
+        .scale(timeScale)
+        .orient("bottom")
+        .tickValues([1977,2014])
+        .tickFormat(d3.format(".0f"))
+      )
+      handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
 
       console.log g.node().getBBox().height
 
