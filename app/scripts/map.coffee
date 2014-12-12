@@ -18,15 +18,11 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   #       id: +d.stcounty
   #       stateId: +d.st
   #       countyName: d["countyname"]
-  #       latino: +d["hisptot_adj"]
-  #       white: +d["whtot_adj"]
-  #       black: +d["afamtot_adj"]
-  #       # asian: +d["%asiantot"]
-  #       indian: +d["aiantot_adj"]
-  #       # pacislander: +d["%nhpitot"]
-  #       # other: +d["%othtot"]
-  #       # multi: +d["%mracetot"]
-  #       asianpac: +d["API"]
+  #       latino: +d["SShisp_1000_edit"]
+  #       white: +d["SSwh_1000_edit"]
+  #       black: +d["SSafam_1000_edit"]
+  #       indian: +d["SSaian_1000_edit"]
+  #       asianpac: +d["SSapi_1000_edit"]
   #     }
   #   ,(err, _data) => 
   #     tempData = _data
@@ -39,21 +35,17 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
       .range([0, 0, 0.1, 0.4, 0.6, 0.8, 1, 1])
     white: d3.scale.threshold()
       .domain([0, 0.01, 0.1, 0.2, 0.3, 0.7, 1])
-      .range([0, 0, 0.1, 0.4, 0.6, 0.8, 1, 1])
+      .range([0, 0, 0.1, 0.2, 0.4, 0.51, 1, 1])
     latino: d3.scale.threshold()
-      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
-      .range([0,0,0.1,0.4,0.6,0.8,1])
+      .domain([0, 0.01, 0.09, 0.1, 0.2, 0.4, 1])
+      .range([0, 0, 0.1, 0.4, 0.6, 0.8, 1, 1])
     indian: d3.scale.threshold()
       .domain([0,0.01,0.2,0.4,0.6,0.8,1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
     asianpac: d3.scale.threshold()
-      .domain([0,0.01,0.2,0.4,0.6,0.8,1])
+      .domain([0, 0.001, 0.01, 0.005, 0.08, 0.13, 1])
       .range([0,0,0.1,0.4,0.6,0.8,1])
   }
-  # myScale.white.domain(myScale.white.domain().map((d,i) -> if i > 1 then d*5 else d))
-  # myScale.asian.domain(myScale.asian.domain().map((d,i) -> if i > 1 then d*0.1 else d))
-  # myScale.asianpac.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
-  # myScale.other.domain(myScale.asianpac.domain().map((d,i) -> if i > 1 then d*0.1 else d))
 
   regionByName = {
     "Pacific": {
@@ -595,44 +587,12 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
 
 
   map.getColorsForEthnicity = (ethnicity) ->
-    colorSets = {
-      latino : () -> [
-        { value: "#ED8F28", label: "0.80 - 1.00", alpha: 1},
-        { value: "#ED8F28", label: "0.60 - 0.80", alpha: 0.8 },
-        { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
-        { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
-        { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
-      ]
-      black : () ->
-          [
-            { value: "#ED8F28", label: "#{myScale["black"].domain()[5]}+", alpha: 1},
-            { value: "#ED8F28", label: "#{myScale["black"].domain()[4]} - #{myScale["black"].domain()[5]}", alpha: 0.8 },
-            { value: "#ED8F28", label: "#{myScale["black"].domain()[3]} - #{myScale["black"].domain()[4]}", alpha: 0.6 },
-            { value: "#ED8F28", label: "#{myScale["black"].domain()[2]} - #{myScale["black"].domain()[3]}", alpha: 0.4 },
-            { value: "#ED8F28", label: "#{myScale["black"].domain()[1]} - #{myScale["black"].domain()[2]}", alpha: 0.1 },
-        ]
-      white : () ->  [
-        { value: "#ED8F28", label: "4.00 - 5.00", alpha: 1},
-        { value: "#ED8F28", label: "3.00 - 4.00", alpha: 0.8 },
-        { value: "#ED8F28", label: "2.00 - 3.00", alpha: 0.6 },
-        { value: "#ED8F28", label: "1.00 - 2.00", alpha: 0.4 },
-        { value: "#ED8F28", label: "0.01 - 1.00", alpha: 0.1 },
-      ]
-      indian : () ->  [
-        { value: "#ED8F28", label: "0.80 - 1.00", alpha: 1},
-        { value: "#ED8F28", label: "0.60 - 0.80", alpha: 0.8 },
-        { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
-        { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
-        { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
-      ]
-      asianpac : () ->  [
-        { value: "#ED8F28", label: "0.08 - 0.1", alpha: 1},
-        { value: "#ED8F28", label: "0.06 - 0.08", alpha: 0.8 },
-        { value: "#ED8F28", label: "0.40 - 0.60", alpha: 0.6 },
-        { value: "#ED8F28", label: "0.20 - 0.40", alpha: 0.4 },
-        { value: "#ED8F28", label: "0.01 - 0.20", alpha: 0.1 },
-      ]
-    }
-    return colorSets[ethnicity]()
+    shades = [0.1,0.4,0.6,0.8]
+    colors = []
+    domain = myScale[ethnicity].domain()
+    [1..4].forEach (i) -> 
+      colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[i]} - #{myScale[ethnicity].domain()[i+1]}", alpha: shades[i-1] }
+    colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[5]}+", alpha: 1}
+    return colors.reverse()
 
   map
