@@ -6,7 +6,7 @@ require.config
     "hammer": "vendor/hammerjs/hammer.min"
 
 
-define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies"], (d3, _, graphics, map, dropdown, barChart, timeline, pies) ->
+define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies) ->
   # colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
   colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#ECD000", "#00C775", "#0075CA", "#9843A0"]
   currentProps = null
@@ -34,21 +34,20 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
     if not props? then return
     currentProps = props
 
-    currentColor = null
-
+    currentChapter = null
     currentColor = null
 
     # story
     lastChapter = null
-    d3.select(".story")
-      .selectAll(".chapter")
+    story_sel = d3.select(".story")
+
+    story_sel.selectAll(".chapter")
       .classed("active", false)
       .each ->
-        if @offsetTop <= document.body.scrollTop
+        if @offsetTop <= window.pageYOffset
           lastChapter = d3.select(@).datum()
 
-    d3.select(".story")
-      .selectAll(".show-me")
+    story_sel.selectAll(".show-me")
       .classed("current", false)
       .filter ->
         d3.select(@).attr("href").slice(1) is props.url
@@ -61,14 +60,34 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
 
         # if the clicked show-me isn't in view, then transition scrollTop
         offsetTop = @parentNode.offsetTop + @offsetTop
-        if offsetTop < document.body.scrollTop or offsetTop > document.body.scrollTop + window.innerHeight or currentChapter isnt lastChapter
+        if offsetTop < window.pageYOffset or offsetTop > window.pageYOffset + window.innerHeight or currentChapter isnt lastChapter
           d3.select(window).transition().tween "scrollTop", =>
             state.transitioningScrollTop = true
-            i = d3.interpolate document.body.scrollTop, @parentNode.offsetTop
-            (t) -> document.body.scrollTop = i(t)
+            i = d3.interpolate window.pageYOffset, @parentNode.offsetTop
+            (t) -> window.scrollTo 0, i(t)
           .each "end", ->
             state.transitioningScrollTop = false
 
+    arrow_sel = story_sel.select(".arrow")
+    if arrow_sel.empty()
+      arrow_sel = story_sel.append("div").attr("class", "arrow")
+      arrow_sel
+        .append("svg")
+          .attr("width", 80)
+          .attr("height", 25)
+        .append("path")
+          .attr("transform", "translate(40, 0)")
+          .attr("d", "M -34 0 L 0 21 L 34 0")
+
+    arrow_sel.on "click", ->
+      console.log currentChapter
+      chapters = story_sel.selectAll(".chapter").data()
+      nextChapter = chapters[chapters.indexOf(currentChapter) + 1]
+      route "/#{nextChapter}"
+
+    arrow_sel.select("path").transition().duration(450)
+      .attr("stroke", currentColor)
+      .attr("fill", currentColor)
 
     # header
     d3.select(".visualization .header h2").text props.heading
@@ -79,7 +98,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
 
     # legend
     sel = d3.select(".visualization .header .legend")
-      .classed "timeline", props.type is "timeline"
+      .attr "class", "legend #{ props.type }"
       .selectAll(".color")
       .data(props.colors ? [], (d) -> d.label)
     sel.enter().append("div").attr("class", "color")
@@ -123,6 +142,10 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
             d3.select(@).select("div.label")
               .text(d.label)
 
+
+    container_sel = d3.select(".chart-container")
+    size = [container_sel.property("offsetWidth"), container_sel.property("offsetHeight")]
+
     #dropdown
     sel = d3.select(".dropdown")
     if props.mode is "ethnicity"
@@ -139,8 +162,11 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
       d3.select(".header").select("div.dropdownLabel").remove()
 
     sel.call dropdown().on "select", (d) =>
+      container_sel = d3.select(".chart-container")
+      size = [container_sel.property("offsetWidth"), container_sel.property("offsetHeight")]
+
       state.ethnicity = d
-      map.call d3.select(".chart"), {ethnicity: state.ethnicity, split: false, mode: "ethnicity"}
+      map.call d3.select(".chart"), {size, ethnicity: state.ethnicity, split: false, mode: "ethnicity"}
 
       constructLegend()
 
@@ -159,8 +185,6 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
       prevNav = currNav
 
     # chart
-    container_sel = d3.select(".chart-container")
-    size = [container_sel.property("offsetWidth"), container_sel.property("offsetHeight")]
     switch props.type
       when "map"
         map.call d3.select(".chart"), { size, ethnicity: state.ethnicity, split: props.split, mode: props.mode}
@@ -190,14 +214,14 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         .selectAll(".chapter")
         .classed("current", false)
         .each(->
-          if @offsetTop <= document.body.scrollTop
+          if @offsetTop <= window.pageYOffset
             currentChapter = d3.select(@).datum()
         )
         .data [currentChapter], String
         .classed("current", true)
 
       if not state.transitioningScrollTop
-        scrollTop = @document.body.scrollTop
+        scrollTop = @pageYOffset
         current = d3.selectAll(".show-me")
           .filter(-> d3.select(@).classed("current")).node()
         if current?
@@ -205,8 +229,8 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
           if offsetTop < scrollTop or offsetTop > scrollTop + window.innerHeight
             s = d3.selectAll(".show-me").filter ->
               @parentNode.offsetTop + @offsetTop > scrollTop
-            # window.location.hash = s.node().attributes.href.value.slice(1)
             route s.node().attributes.href.value.slice(1)
+
 
   chapters = d3.selectAll(".chapter")
     .datum ->
@@ -231,8 +255,9 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
     element = nav.append("g")
       .datum chapter
       .attr "transform", "translate(15, #{ 7 + i*nav_separation })"
-      .on "click", (d) ->
-        route "/#{d}"
+      .on "click", (d) -> route "/#{d}"
+      .each (d) ->
+        Hammer(@, {preventDefault: true}).on "tap", => route "/#{d}"
     element.append("circle")
       .style "fill", "transparent"
       .attr "r", 8
@@ -240,13 +265,16 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
       .style "fill", d3.select(@).attr("data-color")
       .attr "r", 4
 
-    d3.select(@).select("a").attr "href", "#/#{chapter}"
+    d3.select(@).select("h1 a").attr "href", "#/#{chapter}"
     d3.select(@).selectAll(".show-me")
-        .attr "href", (d, i) -> "#/#{chapter}/#{i+1}"
-        .on "click", ->
-          if not d3.event.metaKey and not d3.event.shiftKey
-            route @attributes.href.value.slice(1)
-            d3.event.preventDefault()
+      .attr "href", (d, i) -> "#/#{chapter}/#{i+1}"
+      .on "click", ->
+        if not d3.event.metaKey and not d3.event.shiftKey
+          route @attributes.href.value.slice(1)
+          d3.event.preventDefault()
+      .each ->
+        Hammer(@, {preventDefault: true}).on "tap", =>
+          route @attributes.href.value.slice(1)
 
 
   currentChapter = null
@@ -254,7 +282,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
     .selectAll(".chapter")
     .classed("current", false)
     .each(->
-      if @offsetTop <= document.body.scrollTop
+      if @offsetTop <= window.pageYOffset
         currentChapter = d3.select(@).datum()
     )
     .data [currentChapter], String

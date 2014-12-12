@@ -57,7 +57,7 @@ define ["d3"], (d3) -> ->
     if ul.empty()
       ul = @.append("ul")
 
-    items = @.selectAll("li").data(options)
+    items = ul.selectAll("li").data(options)
     items.enter()
       .append("li")
         .attr

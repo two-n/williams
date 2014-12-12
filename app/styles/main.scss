@@ -131,7 +131,9 @@ $header-background-color: rgba($background-color, 0.95);
     margin-bottom: 80px;
     position: relative;
     padding-top: 180px;
-    transition: color 450ms;
+    transition: color 450ms, opacity 450ms;
+
+    opacity: 0.25;
 
     &.current {
       h1 {
@@ -140,8 +142,15 @@ $header-background-color: rgba($background-color, 0.95);
       }
     }
     &:not(.active) {
-      color: nth($colors, 2) !important;
+      color: nth($colors, 3) !important;
     }
+
+    .caption {
+      @include caption;
+    }
+  }
+  .chapter.active {
+    opacity: 1;
   }
 
   .introduction {
@@ -168,7 +177,6 @@ $header-background-color: rgba($background-color, 0.95);
     font-size: 17px;
     text-transform: uppercase;
     padding-top: 5px;
-    // font-weight: bold;
 
     font-family: 'Open Sans';
     font-style: normal;
@@ -193,14 +201,14 @@ $header-background-color: rgba($background-color, 0.95);
   }
 
   p {
-    color: nth($colors, 5);
     @include font-2;
     font-size: 12px;
     line-height: 18px;
     margin: 17px 0 0;
     letter-spacing: .02em;
-
+    color: nth($colors, 5);
   }
+
   .show-me {
     text-transform: uppercase;
     @include font-1;
@@ -224,6 +232,27 @@ $header-background-color: rgba($background-color, 0.95);
       cursor: default;
     }
   }
+
+  .arrow {
+    position: fixed;
+    bottom: 0;
+    width: 240px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 23px;
+    cursor: pointer;
+    fill-opacity: 0;
+    &:hover {
+      fill-opacity: 0.1;
+      transition: fill-opacity 150ms;
+    }
+    z-index: 10;
+
+    background: $header-background-color;
+    // box-shadow: $header-background-color 0 0 7px 7px;
+  }
+
+
 }
 
 .visualization {
@@ -270,6 +299,9 @@ $header-background-color: rgba($background-color, 0.95);
       &.timeline {
         width: 182px;
       }
+      &.map {
+        width: 147px;
+      }
 
       .color {
         @include clear;
@@ -296,7 +328,19 @@ $header-background-color: rgba($background-color, 0.95);
 
     .share-btns {
       width: 40px;
+      height: 40px;
       float: right;
+      text-align: right;
+
+      // .share {
+      //   background: url(assets/icons/share_4.png) -11px -10px;
+      //   display: inline-block;
+      //   width: 15px;
+      //   height: 20px;
+      //   &:hover {
+      //     opacity: 0.67;
+      //   }
+      // }
     }
   }
 
@@ -314,7 +358,6 @@ $header-background-color: rgba($background-color, 0.95);
     bottom: 0;
   }
 }
-
 
 .nav {
   position: fixed;
@@ -448,11 +491,10 @@ $_d: 600ms;
 }
 
 .dropdown {
-  width: 275px;
+  width: 190px;
 
   cursor: pointer;
   z-index: 10;
-  margin: -1px 3px 0;
   display: inline-block;
   position: relative;
   border-top: 1px solid nth($colors, 3);
@@ -460,14 +502,15 @@ $_d: 600ms;
 
   ul {
     margin: 0;
-    padding: 3px 16px 0 7px;
+    border: 1px solid nth($colors, 3);
+    border-left: none;
+    border-right: none;
+    padding: 0;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     z-index: 2;
-
-    // background-color: rgba($primary, 0.8);
   }
 
   &::after {
@@ -475,9 +518,11 @@ $_d: 600ms;
     // content: "\25B3";
     cursor: pointer;
     position: absolute;
-    top: 4px;
-    right: 8px;
+    top: -1px;
+    right: 4px;
     z-index: 2;
+    // font-size: 14px;
+    // color: nth($colors, 3);
     // color: $secondary;
   }
   &.collapsed::after {
@@ -488,6 +533,7 @@ $_d: 600ms;
   .item {
     @include font-1;
     display: block;
+    // font-size: 12px;
     font-size: 11px;
     font-weight: bold;
     list-style-type: none;
@@ -495,17 +541,15 @@ $_d: 600ms;
     letter-spacing: 0.05em;
     padding: 0px 0 0px;
     color: nth($colors, 7);
+    // height: 17px;
     height: 16px;
+
     transition: all 200ms;
     overflow: hidden;
-    // @include text-shadow($primary-accented 1px 1px 2px);
-
-    // &:hover {
-    //   color: $secondary;
-    // }
-    // &.active {
-      // color: $tertiary-accented;
-    // }
+    opacity: 0.5;
+    &.active, &:hover {
+      opacity: 1;
+    }
   }
 
   &.collapsed .item:not(.active) {
