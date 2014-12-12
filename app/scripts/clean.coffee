@@ -54,7 +54,7 @@ define ["d3"], (d3) ->
           .attr
             "stroke-dasharray": "0px #{length}px #{length}px 0px"
             "stroke-dashoffset": "#{length}px"
-      .transition().duration(duration)
+      .transition("dasharray").duration(duration)
       .attr
         "stroke-dashoffset": 0
         "stroke-opacity": 0

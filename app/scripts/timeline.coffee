@@ -103,7 +103,7 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           .attr "fill-opacity": 0
           .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
       label_sel.selectAll("tspan").remove()
-      label_sel.transition().duration(600)
+      label_sel.transition().duration(600).ease("cubic-out")
         .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
         .attr "text-anchor", "middle"
         .attr "y", 23
@@ -117,7 +117,7 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           .attr "x", 0
 
 
-      lines_sel = @select(".lines")
+      lines_sel = @select(".lines:not(.exiting)")
       if lines_sel.empty()
         lines_sel = @append("g").attr("class", "lines")
       lines_sel.attr "transform", "translate(#{ margin.left }, #{ margin.top })"
@@ -168,7 +168,7 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           "cx": -> xScale focusedYear
           "cy": (d) -> yScale index[d][focusedYear]
       circle_sel.exit()
-        .transition().duration(75)
+        .transition().duration(75).ease("cubic-out")
         .attr "r": 0
         .remove()
 

@@ -26,23 +26,21 @@ define ["d3", "hammer", "./clean"], (d3, Hammer, clean) ->
         "height": height
 
 
-
       radius = Math.min width / 644 * 90, (height - 90) / (678 - 90) * 90
       innerRadius = radius * 72/90
-
 
       transform = (d, i) ->
         x = (i+0.5) / pies.length * (width - 100) + 50
         y = 90 + if i % 2 then (height - 90) * 2 / 3 else (height - 90) / 6
         "translate(#{ x }, #{ y })"
-      sel = pies_sel.selectAll(".pie").data pies, (d) -> d?[""]
+      sel = pies_sel.selectAll(".pie:not(.exiting)").data pies, (d) -> d?[""]
       sel.enter()
         .append("g")
         .attr("class", "pie")
         .attr "transform", transform
         .attr "opacity", 0
 
-      sel.transition().duration(150)
+      sel.transition().duration(200).ease("cubic-out")
         .attr "transform", transform
         .attr "opacity", 1
 
@@ -64,7 +62,7 @@ define ["d3", "hammer", "./clean"], (d3, Hammer, clean) ->
           .classed "faded", props.ethnicity?
           .attr "text-anchor", "middle"
           .attr "dy", -5
-          .transition().duration(150)
+          .transition().duration(200).ease("cubic-out")
           .attr "y", radius + 30
 
         split_pattern = /\s|\/a2/
@@ -100,7 +98,7 @@ define ["d3", "hammer", "./clean"], (d3, Hammer, clean) ->
           .style("cursor", "pointer")
           # .style("stroke", (d, i) -> "#EDEDEE")
           # .style("stroke-width", 1)
-          .transition().duration(150)
+          .transition().duration(200).ease("cubic-out")
           .attr("d", arc)
           .style "fill", fill
 
@@ -131,7 +129,7 @@ define ["d3", "hammer", "./clean"], (d3, Hammer, clean) ->
           .style("stroke", (d, i) -> "#EDEDEE")
           .style("stroke-width", 1)
           .style("cursor", "pointer")
-          .transition().duration(150)
+          .transition().duration(200).ease("cubic-out")
           .attr("d", arc)
           .style "fill", fill
 
@@ -140,7 +138,7 @@ define ["d3", "hammer", "./clean"], (d3, Hammer, clean) ->
           if ethnicity_sel.empty()
             ethnicity_sel = pie_sel.append("g").attr("class", "ethnicity-stats")
               .attr "transform", "translate(0, #{ radius + 30 })"
-          ethnicity_sel.transition().duration(150)
+          ethnicity_sel.transition().duration(200).ease("cubic-out")
             .attr "transform", "translate(0, #{ radius + 30 })"
             .attr("opacity", 1)
           ethnicity_sel.text("")  # clear
@@ -192,7 +190,7 @@ define ["d3", "hammer", "./clean"], (d3, Hammer, clean) ->
         else
           ethnicity_sel
             .attr("opacity", 1)
-            .transition().duration(150)
+            .transition().duration(200).ease("cubic-out")
             .attr("opacity", 0)
             .remove()
 

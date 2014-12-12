@@ -138,13 +138,13 @@ define ->
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
     "type": "bar-chart",
-    "rows": ["21 State Law States", "29 Non-State Law States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "data": """
       ,LGBT,Non-LGBT,"Odds Ratio of Reporting a Household Income Below $24,000 (LGBT:Non-LGBT)"
       All Individuals,32%,24%,1.3155737705
-      21 State Law States,29%,22%,1.2981120697
-      29 Non-State Law States,35%,26%,1.3463865742
+      21 Protective States,29%,22%,1.2981120697
+      29 Non-Protective States,35%,26%,1.3463865742
       Northeast,29%,22%,1.3236786143
       Midwest,35%,24%,1.4878838431
       South,33%,27%,1.2437152726
@@ -183,13 +183,13 @@ define ->
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
     "type": "bar-chart",
-    "rows": ["21 State Law States", "29 Non-State Law States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Not Having Enough Money for Health Care (LGBT: Non-LGBT)
       All Individuals ,26,18,1.4515104577
-      21 State Law States,23,16,1.45
-      29 Non-State Law States,28,19,1.47
+      21 Protective States,23,16,1.45
+      29 Non-Protective States,28,19,1.47
       Northeast,22,15,1.5
       Midwest,26,17,1.57
       South,28,20,1.38

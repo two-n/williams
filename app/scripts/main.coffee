@@ -73,23 +73,26 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
     # header
     d3.select(".visualization .header h2").text props.heading
 
-    legendSel = d3.select(".visualization .header .legend").selectAll(".color")
-    if not legendSel.empty()
-      legendSel.remove()
+    # legendSel = d3.select(".visualization .header .legend").selectAll(".color")
+    # if not legendSel.empty()
+    #   legendSel.remove()
 
     # legend
     sel = d3.select(".visualization .header .legend")
       .classed "timeline", props.type is "timeline"
       .selectAll(".color")
-      .data(props.colors ? [])
+      .data(props.colors ? [], (d) -> d.label)
     sel.enter().append("div").attr("class", "color")
       .each ->
         d3.select(@).append("div").attr("class", "values")
         d3.select(@).append("div").attr("class", "label")
     value_sel = sel.select(".values").selectAll(".value")
       .data((d) -> [].concat d.value)
-    value_sel.enter().append("div").attr("class", "value")
-    value_sel.style("background-color", String)
+    value_sel.enter()
+      .append("div").attr("class", "value")
+      .style("background-color", String)
+    value_sel.transition().duration(600).ease("cubic-out")
+      .style("background-color", String)
     value_sel.exit().remove()
     label_sel = sel.select(".label").text((d) -> d.label)
     sel.exit().remove()
@@ -152,7 +155,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         .select(".visible")
           .attr "r", 6
         .transition().duration(600).ease("cubic-out")
-          .attr "r", 3
+          .attr "r", 4
       prevNav = currNav
 
     # chart
@@ -211,7 +214,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         .replace("chapter", "").replace("current", "").trim()
     .attr "data-color", (d, i) -> colors[i+5]
 
-  nav_separation = 16
+  nav_separation = 21
   nav = d3.select(".nav")
     .attr("width", 25)
     .style("width", 25)
@@ -235,7 +238,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
       .attr "r", 8
     element.append("circle").classed("visible", true)
       .style "fill", d3.select(@).attr("data-color")
-      .attr "r", 3
+      .attr "r", 4
 
     d3.select(@).select("a").attr "href", "#/#{chapter}"
     d3.select(@).selectAll(".show-me")
