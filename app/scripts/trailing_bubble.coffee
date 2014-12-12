@@ -25,6 +25,15 @@ define ['d3'], (d3) ->
         point[1] + vector[1]
       ]
 
+      whiteRect = sel.selectAll(".whiteRect").data([null])
+      whiteRect.enter()
+        .append('rect')
+          .attr
+            fill: color
+            class: "whiteRect"
+            stroke: 'white'
+            "stroke-width": 5.5
+
       body = sel.selectAll('.trailing-bubble-body').data [null]
       bodyEnter = body.enter()
         .append('g')
@@ -35,20 +44,21 @@ define ['d3'], (d3) ->
         .append('rect')
           .attr
             fill: color
-            # rx: r2
-            stroke: 'white'
-            'stroke-width': 1.5
+            stroke: 'red'
+            "stroke-width": 1.5
 
+      arrowStroke = [ 'white', stroke, 'none']
+      arrowStrokeWidth = [4, 2, 0]
       # Actually draws 2 paths, one without stroke (on top)
       # and one with stoke below
-      path = sel.selectAll('path').data [null, null]
+      path = sel.selectAll('path').data [null, null, null]
       path.enter()
-        .insert('path', (d, i) -> body.node() if i == 0)
+        .insert('path', (d, i) -> body.node() if i isnt 2)
         .attr
           "fill":           color
           "pointer-events": "none"
-          "stroke":         (d, i) -> if i == 0 then stroke else 'none'
-          "stroke-width":   (d, i) -> if i == 0 then 2 else 0
+          "stroke":         (d, i) -> arrowStroke[i] #if i == 0 then stroke else 'none'
+          "stroke-width":   (d, i) -> arrowStrokeWidth[i] #if i == 0 then 2 else 0
 
       gText = sel.selectAll('g.trailing-bubble-text')
       if gText.empty()
@@ -133,12 +143,19 @@ define ['d3'], (d3) ->
           'pointer-events': 'none'
         .text (d) -> d
 
-      prep(body.select('rect'))
+      prep(body.selectAll('rect'))
         .attr
           fill: color
           width: width
           height: totalHeight
-          stroke:  stroke
+          stroke: stroke
+
+      sel.selectAll('rect.whiteRect')
+        .attr
+          fill: color
+          width: width
+          height: totalHeight
+          stroke: "white"
 
       registration = [
         point2[0] - (if vector[0] > 0 then r2+1 else width - r2-1)
@@ -148,6 +165,9 @@ define ['d3'], (d3) ->
       bodyEnter.attr transform: "translate(#{registration})"
       # gText.attr transform: "translate(#{registration})"
       prep(body)
+        .attr
+          transform: "translate(#{registration})"
+      prep(whiteRect)
         .attr
           transform: "translate(#{registration})"
       prep(gText)
