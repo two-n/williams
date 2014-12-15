@@ -1,4 +1,6 @@
-define ["d3", "underscore", "./clean"], (d3, _, clean) ->
+define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, TrailingBubble) ->
+
+  trailing = TrailingBubble()
 
   timeline = (props, focusedYear) ->
     context = @
@@ -184,4 +186,26 @@ define ["d3", "underscore", "./clean"], (d3, _, clean) ->
           timeline.call(context, props, null)
 
 
+      bubble = @.selectAll('g.trailing-bubble').data(focusedLines)
+      bubble.enter()
+        .append('g')
+        .attr
+          class: "trailing-bubble"
+          opacity: 0
+      bubble
+        .each (d, i) ->
+          x = xScale(focusedYear)
+          y = yScale(index[d][focusedYear])
+          point = [x,y]
+          vector = [0.25,-0.5]
+          # series = dimension.series d
 
+          trailing
+            .point(point)
+            .vector(vector, 18)
+            .text("#{d}, #{index[d][focusedYear]}%")
+            .stroke "#FF0055"
+          d3.select(@).call trailing
+        .attr
+          "opacity": 1
+          "transform": "translate(#{ margin.left }, #{ margin.top })"

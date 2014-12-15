@@ -141,6 +141,8 @@ define ['d3'], (d3) ->
           y: 6
           dy: 7
           'pointer-events': 'none'
+        .style
+          fill: stroke
         .text (d) -> d
 
       prep(body.selectAll('rect'))
