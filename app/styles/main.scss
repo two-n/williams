@@ -135,7 +135,7 @@ $header-background-color: rgba($background-color, 0.95);
 
     opacity: 0.25;
 
-    &.current {
+    &.top {
       h1 {
         position: fixed;
         top: 30px;
@@ -153,6 +153,9 @@ $header-background-color: rgba($background-color, 0.95);
     opacity: 1;
   }
 
+  .cover {
+    color: nth($colors, 10);
+  }
   .introduction {
     color: nth($colors, 6);
   }
@@ -610,49 +613,12 @@ $_d: 600ms;
   }
 }
 
-// // bar-chart
-// .chart {
-//   .row {
-//     @include font-1;
-//     font-size: 10px;
-//     font-weight: 900;
-//     fill: nth($colors, 3);
-//     text-transform: uppercase;
-//     text-anchor: end;
-//     letter-spacing: .05em;
-//   }
 
-//   .x-axis {
-//     path {
-//       fill: none;
-//       stroke: nth($colors, 3);
-//       shape-rendering: crispEdges;
-//     }
-//     text {
-//       @include font-1;
-//       fill: nth($colors, 4);
-//       font-size: 10px;
-//       line-height: 12px;
-//       font-weight: bold;
-//       letter-spacing: .03em;
-//     }
-//   }
-
-//   .label {
-//     @include caption;
-//     font-size: 11px;
-//     fill: nth($colors, 4);
-//     letter-spacing: .07em;
-//   }
-// }
-
-
-// bar-chart
 .chart {
   .row {
     @include font-1;
     font-size: 10px;
-    font-weight: 900;
+    font-weight: 700;
     fill: nth($colors, 3);
     text-transform: uppercase;
     text-anchor: end;
@@ -676,6 +642,18 @@ $_d: 600ms;
       stroke: nth($colors, 2);
     }
 
+  }
+
+  .benchmark {
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+    // mix-blend-mode: multiply;
+    text {
+      @include font-1;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
   }
 
   .label {

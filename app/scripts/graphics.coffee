@@ -1,5 +1,8 @@
 define ->
   [{
+    "url": "/cover/1",
+    "heading": "A Data Portrait...",
+  }, {
     "url": "/introduction/1",
     "heading": "Graph of Opinions on Marriage/Employment/Sin",
     "colors": [
@@ -91,6 +94,7 @@ define ->
     "type": "bar-chart",
     "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT"],
+    "benchmark": "All Individuals in the US",
     "data": """
       ,LGBT,Non-LGBT
       All Individuals in the US,34%,34%
@@ -114,6 +118,7 @@ define ->
     "type": "bar-chart",
     "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
+    "benchmark": "All Individuals in the US",
     "data": """
       ,LGBT,Non-LGBT
       All Individuals in the US,34%,34%
@@ -128,9 +133,6 @@ define ->
     """,
     "label": "Percentage of individuals\nover age 25 with a college degree (%)"
   }, {
-  #   "url": "/education/3",
-  #   "heading": "Bar Chart of College Completion by Region & SS/DS"
-  # }, {
     "url": "/economic-insecurity/1",
     "heading": "Bar Chart of <$24,000 by Region & SS/DS",
     "colors": [
@@ -140,6 +142,7 @@ define ->
     "type": "bar-chart",
     "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
+    "benchmark": "All Individuals",
     "data": """
       ,LGBT,Non-LGBT,"Odds Ratio of Reporting a Household Income Below $24,000 (LGBT:Non-LGBT)"
       All Individuals,32%,24%,1.3155737705
@@ -162,6 +165,7 @@ define ->
     "type": "bar-chart",
     "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
+    "benchmark": "All Individuals ",
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Not Having Enough Money for Food (LGBT:Non-LGBT)
       All Individuals ,28%,18%,1.6
@@ -185,6 +189,7 @@ define ->
     "type": "bar-chart",
     "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
+    "benchmark": "All Individuals ",
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Not Having Enough Money for Health Care (LGBT: Non-LGBT)
       All Individuals ,26,18,1.4515104577
@@ -207,6 +212,7 @@ define ->
     "type": "bar-chart",
     "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
+    "benchmark": "All Individuals ",
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Having Health Insurance (LGBT:Non-LGBT)
       All Individuals ,82%,87%,0.95
@@ -241,4 +247,6 @@ define ->
   }, {
     "url": "/health/4",
     "heading": "Rates of HIV Occurrence by Region & SS/DS"
+  }, {
+    "url": "/conclusion/1"
   }]

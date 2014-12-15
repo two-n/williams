@@ -1,8 +1,7 @@
 define ["d3", "./clean", './callout'], (d3, clean, callout) ->
 
   (props) ->
-    clean.call @, [".rows", ".x-axis", ".label"], =>
-
+    clean.call @, [".rows", ".x-axis", ".benchmarks", ".label"], =>
       index = _.indexBy d3.csv.parse(props.data), ""
 
       [width, height] = props.size
@@ -73,9 +72,8 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
             .attr "transform", (d, i) -> "translate(0, #{ i * barHeight })"
             .attr "fill", (d, i) -> if i is 0 then props.colors[0].value else "#D1D1D4"
           bar_sel.transition("width").duration(600).ease("cubic-out")
-            .delay((d,i) -> row_i*25 + i*100)
-            .attr "width", (d, i) ->
-              xScale parseFloat(row[d])
+            .delay (d, i) -> row_i * 25 + i * 100
+            .attr "width", (d, i) -> xScale parseFloat(row[d])
           bar_sel.exit()
             .classed "exiting", true
             .transition().duration(600).ease("cubic-out")
@@ -130,12 +128,63 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
             .attr "transform", (d, i) -> "translate(0, #{ i * barHeight })"
             .attr "fill", (d, i) -> if i is 0 then props.colors[0].value else "#D1D1D4"
 
-      sel.exit()
-        # .transition()
-        # .ease("cubic-out")
-        # .duration(600)
-        # .attr "width", 0
-        .remove()
+      exit = sel.exit()
+        .transition().duration(600).ease("cubic-out")
+        .attr "fill-opacity", 0
+      exit.selectAll(".bar").attr "width", 0
+      exit.remove()
+
+
+      benchmarks_sel = @select(".benchmarks")
+      if benchmarks_sel.empty()
+        benchmarks_sel = @append("g").attr("class", "benchmarks")
+      benchmarks_sel.attr("transform", "translate(#{margin.left}, #{margin.top})")
+      benchmark_sel = benchmarks_sel.selectAll(".benchmark")
+        .data (if props.benchmark? then props.bars else []), String
+      benchmark_sel.enter().append("g").attr("class", "benchmark").call ->
+        @append("line").attr
+          stroke: (d, i) ->
+            color = if i is 0 then props.colors[0].value else "#D1D1D4"
+            d3.rgb(color).darker(0.5)
+        @append("text").attr("class", "top").attr("y", -24).attr("x", -2)
+        @append("text").attr("class", "bottom").attr("y", -12).attr("x", -2)
+
+      benchmark_sel.transition().duration(600)
+        # .attr "transform", (bar) ->
+        #   x = xScale parseFloat(index[props.benchmark][bar])
+        #   "translate(#{ x }, 0)"
+        .tween "value", (bar, i) ->
+          a = d3.select(@).attr("data-value")
+          interpolateValue = d3.interpolate a ? 0, parseFloat(index[props.benchmark][bar])
+          (t) =>
+            value_t = interpolateValue(t)
+            d3.select(@)
+              .attr "data-value", value_t
+              .attr "transform", (bar) ->
+                x = xScale value_t
+                "translate(#{ x }, 0)"
+              .select("text.bottom")
+                .text (bar) -> "#{ bar } #{ Math.round(value_t) }%"
+        .select("line").attr
+          y2: yScale(rows.length-1) + yScale.rangeBand()
+          stroke: (d, i) ->
+            color = if i is 0 then props.colors[0].value else "#D1D1D4"
+            d3.rgb(color).darker(0.5)
+
+      benchmark_sel.select("text.top")
+        .text("National Avg")
+        .attr
+          fill: (d, i) ->
+            color = if i is 0 then props.colors[0].value else "#D1D1D4"
+            d3.rgb(color).darker(0.5)
+      benchmark_sel.select("text.bottom")
+        # .text (bar) -> "#{ bar } #{ parseFloat(index[props.benchmark][bar]) }%"
+        .attr
+          fill: (d, i) ->
+            color = if i is 0 then props.colors[0].value else "#D1D1D4"
+            d3.rgb(color).darker(0.5)
+
+      benchmark_sel.exit().remove()
 
 
       axis_sel = @select(".x-axis")
@@ -159,7 +208,7 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
         label_sel = @append("text").attr("class", "label")
           .attr "fill-opacity": 0
           .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
-      label_sel.remove()
+      # label_sel.remove()
       label_sel.transition().duration(600).ease("cubic-out")
         .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
         .attr "text-anchor", "middle"

@@ -4,6 +4,7 @@ define ["d3"], (d3) ->
       ".rows"
       ".lines"
       ".pies"
+      ".benchmarks"
       ".x-axis"
       ".y-axis"
       ".label"
@@ -60,6 +61,11 @@ define ["d3"], (d3) ->
         "stroke-opacity": 0
 
     waste.filter(".pies").selectAll(".pie")
+      .attr "opacity", 1
+      .transition().duration(duration)
+      .attr "opacity", 0
+
+    waste.filter(".benchmarks").selectAll(".benchmark")
       .attr "opacity", 1
       .transition().duration(duration)
       .attr "opacity", 0

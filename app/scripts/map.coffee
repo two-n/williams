@@ -529,7 +529,7 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
 
 
       #timescale
-      timeScale.range ([0,size[0] * 0.5])
+      timeScale.range ([0,props.size[0] * 0.5])
       timeAxis = calloutSurface.select(".timeAxis")
       handle = calloutSurface.select(".handle")
       if timeAxis.empty()
@@ -574,7 +574,7 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
         )
       timeAxis.attr
         "display": if mode is "protection" then "inherit" else "none"
-        "transform": "translate(#{size[0] * 0.25},#{size[1] * 0.9})"
+        "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.9})"
       .call(d3.svg.axis()
         .scale(timeScale)
         .orient("bottom")
