@@ -161,6 +161,8 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           "stroke-width": 1.5
           "cx": -> xScale focusedYear
           "cy": (d) -> yScale index[d][focusedYear]
+        .style
+          "pointer-events": "none"
       circle_sel
         .transition().duration(75).ease("cubic-out")
         .attr
