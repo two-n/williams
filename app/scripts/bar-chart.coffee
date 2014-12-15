@@ -1,9 +1,7 @@
-define ["d3", "./clean", './trailing_bubble'], (d3, clean, TrailingBubble) ->
+define ["d3", "./clean", './callout'], (d3, clean, callout) ->
 
   (props) ->
     clean.call @, [".rows", ".x-axis", ".label"], =>
-
-      trailing = TrailingBubble()
 
       index = _.indexBy d3.csv.parse(props.data), ""
 
@@ -50,8 +48,6 @@ define ["d3", "./clean", './trailing_bubble'], (d3, clean, TrailingBubble) ->
       sel.each (d) ->
         row_sel = d3.select(@)
 
-        console.log sel
-
         if d?
           text_sel = row_sel.select("text")
           if text_sel.empty()
@@ -85,27 +81,36 @@ define ["d3", "./clean", './trailing_bubble'], (d3, clean, TrailingBubble) ->
       if calloutSurface.empty()
         calloutSurface = @.append("g").classed("calloutSurface", true)
 
+      formatCalloutData = (row) ->
+        toRet = {}
+        toRet.name = "LGBT,#{row["LGBT"]}"
+        toRet.subSpanText = [{label: "Non-LGBT", value: row["Non-LGBT"] , bold: false}]
+        toRet.stroke = "#A6A6AC"
+        [toRet]
+
+
       sel.each (row) ->
         d3.select(@)
           .selectAll(".bar:not(.exiting)")
+            .on "mouseleave", ->
+              callout.call calloutSurface, null, []
             .on "mouseenter", (d,i) ->
+
               bubble = calloutSurface.selectAll('g.trailing-bubble').data([null])
               bubble.enter()
                 .append "g"
                   .attr
                     class: "trailing-bubble"
+                    opacity: 0
+              bubble.transition().duration(500)
+                .attr
+                  opacity: 1
               x = xScale parseFloat(row[d])
               y = yScale(i)
 
               point = d3.mouse(calloutSurface.node())
               vector = [0.25,-0.5]
-              trailing
-                .point(point)
-                .vector(vector, 18)
-                .text("LGBT,#{row["LGBT"]}")
-                .subSpanText [{label: "Non-LGBT", value: row["Non-LGBT"] , bold: false}]
-                .stroke "#A6A6AC"
-              bubble.call trailing
+              callout.call calloutSurface, point, formatCalloutData(row)
             .transition()
             .duration(600)
             .ease("cubic-out")

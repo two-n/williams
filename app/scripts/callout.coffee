@@ -10,6 +10,9 @@ define ["d3", "./trailing_bubble"], (d3, TrailingBubble) ->
     if d.length? and (d.length is 0)
       return
 
+    if not coords?
+      cords = trailing.point()
+
     if coords[0] < this.node().getBBox().width/2
       vector = [0.25,-0.5]
     else
@@ -20,7 +23,7 @@ define ["d3", "./trailing_bubble"], (d3, TrailingBubble) ->
           coords[0],coords[1]
         ])
       .vector(vector, 18)
-      .color("#999")
+      .color("#FFF")
       .text(d[0].name)
       .subSpanText(d[0].subSpanText)
       .stroke(d[0].stroke)
