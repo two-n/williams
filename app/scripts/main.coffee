@@ -120,11 +120,11 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
               .text(d.label)
 
     #dropdown
-    sel = d3.select(".visualization .header .dropdown")
+    sel = d3.select(".dropdown")
     if props.mode is "ethnicity"
       console.log "ethnicity", sel.empty()
       if sel.empty()
-        d3.select(".visualization .header").append("div")
+        d3.select(".header").append("div")
           .attr "class" : "dropdownLabel"
           .text "Please select"
         sel = d3.select(".visualization .header").append("div")
@@ -132,6 +132,7 @@ define ["d3", "underscore", "./graphics", "./map", "./dropdown", "./bar-chart", 
         constructLegend()
     else
       sel.remove()
+      d3.select(".header").select("div.dropdownLabel").remove()
 
     sel.call dropdown().on "select", (d) =>
       state.ethnicity = d
