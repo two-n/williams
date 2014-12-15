@@ -356,7 +356,7 @@ define ["d3", "topojson", "./callout", "./clean", "../assets/counties.topo.json"
   currentTime = 2014
 
   map = (props) ->
-    clean.call @, ["#vectorMap"], =>
+    clean.call @, ["#vectorMap", ".timeAxis", ".calloutSurface"], =>
       size = [@property("offsetWidth"), @property("offsetHeight")]
 
       ethnicity = props.ethnicity

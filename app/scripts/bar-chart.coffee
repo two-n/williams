@@ -94,8 +94,7 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
           .selectAll(".bar:not(.exiting)")
             .on "mouseleave", ->
               callout.call calloutSurface, null, []
-            .on "mouseenter", (d,i) ->
-
+            .on "mouseover", (d,i) ->
               bubble = calloutSurface.selectAll('g.trailing-bubble').data([null])
               bubble.enter()
                 .append "g"

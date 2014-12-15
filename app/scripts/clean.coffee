@@ -8,6 +8,8 @@ define ["d3"], (d3) ->
       ".y-axis"
       ".label"
       "#vectorMap"
+      ".calloutSurface"
+      ".timeAxis"
     ]
 
     waste = @selectAll(selectors)
@@ -15,6 +17,16 @@ define ["d3"], (d3) ->
     duration = 600
 
     waste.filter("#vectorMap")
+      .attr
+        "fill-opacity" : 0
+        "stroke-opacity" : 0
+
+    waste.filter(".timeAxis")
+      .attr
+        "fill-opacity" : 0
+        "stroke-opacity" : 0
+
+    waste.filter(".calloutSurface")
       .attr
         "fill-opacity" : 0
         "stroke-opacity" : 0
