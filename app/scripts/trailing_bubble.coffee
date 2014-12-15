@@ -6,7 +6,8 @@ define ['d3'], (d3) ->
     mainTextHeight = 18
     text = "bubble"
     subSpanText = ""
-    color = '#888'
+    mainTextColor = null
+    color = '#FFF'
     stroke = null
 
     deg90 = Math.PI / 2
@@ -74,6 +75,8 @@ define ['d3'], (d3) ->
           dy: 7
           'pointer-events': 'none'
           class: "mainText"
+        .style
+          fill: mainTextColor
         .text(text)
 
       positionSubTextLine = (d,i) -> mainTextHeight + 16 + 15 * i
@@ -142,7 +145,7 @@ define ['d3'], (d3) ->
           dy: 7
           'pointer-events': 'none'
         .style
-          fill: stroke
+          fill: mainTextColor || stroke
         .text (d) -> d
 
       prep(body.selectAll('rect'))
@@ -208,6 +211,11 @@ define ['d3'], (d3) ->
     bubble.color = (c) ->
       return color if arguments.length == 0
       color = c
+      bubble
+
+    bubble.mainTextColor = (c) ->
+      return mainTextColor if arguments.length == 0
+      mainTextColor = c
       bubble
 
     bubble.subSpanText = (sST) ->

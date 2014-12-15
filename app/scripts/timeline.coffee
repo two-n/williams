@@ -186,7 +186,10 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
           timeline.call(context, props, null)
 
 
-      bubble = @.selectAll('g.trailing-bubble').data(focusedLines)
+      vectors = [[0.25,-0.5],[0.25,-0.5],[0.25,-0.5],[0.25,0.5],[0.25,-0.5]]
+      distances = [1,18,18,28,18]
+      bubbleData = if focusedLines.length > 0 then ["Public Optinions"].concat focusedLines else []
+      bubble = @.selectAll('g.trailing-bubble').data(bubbleData)
       bubble.enter()
         .append('g')
         .attr
@@ -194,18 +197,33 @@ define ["d3", "underscore", "./clean", "./trailing_bubble"], (d3, _, clean, Trai
           opacity: 0
       bubble
         .each (d, i) ->
-          x = xScale(focusedYear)
-          y = yScale(index[d][focusedYear])
+          if i > 0
+            x = xScale(focusedYear)
+            y = yScale(index[d][focusedYear])
+          else
+            x = xScale(focusedYear) + 7
+            y = yScale(index["Always Wrong"][focusedYear]) - 50
           point = [x,y]
-          vector = [0.25,-0.5]
-          # series = dimension.series d
+          vector = vectors[i]
+          if i > 0
+            text = "#{d}, #{index[d][focusedYear]}%"
+          else
+            text = "Public Opinions, #{focusedYear}"
 
           trailing
             .point(point)
-            .vector(vector, 18)
-            .text("#{d}, #{index[d][focusedYear]}%")
+            .vector(vector, distances[i])
+            .text(text)
             .stroke "#FF0055"
+          if i is 0
+            trailing.color "#FF0055"
+            trailing.mainTextColor "#FFF"
+          else
+            trailing.color "#FFF"
+            trailing.mainTextColor null
           d3.select(@).call trailing
         .attr
           "opacity": 1
           "transform": "translate(#{ margin.left }, #{ margin.top })"
+
+      bubble.exit().remove()
