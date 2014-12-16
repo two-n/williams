@@ -86,9 +86,7 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
         .attr "transform", (d, i) -> "translate(0, #{ yScale(i) })"
         .attr "fill-opacity", 1
 
-      calloutSurface = @.select("g.calloutSurface")
-      if calloutSurface.empty()
-        calloutSurface = @.append("g").classed("calloutSurface", true)
+      calloutSurface = @
 
       formatCalloutData = (row) ->
         toRet = {}
@@ -103,7 +101,7 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
           .selectAll(".bar:not(.exiting)")
             .on "mouseleave", ->
               callout.call calloutSurface, null, []
-            .on "mouseover", (d,i) ->
+            .on "mousemove", (d,i) ->
               bubble = calloutSurface.selectAll('g.trailing-bubble').data([null])
               bubble.enter()
                 .append "g"
