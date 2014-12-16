@@ -583,9 +583,6 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
       )
       handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
 
-      console.log g.node().getBBox().height
-
-
   map.getColorsForEthnicity = (ethnicity) ->
     shades = [0.1,0.4,0.6,0.8]
     colors = []

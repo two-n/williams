@@ -17,8 +17,8 @@ define ['d3'], (d3) ->
     prep = (sel) ->
       sel
         .transition()
-        .duration(100)
-        .ease('linear')
+        .duration(60)
+        .ease('cubic-out')
 
     bubble = (sel) ->
       point2 = [
