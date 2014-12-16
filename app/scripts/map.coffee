@@ -452,19 +452,29 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
           bubbleTimeout = setTimeout((() => callout.call calloutSurface, path.centroid(d), []), 500)
 
       #region definitions
-      g.selectAll(".region")
-        .transition()
-        .delay((d,i) -> 250*(5-i))
-        .duration(1000)
-
-        .attr("transform", (d) =>
-          if split
-            x = regionByName[d].offset[0]
-            y = regionByName[d].offset[1]
-            "translate(#{x},#{y})"
-          else
-            "translate(0,0)"
-        )
+      if mode isnt "ethnicity"
+        g.selectAll(".region")
+          .transition()
+          .delay((d,i) -> 250*(5-i))
+          .duration(1000)
+          .attr("transform", (d) =>
+            if split
+              x = regionByName[d].offset[0]
+              y = regionByName[d].offset[1]
+              "translate(#{x},#{y})"
+            else
+              "translate(0,0)"
+          )
+      else
+        g.selectAll(".region")
+          .attr("transform", (d) =>
+            if split
+              x = regionByName[d].offset[0]
+              y = regionByName[d].offset[1]
+              "translate(#{x},#{y})"
+            else
+              "translate(0,0)"
+          )
 
       regionOverlay = g.selectAll(".regionOverlay")
       if regionOverlay.empty()
