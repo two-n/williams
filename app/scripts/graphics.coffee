@@ -2,6 +2,7 @@ define ->
   [{
     "url": "/cover/1",
     "heading": "A Data Portrait of LGBT People\nin the Midwest, Mountain, and Southern States",
+    "type": "cover"
   }, {
     "url": "/introduction/1",
     "heading": "Graph of Opinions on Marriage/Employment/Sin",
@@ -215,6 +216,8 @@ define ->
     "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "benchmark": "All Individuals ",
+    "benchmark-orientation": ["end", "start"],
+    "bounds": [0, 100],
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Having Health Insurance (LGBT:Non-LGBT)
       All Individuals ,82%,87%,0.95

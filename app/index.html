@@ -32,6 +32,10 @@
             <div class="story">
                 <div class="cover chapter">
                     <h1><a>The LGBT Divide</a></h1>
+
+                    <div class="credits">
+                        By Amira Hasenbush, Andrew R. Flores, Angeliki Kastanis, Brad Sears, & Gary J. Gates
+                    </div>
                 </div>
                 <div class="introduction chapter">
                     <h1><a>Introduction</a></h1>
@@ -129,13 +133,18 @@
                     <p>While Southern LGBT people do face disparities compared to there non-LGBT counterparts, our analyses found that many of the greatest disparities are found in the Midwest and Mountain states.</p>
 
                     <p>The social climate of each region has its own assets and challenges to achieving legal and lived equality among LGBT and non-LGBT people.</p>
+
+                    <div class="credit-two-n">
+                        Designed & Developed by
+                        <a class="two-n-logo" href="http://two-n.com" target="_blank"></a>
+                    </div>
                 </div>
             </div>
 
             <div class="visualization">
                 <div class="header">
                     <div class="share-btns">
-                        <a class="tweet"></a>
+                        <a class="tweet" target="_blank"></a>
                         <a class="share"></a>
                     </div>
                     <div class="chartNotation">
@@ -148,9 +157,9 @@
                     <svg class="chart" width="100%" height="100%"></svg>
                 </div>
 
-                <div class="attribution">
+                <!--div class="attribution">
                     Source: Williams Institute
-                </div>
+                </div-->
             </div>
 
             <svg class="nav"></svg>
@@ -169,6 +178,12 @@
             e.src='//www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+
+        <script>
+            var covers = document.querySelectorAll(".cover.chapter, .conclusion.chapter");
+            covers.item(0).style.height = window.innerHeight - 30 + "px";
+            covers.item(1).style.height = window.innerHeight - 30 + "px";
         </script>
 
         <!-- build:js scripts/main.js -->

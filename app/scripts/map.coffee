@@ -1,10 +1,19 @@
-define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "assets/census_data.json"], (d3, topojson, callout, clean, _vectorMap, data) ->
+define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/census_data.json"], (d3, topojson, callout, _vectorMap, data) ->
+# define ["d3", "topojson", "./callout", "assets/census_data.json"], (d3, topojson, callout, data) ->
 
+  ready = false
+  vectorMap = null
+  countyGeometries = null
+  countyGeometries = null
+  stateGeometries = null
+  nationGeometries = null
+  # d3.json "assets/counties.topo.json", (_vectorMap) ->
   vectorMap = _vectorMap
   countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
   countyGeometries.forEach (d) -> d.entry = _.find(data, (entry) -> entry.id is +d.id )
   stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
   nationGeometries = topojson.feature(vectorMap, vectorMap.objects.nation).features
+
   path = d3.geo.path().projection(null)
   scale = 1
 
@@ -311,6 +320,10 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
       stateClass: (d) -> if sogiDates[index[d.id]?.fullName]? then "state nofill protected" else "state nofill"
       countyClass : "county"
     }
+    silhouette: {
+      stateClass: "gray state"
+      countyClass : "county hidden"
+    }
   }
 
   ethnicities = ["latino", "black", "white", "asianpac", "indian"]
@@ -349,279 +362,290 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
   currentTime = 2014
 
   map = (props) ->
-    clean.call @, ["#vectorMap", ".unscaledRegionOverlay", ".timeAxis", ".calloutSurface"], =>
-      size = [@property("offsetWidth"), @property("offsetHeight")]
+    ethnicity = props.ethnicity ? "black"
+    split = props.split
+    mode = props.mode
 
-      ethnicity = props.ethnicity
-      split = props.split
-      mode = props.mode
+    # horizonalPadding = 0.1 * props.size[0]
+    # props.size[0] -= horizonalPadding
 
-      g = @.selectAll("g").data([null])
-      g.enter().append("g").attr("id" : "vectorMap")
-
-      horizonalPadding = 0.1 * props.size[0]
-      props.size[0] = props.size[0] - horizonalPadding
-
+    if props.scaling is "cover"
+      verticalPadding = 90
+      horizonalPadding = props.size[0] * 0.075
+      scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
+      scale *= 0.95
+    # else if props.scaling is "conclusion"
+    #   verticalPadding = 180
+    #   horizonalPadding = props.size[0] * 0.075
+    #   scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
+    #   scale *= 1.075
+    else
       verticalPadding = 180
       horizonalPadding = props.size[0] * 0.1
       scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
+      scale *= 0.9
 
-      g
-        .attr
-          "transform": "translate(#{horizonalPadding}, #{verticalPadding}) scale(#{scale}) "
-          "y": 200
-          "x": 200
+    transform = "translate(#{horizonalPadding}, #{verticalPadding}) scale(#{scale}) "
+    g = @.selectAll("g").data([null])
+    g.enter()
+      .append("g").attr("id" : "vectorMap")
+      .attr "transform", transform
+    g.transition().duration(600).ease("cubic-out")
+      .attr "transform", transform
 
-      calloutSurface = @
-      calloutTransform = (coords) ->
-        coords[0] = coords[0] * scale + horizonalPadding
-        coords[1] = coords[1] * scale + verticalPadding
-        coords
+    calloutSurface = @
+    calloutTransform = (coords) ->
+      coords[0] = coords[0] * scale + horizonalPadding
+      coords[1] = coords[1] * scale + verticalPadding
+      coords
 
-      # county definitions
-      countyPaths = g.selectAll("path.county").data(countyGeometries)
-      countyPaths.enter()
-        .append("path")
+    # county definitions
+    countyPaths = g.selectAll("path.county")
+      .data(if mode is "ethnicity" then countyGeometries else [])
+    countyPaths.enter()
+      .append("path")
+      .attr
+        "d" : path
+        "id" : (d) -> d.id
+        "fill-opacity": 0
+      .on "mouseleave", (d) =>
+        bubbleTimeout = setTimeout((() => callout.call calloutSurface, path.centroid(d), []), 500)
+    countyPaths
+      .on "mouseenter", (d) =>
+        if bubbleTimeout?
+          clearTimeout(bubbleTimeout)
+        callout.call calloutSurface, calloutTransform(path.centroid(d)), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
+      .attr
+        "class" : modes[mode].countyClass
+        "fill-opacity" : (d,i) -> myScale[ethnicity](d.entry?[ethnicity])
+    countyPaths.exit().remove()
+
+    #backdrop construction
+    nationBackdrop = d3.select("path.nationBackdrop")
+    if nationBackdrop.empty()
+      nationBackdrop = g.append("path").datum(topojson.mesh(vectorMap, vectorMap.objects.states, (a, b) -> return a is b))
         .attr
           "d" : path
-          "id" : (d) -> d.id
-          "fill-opacity": 0
-        .on "mouseleave", (d) =>
-          bubbleTimeout = setTimeout((() => callout.call calloutSurface, path.centroid(d), []), 500)
-      countyPaths
-        .on "mouseenter", (d) =>
-          if bubbleTimeout?
-            clearTimeout(bubbleTimeout)
-          callout.call calloutSurface, calloutTransform(path.centroid(d)), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
+          "class" : "nationBackdrop"
+    nationBackdrop
+      .attr
+        "display" : if mode isnt "ethnicity" then "none" else "inherit"
+
+    stateBackdrop = d3.select("path.stateBackdrop")
+    if stateBackdrop.empty()
+      stateBackdrop = g.append("path").datum(topojson.mesh(vectorMap, vectorMap.objects.states, (a, b) -> return a isnt b))
         .attr
-          "class" : modes[mode].countyClass
-          "fill-opacity" : (d,i) -> myScale[ethnicity](d.entry?[ethnicity])
+          "d" : path
+          "class" : "stateBackdrop"
+    stateBackdrop
+      .attr
+        "display" : if mode isnt "ethnicity" then "none" else "inherit"
 
-      #backdrop construction
-      nationBackdrop = d3.select("path.nationBackdrop")
-      if nationBackdrop.empty()
-        nationBackdrop = g.append("path").datum(topojson.mesh(vectorMap, vectorMap.objects.states, (a, b) -> return a is b))
-          .attr
-            "d" : path
-            "class" : "nationBackdrop"
-      nationBackdrop
+    #state definitions
+    g = @.selectAll("g").data([null])
+    g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
+    regions = g.selectAll(".region").data(_.keys(regionByName))
+    regions.enter().append("g")
+      .attr
+        "class": "region"
+        "id": (d) -> d
+    regions.selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
+      .append("path")
         .attr
-          "display" : if mode isnt "ethnicity" then "none" else "inherit"
+          "d" : path
+          "class" : "state"
+        .each (d) -> d.parentRegion = @.parentNode
+    g.selectAll(".state")
+      .attr
+        "id" : (d) -> d.id
+        "class" : (d, i) ->
+          d3.functor(modes[mode].stateClass)(d, i) + (if props.fill? then " #{ props.fill }-fill" else "")
+        # "stroke": modes[mode].stroke
+        "vector-effect": "non-scaling-stroke"
+      .on "mouseenter", (d) =>
+        if mode in ["bubble", "silhouette"] then return
+        if bubbleTimeout?
+          clearTimeout(bubbleTimeout)
+        adjustedCentroid = path.centroid(d)
+        offset = d3.select(d.parentRegion).attr("transform")?.match(/[0-9., -]+/)?[0].split(",") || ["0","0"]
+        adjustedCentroid[0] += +offset[0]
+        adjustedCentroid[1] += +offset[1]
+        callout.call calloutSurface, calloutTransform(adjustedCentroid.map((d) -> d)), formatStateCalloutData(d)
+      .on "mouseleave", (d) =>
+        bubbleTimeout = setTimeout((() => callout.call calloutSurface, path.centroid(d), []), 500)
 
-      stateBackdrop = d3.select("path.stateBackdrop")
-      if stateBackdrop.empty()
-        stateBackdrop = g.append("path").datum(topojson.mesh(vectorMap, vectorMap.objects.states, (a, b) -> return a isnt b))
-          .attr
-            "d" : path
-            "class" : "stateBackdrop"
-      stateBackdrop
-        .attr
-          "display" : if mode isnt "ethnicity" then "none" else "inherit"
-
-      #state definitions
-      g = @.selectAll("g").data([null])
-      g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
-      regions = g.selectAll(".region").data(_.keys(regionByName))
-      regions.enter().append("g")
-        .attr
-          "class": "region"
-          "id": (d) -> d
-      regions.selectAll("path").data((d) -> stateGeometries.filter (state) -> _.contains regionByName[d].states, index[state.id]?.fullName).enter()
-        .append("path")
-          .attr
-            "d" : path
-            "class" : "state"
-          .each (d) -> d.parentRegion = @.parentNode
-      g.selectAll(".state")
-        .attr
-          "id" : (d) -> d.id
-          "class" : modes[mode].stateClass
-          # "stroke": modes[mode].stroke
-          "vector-effect": "non-scaling-stroke"
-        .on "mouseenter", (d) =>
-          if mode is "bubble" then return
-          if bubbleTimeout?
-            clearTimeout(bubbleTimeout)
-          adjustedCentroid = path.centroid(d)
-          offset = d3.select(d.parentRegion).attr("transform")?.match(/[0-9., -]+/)?[0].split(",") || ["0","0"]
-          adjustedCentroid[0] += +offset[0]
-          adjustedCentroid[1] += +offset[1]
-          callout.call calloutSurface, calloutTransform(adjustedCentroid.map((d) -> d)), formatStateCalloutData(d)
-        .on "mouseleave", (d) =>
-          bubbleTimeout = setTimeout((() => callout.call calloutSurface, path.centroid(d), []), 500)
-
-      #region definitions
-      if mode isnt "ethnicity"
-        g.selectAll(".region")
-          .transition()
-          .delay((d,i) -> 250*(5-i))
-          .duration(1000)
-          .attr("transform", (d) =>
-            if split
-              x = regionByName[d].offset[0]
-              y = regionByName[d].offset[1]
-              "translate(#{x},#{y})"
-            else
-              "translate(0,0)"
-          )
-      else
-        g.selectAll(".region")
-          .attr("transform", (d) =>
-            if split
-              x = regionByName[d].offset[0]
-              y = regionByName[d].offset[1]
-              "translate(#{x},#{y})"
-            else
-              "translate(0,0)"
-          )
-
-      regionOverlay = g.selectAll(".regionOverlay")
-      if regionOverlay.empty()
-        regionOverlay = g.append("g").classed("regionOverlay",true)
-
-      unscaledRegionOverlay = @.selectAll(".unscaledRegionOverlay")
-      if unscaledRegionOverlay.empty()
-        unscaledRegionOverlay = @.append("g").classed("unscaledRegionOverlay",true)
-
-      regionBubbleData = []
-      regionLabelData = []
-      if mode is "bubble"
-        regionBubbleData = _.keys(regionByName)
-      if mode is "protection" and split
-        regionLabelData = _.keys(regionByName)
-        regionLabelData = regionLabelData.filter (d) -> regionByName[d].splitLabelCentroid?
-
-      #bubble
-      regionBubble = regionOverlay.selectAll(".regionBubble").data(regionBubbleData)
-      regionBubble.enter().append("circle")
-          .attr
-            "class": "regionBubble"
-            "r": 0
-      regionBubble
-        .attr
-          "cx": (d) => projection(regionByName[d].centroid)[0]
-          "cy": (d) => projection(regionByName[d].centroid)[1]
-          "fill": props.bubbleColor
-        .transition().delay((d,i) -> 1000 + 250*(5-i))
-          .attr
-            "r": (d) =>
-              value =
-                if props.solidCircle?
-                  parseFloat(props.percentageByRegion[d][props.solidCircle])
-                else
-                  props.percentageByRegion[d]
-              circleScale(value)
-      regionBubble.exit().remove()
-
-      #name
-      regionLabelBrown = unscaledRegionOverlay.selectAll(".regionLabel.brown").data(regionBubbleData)
-      regionLabelBrown.enter().append("text")
-          .attr
-            "class": "regionLabel brown"
-            "opacity": 0
-      regionLabelBrown
-        .attr
-          "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
-          "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding + 18
-          "fill": d3.rgb(props.bubbleColor).darker()
-        .text((d) -> d)
-        .transition().delay((d,i) -> 1000 + 250*(5-i))
-          .attr
-            "opacity": 1
-      regionLabelBrown.exit().remove()
-
-      #alternate, non-bubble name
-      regionLabelGray = unscaledRegionOverlay.selectAll(".regionLabel.gray").data(regionLabelData)
-      regionLabelGray.enter().append("text")
-          .attr
-            "class": "regionLabel gray"
-            "opacity": 0
-      regionLabelGray
-        .attr
-          "x": (d) => projection(regionByName[d].splitLabelCentroid)[0] * scale + horizonalPadding
-          "y": (d) => projection(regionByName[d].splitLabelCentroid)[1] * scale + verticalPadding
-        .text((d) -> d)
-        .transition().delay((d,i) -> 1000 + 250*(5-i))
-          .attr
-            "opacity": 1
-      regionLabelGray.exit().remove()
-
-
-      #percentage
-      regionPercent = unscaledRegionOverlay.selectAll(".regionPercent").data(regionBubbleData)
-      regionPercent.enter().append("text")
-          .attr
-            "class": "regionPercent"
-            "opacity": 0
-      regionPercent
-        .attr
-          "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
-          "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding
-        .text (d) =>
-          if props.solidCircle?
-            props.percentageByRegion[d][props.solidCircle]
+    #region definitions
+    if mode isnt "ethnicity"
+      g.selectAll(".region")
+        .transition()
+        .delay((d,i) -> 250*(5-i))
+        .duration(1000)
+        .attr("transform", (d) =>
+          if split
+            x = regionByName[d].offset[0]
+            y = regionByName[d].offset[1]
+            "translate(#{x},#{y})"
           else
-            "#{props.percentageByRegion[d]}\%"
-        .transition().delay((d,i) -> 1000 + 250*(5-i))
-          .attr
-            "opacity": 1
-      regionPercent.exit().remove()
-
-
-      #timescale
-      timeScale.range ([0,props.size[0] * 0.5])
-      timeAxis = calloutSurface.select(".timeAxis")
-      handle = calloutSurface.select(".handle")
-      if timeAxis.empty()
-        timeAxis = calloutSurface.append("g")
-            .attr
-              "class": "timeAxis"
-        slider = timeAxis.append("g")
-            .attr
-              "class": "slider"
-              "transform": "translate(-2,-16)"
-            .call(brush)
-        slider.selectAll(".extent,.resize")
-            .remove()
-        slider.select(".background")
-            .attr("height", 30)
-        handle = slider.append("g")
-          .attr
-            "class": "handle"
-            # "x": timeScale(currentTime)
-            "transform": "translate(#{timeScale(currentTime)}," + 0 + ")"
-        handle.append("rect")
-          .attr
-              "transform": "translate(0," + 11 + ")"
-              "width": 6
-              "height": 11
-        label = handle.append("text")
-          .attr
-            "class": "sliderLabel"
-            "transform": "translate(4," + 5 + ")"
-            "text-anchor": "middle"
-          .text(currentTime)
-        brush.on("brush", () =>
-          value = timeScale.invert(d3.mouse(slider.node())[0])
-          currentTime =  Math.round(value)
-          brush.extent([value, value])
-          handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
-          label.text(currentTime)
-          g.selectAll(".state")
-            .attr
-              "id" : (d) -> d.id
-              "class" : modes["protection"].stateClass
+            "translate(0,0)"
         )
-      timeAxis.attr
-        "display": if mode is "protection" then "inherit" else "none"
-        "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
-      .call(d3.svg.axis()
-        .scale(timeScale)
-        .orient("bottom")
-        .tickValues([1977,2014])
-        .tickFormat(d3.format(".0f"))
+    else
+      g.selectAll(".region")
+        .attr("transform", (d) =>
+          if split
+            x = regionByName[d].offset[0]
+            y = regionByName[d].offset[1]
+            "translate(#{x},#{y})"
+          else
+            "translate(0,0)"
+        )
+
+    regionOverlay = g.selectAll(".regionOverlay")
+    if regionOverlay.empty()
+      regionOverlay = g.append("g").classed("regionOverlay",true)
+
+    unscaledRegionOverlay = @.selectAll(".unscaledRegionOverlay")
+    if unscaledRegionOverlay.empty()
+      unscaledRegionOverlay = @.append("g").classed("unscaledRegionOverlay",true)
+
+    regionBubbleData = []
+    regionLabelData = []
+    if mode is "bubble"
+      regionBubbleData = _.keys(regionByName)
+    if mode is "protection" and split
+      regionLabelData = _.keys(regionByName)
+      regionLabelData = regionLabelData.filter (d) -> regionByName[d].splitLabelCentroid?
+
+    #bubble
+    regionBubble = regionOverlay.selectAll(".regionBubble").data(regionBubbleData)
+    regionBubble.enter().append("circle")
+        .attr
+          "class": "regionBubble"
+          "r": 0
+    regionBubble
+      .attr
+        "cx": (d) => projection(regionByName[d].centroid)[0]
+        "cy": (d) => projection(regionByName[d].centroid)[1]
+        "fill": props.bubbleColor
+      .transition().delay((d,i) -> 1000 + 250*(5-i))
+        .attr
+          "r": (d) =>
+            value =
+              if props.solidCircle?
+                parseFloat(props.percentageByRegion[d][props.solidCircle])
+              else
+                props.percentageByRegion[d]
+            circleScale(value)
+    regionBubble.exit().remove()
+
+    #name
+    regionLabelBrown = unscaledRegionOverlay.selectAll(".regionLabel.brown").data(regionBubbleData)
+    regionLabelBrown.enter().append("text")
+        .attr
+          "class": "regionLabel brown"
+          "opacity": 0
+    regionLabelBrown
+      .attr
+        "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
+        "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding + 18
+        "fill": d3.rgb(props.bubbleColor).darker()
+      .text((d) -> d)
+      .transition().delay((d,i) -> 1000 + 250*(5-i))
+        .attr
+          "opacity": 1
+    regionLabelBrown.exit().remove()
+
+    #alternate, non-bubble name
+    regionLabelGray = unscaledRegionOverlay.selectAll(".regionLabel.gray").data(regionLabelData)
+    regionLabelGray.enter().append("text")
+        .attr
+          "class": "regionLabel gray"
+          "opacity": 0
+    regionLabelGray
+      .attr
+        "x": (d) => projection(regionByName[d].splitLabelCentroid)[0] * scale + horizonalPadding
+        "y": (d) => projection(regionByName[d].splitLabelCentroid)[1] * scale + verticalPadding
+      .text((d) -> d)
+      .transition().delay((d,i) -> 1000 + 250*(5-i))
+        .attr
+          "opacity": 1
+    regionLabelGray.exit().remove()
+
+
+    #percentage
+    regionPercent = unscaledRegionOverlay.selectAll(".regionPercent").data(regionBubbleData)
+    regionPercent.enter().append("text")
+        .attr
+          "class": "regionPercent"
+          "opacity": 0
+    regionPercent
+      .attr
+        "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
+        "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding
+      .text (d) =>
+        if props.solidCircle?
+          props.percentageByRegion[d][props.solidCircle]
+        else
+          "#{props.percentageByRegion[d]}\%"
+      .transition().delay((d,i) -> 1000 + 250*(5-i))
+        .attr
+          "opacity": 1
+    regionPercent.exit().remove()
+
+
+    #timescale
+    timeScale.range ([0,props.size[0] * 0.5])
+    timeAxis = calloutSurface.select(".timeAxis")
+    handle = calloutSurface.select(".handle")
+    if timeAxis.empty()
+      timeAxis = calloutSurface.append("g")
+          .attr
+            "class": "timeAxis"
+      slider = timeAxis.append("g")
+          .attr
+            "class": "slider"
+            "transform": "translate(-2,-16)"
+          .call(brush)
+      slider.selectAll(".extent,.resize")
+          .remove()
+      slider.select(".background")
+          .attr("height", 30)
+      handle = slider.append("g")
+        .attr
+          "class": "handle"
+          # "x": timeScale(currentTime)
+          "transform": "translate(#{timeScale(currentTime)}," + 0 + ")"
+      handle.append("rect")
+        .attr
+            "transform": "translate(0," + 11 + ")"
+            "width": 6
+            "height": 11
+      label = handle.append("text")
+        .attr
+          "class": "sliderLabel"
+          "transform": "translate(4," + 5 + ")"
+          "text-anchor": "middle"
+        .text(currentTime)
+      brush.on("brush", () =>
+        value = timeScale.invert(d3.mouse(slider.node())[0])
+        currentTime =  Math.round(value)
+        brush.extent([value, value])
+        handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
+        label.text(currentTime)
+        g.selectAll(".state")
+          .attr
+            "id" : (d) -> d.id
+            "class" : modes["protection"].stateClass
       )
-      handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
+    timeAxis.attr
+      "display": if mode is "protection" then "inherit" else "none"
+      "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
+    .call(d3.svg.axis()
+      .scale(timeScale)
+      .orient("bottom")
+      .tickValues([1977,2014])
+      .tickFormat(d3.format(".0f"))
+    )
+    handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
 
   map.getColorsForEthnicity = (ethnicity) ->
     shades = [0.1,0.4,0.6,0.8]
@@ -631,5 +655,7 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
       colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[i]} - #{myScale[ethnicity].domain()[i+1]}", alpha: shades[i-1] }
     colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[5]}+", alpha: 1}
     return colors.reverse()
+
+  map.deps = ["#vectorMap", ".unscaledRegionOverlay", ".timeAxis", ".calloutSurface"]
 
   map

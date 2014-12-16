@@ -6,7 +6,7 @@ require.config
     "hammer": "vendor/hammerjs/hammer.min"
 
 
-define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover", "./composite"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover, composite) ->
+define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover", "./composite", "./clean"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover, composite, clean) ->
   # colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
   colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#ECD000", "#00C775", "#0075CA", "#9843A0"]
   currentProps = null
@@ -17,11 +17,6 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
     ethnicity: "black"
 
   prevChapter = null
-
-
-  d3.selectAll(".cover.chapter, .conclusion.chapter")
-    .style "height", window.innerHeight - 80 - 30 + "px"
-
 
   route = (path) ->
     if state.path is path then return
@@ -40,6 +35,9 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
     currentProps = props
 
     currentChapter = props.url.match(/\/([^\/]+)\//)[1]
+
+    d3.selectAll(".cover.chapter, .conclusion.chapter")
+      .style "height", window.innerHeight - 30 + "px"
 
     # story
     story_sel = d3.select(".story")
@@ -86,26 +84,39 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
     showme_sel = story_sel.selectAll(".show-me")
       .classed "current", -> d3.select(@).attr("href").slice(1) is props.url
 
+
+    # arrow
     arrow_sel = story_sel.select(".arrow")
     if chapter_sel.size() - 1 is activeIndex
       arrow_sel.remove()
     else if arrow_sel.empty()
       arrow_sel = story_sel.append("div").attr("class", "arrow")
-      arrow_sel
-        .append("svg")
-          .attr("width", 80)
-          .attr("height", 25)
-        .append("path")
-          .attr("transform", "translate(40, 0)")
-          .attr("d", "M -34 0 L 0 21 L 34 0")
+        .style "width", if props.type is "cover" then window.innerWidth + "px" else "240px"
+        .style "left", if props.type is "cover" then "0px" else "40px"
+      arrow_svg_sel = arrow_sel.append("svg")
+        .attr("width", 80)
+        .attr("height", 25)
+        .on "click", ->
+          route "/#{ d3.select(@).datum() }"
+          d3.event.preventDefault()
+        .each ->
+          Hammer(@, {preventDefault: true}).on "tap", =>
+            route "/#{ d3.select(@).datum() }"
+      arrow_svg_sel.append("path")
+        .attr("transform", "translate(40, 0)")
+        .attr("d", "M -34 0 L 0 21 L 34 0")
 
-    arrow_sel.on "click", ->
-      chapters = story_sel.selectAll(".chapter").data()
-      nextChapter = chapters[chapters.indexOf(currentChapter) + 1]
-      route "/#{nextChapter}"
+    arrow_sel
+      .classed "cover", props.type is "cover"
+      .select("svg").datum ->
+        chapters = story_sel.selectAll(".chapter").data()
+        chapters[chapters.indexOf(currentChapter) + 1]
 
-    arrow_sel.select("path").transition().duration(450)
-      .attr("stroke", currentColor)
+    arrow_sel.transition().duration(450).ease("cubic-out")
+      .style "width", if props.type is "cover" then window.innerWidth + "px" else "240px"
+      .style "left", if props.type is "cover" then "0px" else "40px"
+      .select("path")
+        .attr("stroke", currentColor)
 
     # header
     heading_sel = d3.select(".visualization .header h2")
@@ -129,6 +140,7 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
 
     # legend
     sel = d3.select(".visualization .header .legend")
+      # .attr "class", "legend #{ props.type } #{ if ~props.colors?[0]?.indexOf?("msm") then "msm" else "" }"
       .attr "class", "legend #{ props.type }"
       .selectAll(".color")
       .data(props.colors ? [], (d) -> d.label)
@@ -174,9 +186,6 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
               .text(d.label)
 
 
-    container_sel = d3.select(".chart-container")
-    size = [container_sel.property("offsetWidth"), container_sel.property("offsetHeight")]
-
     #dropdown
     sel = d3.select(".dropdown")
     if props.mode is "ethnicity"
@@ -213,41 +222,59 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
           .attr "r", 4
 
     # chart
-    switch props.type
-      when "map"
-        map.call d3.select(".chart"), _.extend {},
-          size: size
-          ethnicity: state.ethnicity
-          split: props.split
-          mode: props.mode
-          bubbleColor: props.colors?[1].value
-          _.pick props, "percentageByRegion", "colors"
-      when "bar-chart"
-        barChart.call d3.select(".chart"), _.extend {},
-          { size }
-          _.pick props, "bars", "rows", "data", "label", "colors", "benchmark"
-      when "composite"
-        composite.call d3.select(".chart"), _.extend {},
-          { size }
-          _.pick props, "bars", "rows", "data", "label", "colors"
-      when "timeline"
-        timeline.call d3.select(".chart"), _.extend {},
-          { size }
-          _.pick props, "lines", "data", "label", "colors"
-      when "pies"
-        pies
-          .on "hover", (ethnicity) ->
-            state.hoverEthnicity = ethnicity
-            render props
-          .call d3.select(".chart"),
-            _.extend ethnicity: state.hoverEthnicity,
-              { size }
-              _.pick props, "pies", "slices", "outer-slices", "data", "colors"
-      when "conclusion"
-        conclusion.call d3.select(".chart"),
-          _.extend { size }, _.pick props, "quote", "attribution"
-      when "cover"
-        cover.call d3.select(".chart")
+    chart_sel = d3.select(".chart")
+    view = switch props.type
+      when "map" then map
+      when "bar-chart" then barChart
+      when "composite" then composite
+      when "timeline" then timeline
+      when "pies" then pies
+      when "conclusion" then conclusion
+      when "cover" then cover
+
+    container_sel = d3.select(".chart-container")
+      .classed "cover", props.type is "cover"
+    if props.type isnt "cover"
+      container_sel.style "transition-property", "left"
+
+    clean.call chart_sel, view.deps, =>
+      size = [container_sel.property("offsetWidth"), container_sel.property("offsetHeight")]
+
+      switch props.type
+        when "map"
+          map.call chart_sel, _.extend {},
+            size: size
+            ethnicity: state.ethnicity
+            split: props.split
+            mode: props.mode
+            bubbleColor: props.colors?[1].value
+            _.pick props, "percentageByRegion", "colors"
+        when "bar-chart"
+          barChart.call chart_sel, _.extend {},
+            { size }
+            _.pick props, "bars", "rows", "data", "label", "colors", "benchmark", "benchmark-orientation", "bounds"
+        when "composite"
+          composite.call chart_sel, _.extend {},
+            { size }
+            _.pick props, "bars", "rows", "data", "label", "colors"
+        when "timeline"
+          timeline.call chart_sel, _.extend {},
+            { size }
+            _.pick props, "lines", "data", "label", "colors"
+        when "pies"
+          pies
+            .on "hover", (ethnicity) ->
+              state.hoverEthnicity = ethnicity
+              render props
+            .call chart_sel,
+              _.extend ethnicity: state.hoverEthnicity,
+                { size }
+                _.pick props, "pies", "slices", "outer-slices", "data", "colors"
+        when "conclusion"
+          conclusion.call chart_sel,
+            _.extend { size }, _.pick props, "quote", "attribution"
+        when "cover"
+          cover.call chart_sel, { size }
 
 
     prevChapter = currentChapter
@@ -309,7 +336,8 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
     element = nav.append("g")
       .datum chapter
       .attr "transform", "translate(15, #{ 7 + i*nav_separation })"
-      .on "click", (d) -> route "/#{d}"
+      .on "click", (d) ->
+        route "/#{d}"
       .each (d) ->
         Hammer(@, {preventDefault: true}).on "tap", => route "/#{d}"
     element.append("circle")
@@ -320,16 +348,12 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
       .attr "r", 4
 
     d3.select(@).select("h1 a").attr "href", "#/#{chapter}"
-    d3.select(@).selectAll(".show-me")
-      .attr "href", (d, i) -> "#/#{chapter}/#{i+1}"
-      .on "click", ->
-        if not d3.event.metaKey and not d3.event.shiftKey
-          route @attributes.href.value.slice(1)
-          d3.event.preventDefault()
+    d3.select(@).selectAll(".show-me").attr "href", (d, i) -> "#/#{chapter}/#{i+1}"
+    d3.select(@).selectAll("h1 a, .show-me")
       .each ->
-        Hammer(@, {preventDefault: true}).on "tap", =>
-          route @attributes.href.value.slice(1)
-
+        Hammer(@, {preventDefault: true}).on "tap", (event) =>
+          if not event.srcEvent.metaKey and not event.srcEvent.shiftKey
+            route @attributes.href.value.slice(1)
 
   currentChapter = null
   d3.select(".story")
@@ -344,5 +368,5 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
 
   route @location.hash.slice(1)
 
-  window.onresize = () => render(currentProps)
+  window.onresize = => render(currentProps)
 

@@ -25,28 +25,40 @@ define ["d3"], (d3) ->
         "fill-opacity" : 0
         "stroke-opacity" : 0
 
+    waste.filter("#vectorMap").selectAll(".regionOverlay circle")
+      .transition().duration(duration).ease("cubic-out")
+      .attr "r", 0
+
+    waste.filter(".unscaledRegionOverlay")
+      .attr "opacity", 1
+      .transition().duration(duration).ease("cubic-out")
+      .attr "opacity", 0
+
     waste.filter(".timeAxis")
       .attr
-        "fill-opacity" : 0
-        "stroke-opacity" : 0
+        "fill-opacity": 1
+        "stroke-opacity": 1
+      .transition().duration(duration).ease("cubic-out")
+      .attr
+        "fill-opacity": 0
+        "stroke-opacity": 0
 
     waste.filter(".calloutSurface")
       .attr
-        "fill-opacity" : 0
-        "stroke-opacity" : 0
+        "fill-opacity": 0
+        "stroke-opacity": 0
 
-    waste.filter(".x-axis, .y-axis").transition().duration(duration)
+    waste.filter(".x-axis, .y-axis").transition().duration(duration).ease("cubic-out")
       .attr
-        "fill-opacity" : 0
-        "stroke-opacity" : 0
+        "fill-opacity": 0
+        "stroke-opacity": 0
       .selectAll(".halfway-line, .tick").attr "opacity": 0
 
-    waste.filter(".label").transition().duration(duration)
-      .attr
-        "fill-opacity" : 0
+    waste.filter(".label").transition().duration(duration).ease("cubic-out")
+      .attr "fill-opacity": 0
 
     waste.filter(".rows").selectAll(".row")
-      .transition().duration(duration)
+      .transition().duration(duration).ease("cubic-out")
       .attr "fill-opacity": 0
       .selectAll(".bar")
       .attr "width": 0
@@ -58,24 +70,24 @@ define ["d3"], (d3) ->
           .attr
             "stroke-dasharray": "0px #{length}px #{length}px 0px"
             "stroke-dashoffset": "#{length}px"
-      .transition("dasharray").duration(duration)
+      .transition("dasharray").duration(duration).ease("cubic-out")
       .attr
         "stroke-dashoffset": 0
         "stroke-opacity": 0
 
     waste.filter(".pies").selectAll(".pie")
       .attr "opacity", 1
-      .transition().duration(duration)
+      .transition().duration(duration).ease("cubic-out")
       .attr "opacity", 0
 
     waste.filter(".benchmarks").selectAll(".benchmark")
       .attr "opacity", 1
-      .transition().duration(duration)
+      .transition().duration(duration).ease("cubic-out")
       .attr "opacity", 0
 
     waste.filter(".quote, .view-report-btn")
       .attr "opacity", 1
-      .transition().duration(duration)
+      .transition().duration(duration).ease("cubic-out")
       .attr "opacity", 0
 
 

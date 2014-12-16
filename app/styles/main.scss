@@ -116,6 +116,7 @@ $header-background-color: rgba($background-color, 0.95);
   width: $story-width;
   position: absolute;
   top: 0;
+  z-index: 30;
 
   &::after {
     content: " ";
@@ -128,9 +129,8 @@ $header-background-color: rgba($background-color, 0.95);
   }
 
   .chapter {
-    margin-bottom: 80px;
     position: relative;
-    padding-top: 180px;
+    padding: 180px 0 80px;
     transition: color 450ms, opacity 450ms;
 
     opacity: 0.25;
@@ -240,27 +240,44 @@ $header-background-color: rgba($background-color, 0.95);
     position: fixed;
     bottom: 0;
     width: 240px;
+    transition: width 1000ms;
     text-align: center;
     padding-top: 10px;
     padding-bottom: 23px;
-    cursor: pointer;
-    fill: none;
-    stroke-opacity: 0.5;
-    transition: stroke-opacity 150ms;
-    &:hover {
-      stroke-opacity: 1;
-    }
-    z-index: 10;
-
     background: $header-background-color;
-  }
+    z-index: 10;
+    &.cover {
+      z-index: -1;
+    }
 
+    svg {
+      fill: none;
+      stroke-width: 1.33px;
+
+      stroke-opacity: 0.5;
+      transition: stroke-opacity 150ms;
+      cursor: pointer;
+      &:hover {
+        stroke-opacity: 1;
+      }
+    }
+    &.cover svg:not(:hover) {
+      animation: pulse 1000ms infinite;
+    }
+  }
 
 }
 
+@keyframes pulse {
+  0% { stroke-opacity: 1; }
+  100% { stroke-opacity: 0.2; }
+}
+
+
+$visualization-margin-left: 60px;
 .visualization {
   margin-top: 30px;
-  margin-left: 60px;
+  margin-left: $visualization-margin-left;
   margin-right: 40px;
   margin-bottom: 30px;
   position: fixed;
@@ -312,6 +329,9 @@ $header-background-color: rgba($background-color, 0.95);
       &.map {
         width: 147px;
       }
+      &.msm {
+        width: 136px;
+      }
 
       .color {
         @include clear;
@@ -362,7 +382,17 @@ $header-background-color: rgba($background-color, 0.95);
     position: absolute;
     top: 0px;
     bottom: 30px;
-    width: 100%;
+    left: 0px;
+    right: 0px;
+    transition-property: none;
+    transition-duration: 450ms;
+  }
+  .chart-container.cover {
+    position: absolute;
+    top: 0px;
+    bottom: 30px;
+    left: -$story-width - $visualization-margin-left;
+    right: 0px;
   }
 
   .attribution {
@@ -370,6 +400,52 @@ $header-background-color: rgba($background-color, 0.95);
     position: absolute;
     left: 0;
     bottom: 0;
+  }
+}
+
+
+.credits {
+  position: absolute;
+  left: 0;
+  bottom: 34px;
+  width: 280px;
+
+  @include font-1;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: .03em;
+  color: nth($colors, 4);
+}
+
+.credit-two-n {
+  position: absolute;
+  left: 0;
+  bottom: 28px;
+  width: 280px;
+
+  @include font-1;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: .03em;
+  color: nth($colors, 3);
+  vertical-align: top;
+
+  .two-n-logo {
+    background: url(assets/2n_logo.png) -11px -11px;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    margin-top: -3px;
+    margin-left: 3px;
+    cursor: pointer;
+
+    opacity: 0.33;
+    transition: opacity 150ms;
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 
@@ -427,6 +503,16 @@ $_d: 600ms;
         stroke: nth($colors, 4);
         stroke-width: 1;
       }
+    }
+    &.light-fill {
+      fill: #E6E6E7;
+      stroke: #E6E6E7;
+      stroke-width: 1px;
+    }
+    &.dark-fill {
+      fill: #D4D4D7;
+      stroke: #D4D4D7;
+      stroke-width: 1px;
     }
   }
 
@@ -732,14 +818,21 @@ $_d: 600ms;
 
 
 .quote {
-  tspan {
+  .line {
     @include font-2;
     fill: nth($colors, 4);
-    opacity: 0.8;
+    fill-opacity: 0.8;
     font-size: 18px;
     font-style: italic;
     text-anchor: middle;
     letter-spacing: .03em;
+  }
+  .mark {
+    @include font-2;
+    fill: nth($colors, 11);
+    fill-opacity: 0.7;
+    font-size: 72px;
+    font-style: italic;
   }
 }
 .view-report-btn {
