@@ -560,7 +560,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       .each (d, i) ->
         # The solid circle
         d3.select(@).select('.circle-solid')
-          .transition().delay((d) -> 399 + 98*(5-i))
+          .transition().delay((d) -> 0.0 + 98*(5-i))
           .attr
             "fill": props.bubbleColor
           .attr
@@ -573,7 +573,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
 
         dashedValue = parseFloat(props.percentageByRegion[d][props.dashedCircle])
         d3.select(@).select('.circle-dashed')
-          .transition().delay((d) -> 399 + 98*(5-i))
+          .transition().delay((d) -> 0.0 + 98*(5-i))
             .attr
               opacity: if isNaN(dashedValue) then 0 else 1
               d: ->
@@ -597,7 +597,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
                 "M#{x0} #{y0} A#{r} #{r} 0 1 0 #{x1} #{y1}"
 
         d3.select(@).select('.circle-dashed-label')
-          .transition().delay((d) -> 399 + 98*(5-i))
+          .transition().delay((d) -> 0.0 + 98*(5-i))
             .attr
               opacity: if isNaN(dashedValue) then 0 else 1
               y: if isNaN(dashedValue) then 0 else circleScale dashedValue
@@ -616,7 +616,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
         "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding + 18
       .text((d) -> d)
-      .transition().delay((d,i) -> 399 + 98*(5-i))
+      .transition().delay((d,i) -> 0.0 + 98*(5-i))
         .attr
           "fill": d3.rgb(props.bubbleColor).darker()
           "opacity": 1
@@ -672,7 +672,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           props.percentageByRegion[d][props.solidCircle]
         else
           "#{props.percentageByRegion[d]}\%"
-      .transition().delay((d,i) -> 399 + 98*(5-i))
+      .transition().delay((d,i) -> 0.0 + 98*(5-i))
         .attr
           "opacity": 1
     regionPercent.exit().remove()
