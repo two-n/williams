@@ -625,12 +625,24 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           "opacity": 1
     regionPercent.exit().remove()
 
+
     #timescale
     timeScale.range ([0,props.size[0] * 0.5])
     timeAxis = calloutSurface.select(".timeAxis")
     handle = calloutSurface.select(".handle")
     if timeAxis.empty()
       timeAxis = calloutSurface.append("g")
+          .attr
+            "class": "timeAxis"
+
+      slider = timeAxis.append("g")
+          .attr
+            "class": "slider"
+      slider.selectAll(".extent,.resize")
+          .remove()
+      slider.select(".background")
+          .attr("height", 30)
+      handle = timeAxis.append("g")
           .attr
             "class": "timeAxis"
       timeAxis.attr
@@ -666,7 +678,6 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           "text-anchor": "middle"
         .text(currentTime)
       brush.on("brush", () =>
-
         value = timeScale.invert(d3.mouse(slider.node())[0])
         currentTime =  Math.round(value)
         brush.extent([value, value])
@@ -678,6 +689,15 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
             "class" : modes["protection"].stateClass
       )
     handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
+    timeAxis.attr
+      "display": if mode is "protection" then "inherit" else "none"
+      "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
+    .call(d3.svg.axis()
+      .scale(timeScale)
+      .orient("bottom")
+      .tickValues([1977,2014])
+      .tickFormat(d3.format(".0f"))
+    )
 
   map.getColorsForEthnicity = (ethnicity) ->
     shades = [0.1,0.4,0.6,0.8]
