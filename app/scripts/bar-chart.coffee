@@ -108,9 +108,9 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
                   .attr
                     class: "trailing-bubble"
                     opacity: 0
-              bubble.transition().duration(500)
-                .attr
-                  opacity: 1
+                  .transition().duration(500)
+                    .attr
+                      opacity: 1
               x = xScale parseFloat(row[d])
               y = yScale(i)
 
