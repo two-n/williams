@@ -626,6 +626,7 @@ $_d: 600ms;
     left: 0;
     right: 0;
     z-index: 2;
+    background-color: nth($colors, 1);
   }
 
   &::after {
