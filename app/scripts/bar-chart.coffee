@@ -91,7 +91,10 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
       formatCalloutData = (row) ->
         toRet = {}
         toRet.name = "LGBT,#{row["LGBT"]}"
-        toRet.subSpanText = [{label: "Non-LGBT", value: row["Non-LGBT"] , bold: false}]
+        if props.bars.length > 1
+          toRet.subSpanText = [{label: "Non-LGBT", value: row["Non-LGBT"] , bold: false}]
+        else
+          toRet.subSpanText = []
         toRet.stroke = "#A6A6AC"
         [toRet]
 
