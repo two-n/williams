@@ -216,6 +216,9 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
         .attr
           class: "trailing-bubble"
           opacity: 0
+        .transition().duration(300)
+          .attr
+            "opacity": 1
       bubble
         .each (d, i) ->
           left = xScale(focusedYear) > overlaySurface.node().getBBox().width/2
@@ -253,8 +256,6 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           d3.select(@).call trailing
         .attr
           "transform": "translate(#{ margin.left }, #{ margin.top })"
-        .transition().duration(300)
-          .attr
-            "opacity": 1
+
 
       bubble.exit().remove()
