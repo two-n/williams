@@ -621,20 +621,22 @@ $_d: 600ms;
   }
 
   &::after {
-    // content: "▾";
-    // content: "\25B3";
+    content: "";
     cursor: pointer;
     position: absolute;
-    top: -1px;
+    top: 7px;
     right: 4px;
     z-index: 2;
-    // font-size: 14px;
-    // color: nth($colors, 3);
-    // color: $secondary;
+    border-right: 1px solid nth($colors, 3);
+    border-bottom: 1px solid nth($colors, 3);
+    width: 8px;
+    height: 8px;
+    transform: rotate(225deg);
   }
   &.collapsed::after {
     color: inherit;
-    // content: "\25BD";
+    transform: rotate(45deg);
+    top: 3px;
   }
 
   .item {
