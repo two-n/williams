@@ -223,15 +223,15 @@ $header-background-color: rgba($background-color, 0.95);
 
     &::after {
       content: "Show me";
-      opacity: 0.5;
+      opacity: 1;
       transition: opacity 150ms;
     }
     &:hover::after {
-      opacity: 1;
+      opacity: 0.5;
     }
     &.current::after {
       content: "As shown";
-      opacity: 1;
+      opacity: 0.5;
       cursor: default;
     }
   }
