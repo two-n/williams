@@ -386,7 +386,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       scale *= 0.9
 
     transform = "translate(#{horizonalPadding}, #{verticalPadding}) scale(#{scale}) "
-    g = @.selectAll("g").data([null])
+    g = @.selectAll("g#vectorMap").data([null])
     g.enter()
       .append("g").attr("id" : "vectorMap")
       .attr "transform", transform
@@ -411,7 +411,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       .on "mouseleave", (d) =>
         bubbleTimeout = setTimeout((() => callout.call calloutSurface, path.centroid(d), []), 500)
     countyPaths
-      .on "mouseenter", (d) =>
+      .on "mouseenter", (d) ->
         if bubbleTimeout?
           clearTimeout(bubbleTimeout)
         callout.call calloutSurface, calloutTransform(path.centroid(d)), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
