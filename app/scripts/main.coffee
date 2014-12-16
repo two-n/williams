@@ -96,9 +96,9 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       arrow_svg_sel = arrow_sel.append("svg")
         .attr("width", 80)
         .attr("height", 25)
-        .on "click", ->
-          route "/#{ d3.select(@).datum() }"
-          d3.event.preventDefault()
+        # .on "click", ->
+        #   route "/#{ d3.select(@).datum() }"
+        #   d3.event.preventDefault()
         .each ->
           Hammer(@, {preventDefault: true}).on "tap", =>
             route "/#{ d3.select(@).datum() }"
@@ -300,18 +300,48 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       #       s = d3.selectAll(".show-me").filter ->
       #         @parentNode.offsetTop + @offsetTop > scrollTop
       #       route s.node().attributes.href.value.slice(1)
-      if not state.transitioningScrollTop
-        scrollTop = @pageYOffset
-        d3.select(".story")
-          .selectAll(".chapter")
-          .data [currentChapter], String
-          .each ->
-            offsetTop = @parentNode.offsetTop + @offsetTop
-            if offsetTop < scrollTop or offsetTop > scrollTop + window.innerHeight
-              console.log @offsetTop, offsetTop, scrollTop, window.innerHeight
-            #   s = d3.selectAll(".chapter").filter ->
-            #     @parentNode.offsetTop + @offsetTop > scrollTop
-            #   route s.select("h1 a").node().attributes.href.value.slice(1)
+
+      cumulative = 0
+      pageYOffset = @pageYOffset
+      found = false
+
+      d3.select(".story")
+        .selectAll(".chapter")
+        .each (d, i) ->
+          return if found
+          cumulative += @offsetHeight / 2
+          if cumulative > pageYOffset
+            clearTimeout(window.switchChaptersTimeoutId) if window.switchChaptersTimeoutId?
+            window.switchChaptersTimeoutId = setTimeout =>
+              route d3.select(@).select("h1 a").node().attributes.href.value.slice(1)
+            , 200
+            found = true
+          cumulative += @offsetHeight / 2
+
+
+          # line = d3.select(@).selectAll('.ref-line').data([null])
+          # line.enter().append('div').attr('class', 'ref-line')
+          # line.style
+          #   "border-top": "1px solid black"
+          #   "width": '100%'
+          #   position: 'absolute'
+          #   top: (@offsetHeight / 2) + 'px'
+          #   "z-index": 1
+
+
+
+      # if not state.transitioningScrollTop
+      #   scrollTop = @pageYOffset
+      #   d3.select(".story")
+      #     .selectAll(".chapter")
+      #     .data [currentChapter], String
+      #     .each ->
+      #       offsetTop = @parentNode.offsetTop + @offsetTop
+      #       if offsetTop < scrollTop or offsetTop > scrollTop + window.innerHeight
+      #         console.log @offsetTop, offsetTop, scrollTop, window.innerHeight
+      #         s = d3.selectAll(".chapter").filter ->
+      #           @parentNode.offsetTop + @offsetTop > scrollTop
+      #         route s.select("h1 a").node().attributes.href.value.slice(1)
 
 
   chapters = d3.selectAll(".chapter")
