@@ -33,7 +33,8 @@ define ['d3'], (d3) ->
             fill: color
             class: "whiteRect"
             stroke: 'white'
-            "stroke-width": 5.5
+            opacity: 0.85
+            "stroke-width": 5.0
 
       body = sel.selectAll('.trailing-bubble-body').data [null]
       bodyEnter = body.enter()
@@ -48,8 +49,8 @@ define ['d3'], (d3) ->
             stroke: 'red'
             "stroke-width": 1.5
 
-      arrowStroke = [ 'white', stroke, 'none']
-      arrowStrokeWidth = [4, 3, 0]
+      arrowStroke = [ 'rgba(255,255,255,0.85)', stroke, 'none']
+      arrowStrokeWidth = [5.5, 3, 0]
       # Actually draws 2 paths, one without stroke (on top)
       # and one with stoke below
       path = sel.selectAll('path').data [null, null, null]

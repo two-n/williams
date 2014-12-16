@@ -571,15 +571,16 @@ $_d: 600ms;
     fill: black;
   }
 
-  .slider .sliderLabel {
+  .sliderLabel {
     stroke: none;
     fill: #FF0055;
     @include font-1;
     font-size: 12px;
   }
 
-  .slider .handle {
+  .handle {
     fill: #FF0055;
+    opacity: 1;
     stroke: #fff;
     stroke-opacity: 1;
     stroke-width: 1px;

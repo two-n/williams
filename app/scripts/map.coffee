@@ -622,32 +622,40 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       timeAxis = calloutSurface.append("g")
           .attr
             "class": "timeAxis"
+      timeAxis.attr
+        "display": if mode is "protection" then "inherit" else "none"
+        "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
+      .call(d3.svg.axis()
+        .scale(timeScale)
+        .orient("bottom")
+        .tickValues([1977,2014])
+        .tickFormat(d3.format(".0f"))
+      )
       slider = timeAxis.append("g")
           .attr
             "class": "slider"
-            "transform": "translate(-2,-16)"
-          .call(brush)
       slider.selectAll(".extent,.resize")
           .remove()
       slider.select(".background")
           .attr("height", 30)
-      handle = slider.append("g")
+      handle = timeAxis.append("g")
         .attr
           "class": "handle"
-          # "x": timeScale(currentTime)
           "transform": "translate(#{timeScale(currentTime)}," + 0 + ")"
+        .call(brush)
       handle.append("rect")
         .attr
-            "transform": "translate(0," + 11 + ")"
+            "transform": "translate(-3," + -5 + ")"
             "width": 6
             "height": 11
       label = handle.append("text")
         .attr
           "class": "sliderLabel"
-          "transform": "translate(4," + 5 + ")"
+          "transform": "translate(0," + -9 + ")"
           "text-anchor": "middle"
         .text(currentTime)
       brush.on("brush", () =>
+
         value = timeScale.invert(d3.mouse(slider.node())[0])
         currentTime =  Math.round(value)
         brush.extent([value, value])
@@ -658,15 +666,6 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
             "id" : (d) -> d.id
             "class" : modes["protection"].stateClass
       )
-    timeAxis.attr
-      "display": if mode is "protection" then "inherit" else "none"
-      "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
-    .call(d3.svg.axis()
-      .scale(timeScale)
-      .orient("bottom")
-      .tickValues([1977,2014])
-      .tickFormat(d3.format(".0f"))
-    )
     handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
 
   map.getColorsForEthnicity = (ethnicity) ->

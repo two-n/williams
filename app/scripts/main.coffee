@@ -193,7 +193,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       if sel.empty()
         d3.select(".header").append("div")
           .attr "class" : "dropdownLabel"
-          .text "Please select"
+          .text "Select group"
         sel = d3.select(".visualization .header").append("div")
           .classed("dropdown", true)
         constructLegend()
