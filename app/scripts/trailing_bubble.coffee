@@ -49,7 +49,7 @@ define ['d3'], (d3) ->
             "stroke-width": 1.5
 
       arrowStroke = [ 'white', stroke, 'none']
-      arrowStrokeWidth = [4, 2, 0]
+      arrowStrokeWidth = [4, 3, 0]
       # Actually draws 2 paths, one without stroke (on top)
       # and one with stoke below
       path = sel.selectAll('path').data [null, null, null]
