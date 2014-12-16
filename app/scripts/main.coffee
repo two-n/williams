@@ -220,7 +220,7 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
           ethnicity: state.ethnicity
           split: props.split
           mode: props.mode
-          bubbleColor: props.colors[1].value
+          bubbleColor: props.colors?[1].value
           _.pick props, "percentageByRegion", "colors"
       when "bar-chart"
         barChart.call d3.select(".chart"), _.extend {},

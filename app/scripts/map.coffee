@@ -470,6 +470,10 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
       if regionOverlay.empty()
         regionOverlay = g.append("g").classed("regionOverlay",true)
 
+      unscaledRegionOverlay = @.selectAll(".unscaledRegionOverlay")
+      if unscaledRegionOverlay.empty()
+        unscaledRegionOverlay = @.append("g").classed("unscaledRegionOverlay",true)
+
       regionBubbleData = []
       regionLabelData = []
       if mode is "bubble"
@@ -501,15 +505,15 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
       regionBubble.exit().remove()
 
       #name
-      regionLabelBrown = regionOverlay.selectAll(".regionLabel.brown").data(regionBubbleData)
+      regionLabelBrown = unscaledRegionOverlay.selectAll(".regionLabel.brown").data(regionBubbleData)
       regionLabelBrown.enter().append("text")
           .attr
             "class": "regionLabel brown"
             "opacity": 0
       regionLabelBrown
         .attr
-          "x": (d) => projection(regionByName[d].centroid)[0]
-          "y": (d) => projection(regionByName[d].centroid)[1] + 18
+          "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
+          "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding + 18 
           "fill": d3.rgb(props.bubbleColor).darker()
         .text((d) -> d)
         .transition().delay((d,i) -> 1000 + 250*(5-i))
@@ -518,15 +522,15 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
       regionLabelBrown.exit().remove()
 
       #alternate, non-bubble name
-      regionLabelGray = regionOverlay.selectAll(".regionLabel.gray").data(regionLabelData)
+      regionLabelGray = unscaledRegionOverlay.selectAll(".regionLabel.gray").data(regionLabelData)
       regionLabelGray.enter().append("text")
           .attr
             "class": "regionLabel gray"
             "opacity": 0
       regionLabelGray
         .attr
-          "x": (d) => projection(regionByName[d].splitLabelCentroid)[0]
-          "y": (d) => projection(regionByName[d].splitLabelCentroid)[1]
+          "x": (d) => projection(regionByName[d].splitLabelCentroid)[0] * scale + horizonalPadding
+          "y": (d) => projection(regionByName[d].splitLabelCentroid)[1] * scale + verticalPadding
         .text((d) -> d)
         .transition().delay((d,i) -> 1000 + 250*(5-i))
           .attr
@@ -535,15 +539,15 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
 
 
       #percentage
-      regionPercent = regionOverlay.selectAll(".regionPercent").data(regionBubbleData)
+      regionPercent = unscaledRegionOverlay.selectAll(".regionPercent").data(regionBubbleData)
       regionPercent.enter().append("text")
           .attr
             "class": "regionPercent"
             "opacity": 0
       regionPercent
         .attr
-          "x": (d) => projection(regionByName[d].centroid)[0]
-          "y": (d) => projection(regionByName[d].centroid)[1]
+          "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
+          "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding
         .text (d) =>
           if props.solidCircle?
             props.percentageByRegion[d][props.solidCircle]
