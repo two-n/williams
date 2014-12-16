@@ -161,21 +161,21 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
         @append("text").attr("class", "bottom").attr("y", -12).attr("x", -2)
 
       benchmark_sel.transition().duration(600)
-        # .attr "transform", (bar) ->
-        #   x = xScale parseFloat(index[props.benchmark][bar])
-        #   "translate(#{ x }, 0)"
-        .tween "value", (bar, i) ->
-          a = d3.select(@).attr("data-value")
-          interpolateValue = d3.interpolate a ? 0, parseFloat(index[props.benchmark][bar])
-          (t) =>
-            value_t = interpolateValue(t)
-            d3.select(@)
-              .attr "data-value", value_t
-              .attr "transform", (bar) ->
-                x = xScale value_t
-                "translate(#{ x }, 0)"
-              .select("text.bottom")
-                .text (bar) -> "#{ bar } #{ Math.round(value_t) }%"
+        .attr "transform", (bar) ->
+          x = xScale parseFloat(index[props.benchmark][bar])
+          "translate(#{ x }, 0)"
+        # .tween "value", (bar, i) ->
+        #   a = d3.select(@).attr("data-value")
+        #   interpolateValue = d3.interpolate a ? 0, parseFloat(index[props.benchmark][bar])
+        #   (t) =>
+        #     value_t = interpolateValue(t)
+        #     d3.select(@)
+        #       .attr "data-value", value_t
+        #       .attr "transform", (bar) ->
+        #         x = xScale value_t
+        #         "translate(#{ x }, 0)"
+        #       .select("text.bottom")
+        #         .text (bar) -> "#{ bar } #{ Math.round(value_t) }%"
         .select("line").attr
           y2: yScale(rows.length-1) + yScale.rangeBand()
           stroke: (d, i) ->
@@ -189,7 +189,7 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
             color = if i is 0 then props.colors[0].value else "#D1D1D4"
             d3.rgb(color).darker(0.5)
       benchmark_sel.select("text.bottom")
-        # .text (bar) -> "#{ bar } #{ parseFloat(index[props.benchmark][bar]) }%"
+        .text (bar) -> "#{ bar } #{ parseFloat(index[props.benchmark][bar]) }%"
         .attr
           fill: (d, i) ->
             color = if i is 0 then props.colors[0].value else "#D1D1D4"

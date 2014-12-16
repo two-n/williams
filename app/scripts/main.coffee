@@ -6,7 +6,7 @@ require.config
     "hammer": "vendor/hammerjs/hammer.min"
 
 
-define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover) ->
+define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover", "./composite"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover, composite) ->
   # colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
   colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#ECD000", "#00C775", "#0075CA", "#9843A0"]
   currentProps = null
@@ -115,6 +115,14 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
     heading_sel.text (d) -> d or " "
     heading_sel.exit().remove()
 
+    i = d3.selectAll(".chapter").data().indexOf(currentChapter)
+    d3.select(".visualization .header .tweet")
+      .style "background",
+        if i then "url(assets/icons/t#{ i }.png)" else "none"
+      .attr "href",
+        "http://twitter.com/share?text=#{encodeURIComponent(document.title)}&url=#{encodeURIComponent(document.URL)}"
+
+
     # legendSel = d3.select(".visualization .header .legend").selectAll(".color")
     # if not legendSel.empty()
     #   legendSel.remove()
@@ -208,11 +216,25 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
     # chart
     switch props.type
       when "map"
-        map.call d3.select(".chart"), { size, ethnicity: state.ethnicity, split: props.split, mode: props.mode}
+        map.call d3.select(".chart"), _.extend {},
+          size: size
+          ethnicity: state.ethnicity
+          split: props.split
+          mode: props.mode
+          bubbleColor: props.colors[1].value
+          _.pick props, "percentageByRegion", "colors"
       when "bar-chart"
-        barChart.call d3.select(".chart"), _.extend { size }, _.pick props, "bars", "rows", "data", "label", "colors", "benchmark"
+        barChart.call d3.select(".chart"), _.extend {},
+          { size }
+          _.pick props, "bars", "rows", "data", "label", "colors", "benchmark"
+      when "composite"
+        composite.call d3.select(".chart"), _.extend {},
+          { size }
+          _.pick props, "bars", "rows", "data", "label", "colors"
       when "timeline"
-        timeline.call d3.select(".chart"), _.extend { size }, _.pick props, "lines", "data", "label", "colors"
+        timeline.call d3.select(".chart"), _.extend {},
+          { size }
+          _.pick props, "lines", "data", "label", "colors"
       when "pies"
         pies
           .on "hover", (ethnicity) ->
@@ -223,7 +245,8 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
               { size }
               _.pick props, "pies", "slices", "outer-slices", "data", "colors"
       when "conclusion"
-        conclusion.call d3.select(".chart"), _.extend { size }, _.pick props, "quote", "attribution"
+        conclusion.call d3.select(".chart"),
+          _.extend { size }, _.pick props, "quote", "attribution"
       when "cover"
         cover.call d3.select(".chart")
 

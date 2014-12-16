@@ -306,7 +306,7 @@ $header-background-color: rgba($background-color, 0.95);
       font-weight: bold;
       letter-spacing: .03em;
 
-      &.timeline {
+      &.timeline, &.pies {
         width: 182px;
       }
       &.map {
@@ -342,15 +342,19 @@ $header-background-color: rgba($background-color, 0.95);
       float: right;
       text-align: right;
 
-      // .share {
-      //   background: url(assets/icons/share_4.png) -11px -10px;
-      //   display: inline-block;
-      //   width: 15px;
-      //   height: 20px;
-      //   &:hover {
-      //     opacity: 0.67;
-      //   }
-      // }
+      .tweet {
+        transition: background 600ms, opacity 100ms;
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        opacity: 1;
+        &:hover {
+          opacity: 0.67;
+        }
+        z-index: 100;
+        position: relative;
+        cursor: pointer;
+      }
     }
   }
 
@@ -427,7 +431,7 @@ $_d: 600ms;
   }
 
   .regionLabel {
-    fill: #a47440;
+    // fill: #a47440;
     text-anchor: middle;
     stroke: none;
     font-size: 11px;
@@ -445,7 +449,6 @@ $_d: 600ms;
     @include font-2;
   }
   .regionBubble {
-    fill: nth($colors, 7);
     fill-opacity: 0.75;
   }
 

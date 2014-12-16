@@ -52,36 +52,26 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
       states: ["Alaska", "California", "Hawaii", "Oregon", "Washington"]
       centroid: [-118.5,32.9]
       offset: [-39.48530542559064, -15.370925469394933]
-      percentage: 17
-      value: 39250000
     }
     "Mountain": {
       states: ["Arizona", "Colorado", "Idaho", "Montana", "Nevada", "New Mexico", "Utah", "Wyoming"]
       centroid: [-111,40]
       offset: [-7.987967225259922, 1.193425583016392]
-      percentage: 8
-      value: 17160000
     }
     "Midwest": {
       states: ["Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin"]
       centroid: [-92,43]
       offset: [17.14660810580267, -5.690153784351679]
-      percentage: 20
-      value: 51810000
     }
     "South": {
       states: ["Alabama", "Arkansas", "Delaware", "Florida", "Georgia", "Kentucky", "Louisiana", "Maryland", "Mississippi", "North Carolina", "Oklahoma", "South Carolina", "Tennessee", "Texas", "Virginia", "District of Columbia", "West Virginia"]
       centroid: [-89,32]
       offset: [16.69364734000476, 20.69134832167154]
-      percentage: 35
-      value: 90440000
     }
     "Northeast": {
       states: ["Connecticut", "Maine", "Massachusetts", "New Hampshire", "New Jersey", "New York", "Pennsylvania", "Rhode Island", "Vermont"]
       centroid: [-71,42.5]
       offset: [31.406069531500407, -3.9391785272940893]
-      percentage: 19
-      value: 43920000
     }
   }
 
@@ -491,9 +481,16 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
         .attr
           "cx": (d) => projection(regionByName[d].centroid)[0]
           "cy": (d) => projection(regionByName[d].centroid)[1]
+          "fill": props.bubbleColor
         .transition().delay((d,i) -> 1000 + 250*(5-i))
           .attr
-            "r": (d) => circleScale(regionByName[d].percentage)
+            "r": (d) =>
+              value =
+                if props.solidCircle?
+                  parseFloat(props.percentageByRegion[d][props.solidCircle])
+                else
+                  props.percentageByRegion[d]
+              circleScale(value)
       regionBubble.exit().remove()
 
       #name
@@ -506,6 +503,7 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
         .attr
           "x": (d) => projection(regionByName[d].centroid)[0]
           "y": (d) => projection(regionByName[d].centroid)[1] + 18
+          "fill": d3.rgb(props.bubbleColor).darker()
         .text((d) -> d)
         .transition().delay((d,i) -> 1000 + 250*(5-i))
           .attr
@@ -522,7 +520,11 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
         .attr
           "x": (d) => projection(regionByName[d].centroid)[0]
           "y": (d) => projection(regionByName[d].centroid)[1]
-        .text((d) => "#{regionByName[d].percentage}\%")
+        .text (d) =>
+          if props.solidCircle?
+            props.percentageByRegion[d][props.solidCircle]
+          else
+            "#{props.percentageByRegion[d]}\%"
         .transition().delay((d,i) -> 1000 + 250*(5-i))
           .attr
             "opacity": 1

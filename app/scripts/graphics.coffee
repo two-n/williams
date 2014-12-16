@@ -52,8 +52,15 @@ define ->
     "mode": "bubble",
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },
-      { value: "#FFDF00", label: "LGBT population" }
-    ]
+      { value: "#FF9C00", label: "LGBT population" }
+    ],
+    "percentageByRegion": {
+      "Pacific": 17,
+      "Mountain": 8,
+      "Midwest": 20,
+      "South": 35,
+      "Northeast": 19
+    }
   }, {
     "url": "/ethnicity/2",
     "heading": "Pie Charts of Race/Ethnicity by Region",
@@ -91,10 +98,9 @@ define ->
     "colors": [
       { value: "#fadc52", label: "LGBT" }
     ],
-    "type": "bar-chart",
-    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "type": "composite",
+    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT"],
-    "benchmark": "All Individuals in the US",
     "data": """
       ,LGBT,Non-LGBT
       All Individuals in the US,34%,34%
@@ -115,10 +121,9 @@ define ->
       { value: "#fadc52", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
-    "type": "bar-chart",
-    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "type": "composite",
+    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
-    "benchmark": "All Individuals in the US",
     "data": """
       ,LGBT,Non-LGBT
       All Individuals in the US,34%,34%
@@ -139,10 +144,8 @@ define ->
       { value: "#00C775", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
-    "type": "bar-chart",
-    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "type": "composite",
     "bars": ["LGBT", "Non-LGBT"],
-    "benchmark": "All Individuals",
     "data": """
       ,LGBT,Non-LGBT,"Odds Ratio of Reporting a Household Income Below $24,000 (LGBT:Non-LGBT)"
       All Individuals,32%,24%,1.3155737705
@@ -162,10 +165,9 @@ define ->
       { value: "#00C775", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
-    "type": "bar-chart",
-    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "type": "composite",
+    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
-    "benchmark": "All Individuals ",
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Not Having Enough Money for Food (LGBT:Non-LGBT)
       All Individuals ,28%,18%,1.6
