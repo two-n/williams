@@ -209,7 +209,6 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
       distancesLeft = [7,28,18,28,18]
       distancesRight = [7,28,18,28,18]
       bubbleData = if focusedLines.length > 0 then ["Public Optinions"].concat focusedLines else []
-      bubbleData.forEach (d,i) -> console.log d,i
       overlaySurface = @
       bubble = @.selectAll('g.trailing-bubble').data(bubbleData)
       bubble.enter()

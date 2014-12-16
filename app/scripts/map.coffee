@@ -409,12 +409,23 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         "id" : (d) -> d.id
         "fill-opacity": 0
       .on "mouseleave", (d) =>
-        bubbleTimeout = setTimeout((() => callout.call calloutSurface, path.centroid(d), []), 500)
+        bubbleTimeout = setTimeout((() =>
+          callout.call calloutSurface, path.centroid(d), [])
+          g.selectAll("path.overlayCounty").data([]).exit().remove()
+        , 500)
     countyPaths
       .on "mouseenter", (d) ->
         if bubbleTimeout?
           clearTimeout(bubbleTimeout)
         callout.call calloutSurface, calloutTransform(path.centroid(d)), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
+        overlayCounty = g.selectAll("path.overlayCounty").data([d3.select(@).attr("d")])
+        overlayCounty.enter().append("path")
+          .attr
+            "class": "overlayCounty"
+
+        overlayCounty
+          .attr
+            "d": (d) -> d
       .attr
         "class" : modes[mode].countyClass
         "fill-opacity" : (d,i) -> myScale[ethnicity](d.entry?[ethnicity])

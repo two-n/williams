@@ -481,6 +481,13 @@ $_d: 600ms;
     }
   }
 
+  .overlayCounty {
+    pointer-events: none;
+    stroke: "#fff";
+    fill-opacity: 0;
+
+  }
+
   .state{
     fill: #FFF;
     // stroke: nth($colors, 1);
