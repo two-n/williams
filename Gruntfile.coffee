@@ -76,7 +76,7 @@ module.exports = (grunt) ->
 
     sass:
       options:
-        sourcemap: true
+        sourcemap: false
       build:
         src: "app/styles/main.scss"
         dest: ".tmp/main.css"
@@ -117,6 +117,11 @@ module.exports = (grunt) ->
         cwd: "data"
         dest: ".tmp/data"
         src: DATA_FILES
+      htaccess:
+        expand: true
+        cwd: "app"
+        src: ".htaccess"
+        dest: ".tmp/"
 
     rsync:
       options:
@@ -166,6 +171,7 @@ module.exports = (grunt) ->
     "copy:data"
     "copy:assets"
     "copy:index"
+    "copy:htaccess"
     "sass:build"
     "autoprefixer:build"
     "coffee:production"
