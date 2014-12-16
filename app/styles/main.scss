@@ -644,14 +644,18 @@ $_d: 600ms;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding: 0px 0 0px;
-    color: nth($colors, 7);
+    color: nth($colors, 4);
     // height: 17px;
     height: 16px;
 
     transition: all 200ms;
     overflow: hidden;
     opacity: 0.5;
-    &.active, &:hover {
+    &:hover {
+      opacity: 1;
+    }
+    &.active{
+      color: nth($colors, 7);
       opacity: 1;
     }
   }
