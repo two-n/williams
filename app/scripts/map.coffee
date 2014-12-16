@@ -591,7 +591,6 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           "opacity": 1
     regionPercent.exit().remove()
 
-
     #timescale
     timeScale.range ([0,props.size[0] * 0.5])
     timeAxis = calloutSurface.select(".timeAxis")
