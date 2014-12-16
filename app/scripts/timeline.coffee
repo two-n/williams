@@ -205,9 +205,10 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           timeline.call(context, props, null)
 
 
-      vectors = [[0.25,-0.5],[0.25,-0.5],[0.25,-0.5],[0.25,0.5],[0.25,-0.5]]
-      distances = [1,18,18,28,18]
+      vectors = [[0.01,-0.5],[0.25,-0.5],[0.25,-0.5],[0.15,0.5],[0.25,-0.5]]
+      distances = [7,18,18,28,18]
       bubbleData = if focusedLines.length > 0 then ["Public Optinions"].concat focusedLines else []
+
       bubble = @.selectAll('g.trailing-bubble').data(bubbleData)
       bubble.enter()
         .append('g')
@@ -242,7 +243,9 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
             trailing.mainTextColor null
           d3.select(@).call trailing
         .attr
-          "opacity": 1
           "transform": "translate(#{ margin.left }, #{ margin.top })"
+        .transition().duration(300)
+          .attr
+            "opacity": 1
 
       bubble.exit().remove()
