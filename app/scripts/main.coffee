@@ -317,15 +317,16 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
       #       route s.node().attributes.href.value.slice(1)
       if not state.transitioningScrollTop
         scrollTop = @pageYOffset
-        # d3.select(".story")
-        #   .selectAll(".chapter")
-        #   .data [currentChapter], String
-        #   .each ->
-        #     offsetTop = @parentNode.offsetTop + @offsetTop
-        #     if offsetTop < scrollTop or offsetTop > scrollTop + window.innerHeight
-        #       s = d3.selectAll(".chapter").filter ->
-        #         @parentNode.offsetTop + @offsetTop > scrollTop
-        #       route s.select("h1 a").node().attributes.href.value.slice(1)
+        d3.select(".story")
+          .selectAll(".chapter")
+          .data [currentChapter], String
+          .each ->
+            offsetTop = @parentNode.offsetTop + @offsetTop
+            if offsetTop < scrollTop or offsetTop > scrollTop + window.innerHeight
+              console.log @offsetTop, offsetTop, scrollTop, window.innerHeight
+            #   s = d3.selectAll(".chapter").filter ->
+            #     @parentNode.offsetTop + @offsetTop > scrollTop
+            #   route s.select("h1 a").node().attributes.href.value.slice(1)
 
 
   chapters = d3.selectAll(".chapter")

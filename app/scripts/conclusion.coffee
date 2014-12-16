@@ -40,7 +40,7 @@ define ["d3", "underscore", "./map"], (d3, _, map) ->
       button_sel = @append("g").attr("class", "view-report-btn")
         .attr "opacity", 0
       button_sel.append("a")
-        # .attr "xlink:href", ...
+        .attr "xlink:href", "http://williamsinstitute.law.ucla.edu/research/lgbt-divide-dec-2014/"
         .attr "target", "_blank"
         .call ->
           @append("rect")

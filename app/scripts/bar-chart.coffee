@@ -9,13 +9,14 @@ define ["d3", "./callout"], (d3, callout) ->
     max = d3.max(rows, (d) -> d3.max(props.bars.map (bar) -> parseFloat(d?[bar])))
 
     margin =
-      left: 105
-      right: 90
-      top: 180
-      bottom: 60
+      left: props.margin?.left ? 105
+      right: props.margin?.right ? 90
+      top: props.margin?.top ? 180
+      bottom: props.margin?.bottom ? 60
 
     innerWidth = width - margin.left - margin.right
     innerHeight = height - margin.top - margin.bottom
+    console.log height, margin.top, innerHeight
 
     xScale = d3.scale.linear()
       .domain(props.bounds ? [0, max]).nice()
