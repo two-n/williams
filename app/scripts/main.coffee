@@ -5,7 +5,12 @@ require.config
     "underscore": "vendor/underscore/underscore"
     "hammer": "vendor/hammerjs/hammer.min"
 
+<<<<<<< HEAD
 require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover", "./composite", "./clean"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover, composite, clean) ->
+=======
+
+define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover", "./composite", "./clean"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover, composite, clean) ->
+>>>>>>> Changes
   # colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
   colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#ECD000", "#00C775", "#0075CA", "#9843A0"]
   currentProps = null
@@ -96,6 +101,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       arrow_svg_sel = arrow_sel.append("svg")
         .attr("width", 80)
         .attr("height", 25)
+<<<<<<< HEAD
         # .on "click", ->
         #   route "/#{ d3.select(@).datum() }"
         #   d3.event.preventDefault()
@@ -103,6 +109,14 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
           Hammer(@, {preventDefault: true}).on "tap", =>
             route "/#{ d3.select(@).datum() }"
             ga 'send', 'event', 'next', 'click', "/#{ d3.select(@).datum() }"
+=======
+        .on "click", ->
+          route "/#{ d3.select(@).datum() }"
+          d3.event.preventDefault()
+        .each ->
+          Hammer(@, {preventDefault: true}).on "tap", =>
+            route "/#{ d3.select(@).datum() }"
+>>>>>>> Changes
       arrow_svg_sel.append("path")
         .attr("transform", "translate(40, 0)")
         .attr("d", "M -34 0 L 0 21 L 34 0")
@@ -338,8 +352,13 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     element = nav.append("g")
       .datum chapter
       .attr "transform", "translate(15, #{ 7 + i*nav_separation })"
+<<<<<<< HEAD
       # .on "click", (d) ->
       #   route "/#{d}"
+=======
+      .on "click", (d) ->
+        route "/#{d}"
+>>>>>>> Changes
       .each (d) ->
         Hammer(@, {preventDefault: true}).on "tap", =>
           ga 'send', 'event', 'chapter', 'click', "/#{d}"
@@ -356,7 +375,10 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     d3.select(@).selectAll("h1 a, .show-me")
       .each ->
         Hammer(@, {preventDefault: true}).on "tap", (event) =>
+<<<<<<< HEAD
           ga 'send', 'event', 'show-me', 'click', @attributes.href.value.slice(1)
+=======
+>>>>>>> Changes
           if not event.srcEvent.metaKey and not event.srcEvent.shiftKey
             route @attributes.href.value.slice(1)
 

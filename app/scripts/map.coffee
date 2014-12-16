@@ -366,6 +366,13 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     split = props.split
     mode = props.mode
 
+<<<<<<< HEAD
+=======
+    # g =  @.selectAll("g#vectorMap")
+    # if g.empty()
+    #   g = @.append("g").attr("id" : "vectorMap")
+
+>>>>>>> Changes
     # horizonalPadding = 0.1 * props.size[0]
     # props.size[0] -= horizonalPadding
 
@@ -374,11 +381,14 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       horizonalPadding = props.size[0] * 0.075
       scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
       scale *= 0.95
+<<<<<<< HEAD
     # else if props.scaling is "conclusion"
     #   verticalPadding = 180
     #   horizonalPadding = props.size[0] * 0.075
     #   scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
     #   scale *= 1.075
+=======
+>>>>>>> Changes
     else
       verticalPadding = 180
       horizonalPadding = props.size[0] * 0.1
@@ -414,7 +424,11 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           g.selectAll("path.overlayCounty").data([]).exit().remove()
         , 500)
     countyPaths
+<<<<<<< HEAD
       .on "mouseenter", (d) ->
+=======
+      .on "mouseenter", (d) =>
+>>>>>>> Changes
         if bubbleTimeout?
           clearTimeout(bubbleTimeout)
         callout.call calloutSurface, calloutTransform(path.centroid(d)), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
@@ -581,6 +595,29 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           "opacity": 1
     regionLabelGray.exit().remove()
 
+<<<<<<< HEAD
+=======
+
+    #percentage
+    regionPercent = unscaledRegionOverlay.selectAll(".regionPercent").data(regionBubbleData)
+    regionPercent.enter().append("text")
+        .attr
+          "class": "regionPercent"
+          "opacity": 0
+    regionPercent
+      .attr
+        "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
+        "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding
+      .text (d) =>
+        if props.solidCircle?
+          props.percentageByRegion[d][props.solidCircle]
+        else
+          "#{props.percentageByRegion[d]}\%"
+      .transition().delay((d,i) -> 1000 + 250*(5-i))
+        .attr
+          "opacity": 1
+    regionPercent.exit().remove()
+>>>>>>> Changes
 
     regionLine = unscaledRegionOverlay.selectAll(".regionLine").data(regionLabelData)
     regionLine.enter().append("line")
@@ -601,6 +638,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     regionLine.exit().remove()
 
 
+<<<<<<< HEAD
     #percentage
     regionPercent = unscaledRegionOverlay.selectAll(".regionPercent").data(regionBubbleData)
     regionPercent.enter().append("text")
@@ -609,6 +647,18 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           "class": "regionPercent"
           "opacity": 0
     regionPercent
+=======
+    #timescale
+    timeScale.range ([0,props.size[0] * 0.5])
+    timeAxis = calloutSurface.select(".timeAxis")
+    handle = calloutSurface.select(".handle")
+    if timeAxis.empty()
+      timeAxis = calloutSurface.append("g")
+          .attr
+            "class": "regionPercent"
+            "opacity": 0
+      regionPercent
+>>>>>>> Changes
         .attr
           "class": "regionPercent"
           "opacity": 0
@@ -766,6 +816,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         .attr
           "transform": "translate(#{timeScale(2014) + 20}," + 2 + ")"
 >>>>>>> Added instructional line to map slider.
+
 
   map.getColorsForEthnicity = (ethnicity) ->
     shades = [0.1,0.4,0.6,0.8]
