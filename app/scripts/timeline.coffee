@@ -205,10 +205,11 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           timeline.call(context, props, null)
 
 
-      vectors = [[0.01,-0.5],[0.25,-0.5],[0.25,-0.5],[0.15,0.5],[0.25,-0.5]]
+      vectorsRight = [[0.01,-0.5],[0.25,-0.5],[0.25,-0.5],[0.15,0.5],[0.25,-0.5]]
+      vectorsLeft = [[-0.01,-0.5],[-0.25,-0.5],[-0.25,-0.5],[-0.15,0.5],[-0.25,-0.5]]
       distances = [7,18,18,28,18]
       bubbleData = if focusedLines.length > 0 then ["Public Optinions"].concat focusedLines else []
-
+      overlaySurface = @
       bubble = @.selectAll('g.trailing-bubble').data(bubbleData)
       bubble.enter()
         .append('g')
@@ -217,14 +218,22 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           opacity: 0
       bubble
         .each (d, i) ->
+          left = xScale(focusedYear) > overlaySurface.node().getBBox().width/2
+
           if i > 0
             x = xScale(focusedYear)
             y = yScale(index[d][focusedYear])
           else
-            x = xScale(focusedYear) + 7
+            x = xScale(focusedYear)
             y = yScale(index["Always Wrong"][focusedYear]) - 50
+            if left then x -= 8 else x += 8
           point = [x,y]
-          vector = vectors[i]
+
+          if left
+            vector = vectorsLeft[i]
+          else
+            vector = vectorsRight[i]
+
           if i > 0
             text = "#{d}, #{index[d][focusedYear]}%"
           else
