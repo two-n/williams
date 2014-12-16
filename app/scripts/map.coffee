@@ -322,6 +322,7 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
 
   ethnicities = ["latino", "black", "white", "asianpac", "indian"]
   formatCountyCalloutData = (d, activeEthnicity) ->
+    if d.countyName.length is 0 then return []
     toRet = {}
     toRet.name = d.countyName.split(",")[0].trim()+", "+stateNameAbbreviations[d.countyName.split(",")[1].trim()]
     toRet.subSpanText = []
