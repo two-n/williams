@@ -113,11 +113,11 @@ define ->
       21 Protective States,39%,38%
       29 Non-Protective States,31%,31%
       ,,
-      Northeast,39%,39%
-      Midwest,29%,32%
-      South,33%,32%
-      Mountain,34%,35%
-      Pacific,39%,35%
+      Northeast,39%,
+      Midwest,29%,
+      South,33%,
+      Mountain,34%,
+      Pacific,39%,
     """,
     # "label": "Percentage of individuals\nover age 25 with a college degree (%)"
     "label": "Percentage of LGBT Population\nwith College Degrees",

@@ -521,24 +521,88 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
 
     #bubble
     regionBubble = regionOverlay.selectAll(".regionBubble").data(regionBubbleData)
-    regionBubble.enter().append("circle")
-        .attr
-          "class": "regionBubble"
-          "r": 0
+    regionBubble.enter().append("g")
+      .attr
+        "class": "regionBubble"
+      .call (enteringBubble) ->
+        enteringBubble
+          .append('circle')
+          .attr
+            class: 'circle-solid'
+            fill: props.bubbleColor
+            r: 0
+        enteringBubble
+          .append('path')
+          .attr
+            class: 'circle-dashed'
+            d: "M0 0 A0 0 0 1 0 0 0"
+            stroke: 'gray'
+            fill: 'none'
+            opacity: 0
+            'stroke-dasharray': '5 7'
+            'stroke-width': 2.4
+        enteringBubble
+          .append('text')
+          .attr
+            class: 'circle-dashed-label'
+            fill: 'gray'
+            stroke: 'none'
+            dy: ".2em"
+            opacity: 0
+            "font-family": "'Libre Baskerville', serif"
+            "font-size": "22px"
+            "text-anchor": 'middle'
     regionBubble
       .attr
-        "cx": (d) => projection(regionByName[d].centroid)[0]
-        "cy": (d) => projection(regionByName[d].centroid)[1]
-        "fill": props.bubbleColor
-      .transition().delay((d,i) -> 1000 + 250*(5-i))
-        .attr
-          "r": (d) =>
-            value =
+        "transform": (d) ->
+          centerPt = projection(regionByName[d].centroid)
+          "translate(#{centerPt})"
+      .each (d, i) ->
+        # The solid circle
+        d3.select(@).select('.circle-solid')
+          .transition().delay((d) -> 399 + 98*(5-i))
+          .attr
+            "fill": props.bubbleColor
+          .attr
+            "r": circleScale(
               if props.solidCircle?
                 parseFloat(props.percentageByRegion[d][props.solidCircle])
               else
                 props.percentageByRegion[d]
-            circleScale(value)
+            )
+
+        dashedValue = parseFloat(props.percentageByRegion[d][props.dashedCircle])
+        d3.select(@).select('.circle-dashed')
+          .transition().delay((d) -> 399 + 98*(5-i))
+            .attr
+              opacity: if isNaN(dashedValue) then 0 else 1
+              d: ->
+                return "M0 0 A0 0 0 1 0 0 0" if isNaN(dashedValue) # Bail out if there's no data
+                # Generate a circle path with a gap for the text:
+                sign = 1
+                r = circleScale dashedValue
+                # the size, in pixels, of the gap (essentially the width of the text plus some padding)
+                gapSize = 52
+                # the size, in radians, of the gap (a function of gapSize and the circle's r)
+                gapAngle = Math.asin(0.5 * gapSize / r)
+                # Start and end angles of the gap (note: sign is only needed for instrumenting whether label is above or below the gap)
+                a0 = sign * .5 * Math.PI - gapAngle
+                a1 = sign * .5 * Math.PI + gapAngle
+                # Start and end points (x,y) of the gap
+                x0 = Math.round(r * Math.cos(a0))
+                y0 = Math.round(r * Math.sin(a0))
+                x1 = Math.round(r * Math.cos(a1))
+                y1 = Math.round(r * Math.sin(a1))
+                # Build and return the circle-with-gap path
+                "M#{x0} #{y0} A#{r} #{r} 0 1 0 #{x1} #{y1}"
+
+        d3.select(@).select('.circle-dashed-label')
+          .transition().delay((d) -> 399 + 98*(5-i))
+            .attr
+              opacity: if isNaN(dashedValue) then 0 else 1
+              y: if isNaN(dashedValue) then 0 else circleScale dashedValue
+            .text if isNaN(dashedValue) then '' else dashedValue + '%'
+
     regionBubble.exit().remove()
 
     #name
@@ -551,10 +615,10 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       .attr
         "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
         "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding + 18
-        "fill": d3.rgb(props.bubbleColor).darker()
       .text((d) -> d)
-      .transition().delay((d,i) -> 1000 + 250*(5-i))
+      .transition().delay((d,i) -> 399 + 98*(5-i))
         .attr
+          "fill": d3.rgb(props.bubbleColor).darker()
           "opacity": 1
     regionLabelBrown.exit().remove()
 
@@ -608,7 +672,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           props.percentageByRegion[d][props.solidCircle]
         else
           "#{props.percentageByRegion[d]}\%"
-      .transition().delay((d,i) -> 1000 + 250*(5-i))
+      .transition().delay((d,i) -> 399 + 98*(5-i))
         .attr
           "opacity": 1
     regionPercent.exit().remove()
