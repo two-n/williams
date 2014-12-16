@@ -25,7 +25,7 @@ define ->
     "label": "\"What about sexual relations\nbetween two adults of the same sex?\""
   }, {
     "url": "/introduction/2",
-    "heading": "Timeline Map of Employment Laws",
+    "heading": "Timeline Map of Employment Protection Policies",
     "colors": [
       { value: "#FF0055", label: "SOGI protection*", alpha: 1},
       { value: "#FF7D96", label: "SO protection*", alpha: 1 },
@@ -36,7 +36,7 @@ define ->
     "mode": "protection"
   }, {
     "url": "/introduction/3",
-    "heading": "Current Employment Map with Region Overlay",
+    "heading": "Timeline Map of Employment Protection Policies",
     "colors": [
       { value: "#FF0055", label: "SOGI protection*", alpha: 1 },
       { value: "#FF7D96", label: "SO protection*", alpha: 1},
@@ -47,7 +47,7 @@ define ->
     "mode": "protection"
   }, {
     "url": "/ethnicity/1",
-    "heading": "Region Map with % LGBT Population Overlay",
+    "heading": "Percentage of LGBT Population per Region",
     "type": "map",
     "split": true,
     "mode": "bubble",
@@ -64,7 +64,7 @@ define ->
     }
   }, {
     "url": "/ethnicity/2",
-    "heading": "Pie Charts of Race/Ethnicity by Region",
+    "heading": "Ethnicity Distribution by Region",
     "colors": [
       { label: "LGBT Ethnicity\nDistribution", value: ["#FF9C00", "#FFAE48", "#FCBF75", "#F5D6B3"] },
       { label: "Non-LGBT Ethnicity\nDistribution", value: ["#B4B3B9", "#C5C5C9", "#D1D1D4", "#E2E2E3"] }
@@ -90,12 +90,12 @@ define ->
     """
   }, {
     "url": "/ethnicity/3",
-    "heading": "Pie Charts of Race/Ethnicity by 21/29"
+    "heading": "Ethnicity Distribution by County"
     "type": "map"
     "mode": "ethnicity"
   }, {
     "url": "/education/1",
-    "heading": "Bar Chart of College Completion by 21/29",
+    "heading": "Percentage of LGBT Population with College Degrees",
     "colors": [
       { value: "#fadc52", label: "LGBT" }
     ],
@@ -117,7 +117,7 @@ define ->
     "label": "Percentage of individuals\nover age 25 with a college degree (%)"
   }, {
     "url": "/education/2",
-    "heading": "Bar Chart of College Completion by Region",
+    "heading": "Percentage of Population with College Degrees",
     "colors": [
       { value: "#fadc52", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -140,7 +140,7 @@ define ->
     "label": "Percentage of individuals\nover age 25 with a college degree (%)"
   }, {
     "url": "/economic-insecurity/1",
-    "heading": "Bar Chart of <$24,000 by Region & SS/DS",
+    "heading": "Percentage of Population Earning less than $24,000 Annually",
     "colors": [
       { value: "#00C775", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -161,7 +161,7 @@ define ->
     "label": "Percentage of individuals\nwith household income below $24,000 (%)"
   }, {
     "url": "/economic-insecurity/2",
-    "heading": "Bar Chart of Food Insecurity by Region & SS/DS",
+    "heading": "Percentage of Population Reporting Food Insecurity",
     "colors": [
       { value: "#00C775", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -184,7 +184,7 @@ define ->
     "label": "Percentage of individuals\nreporting not having enough money for food (%)"
   }, {
     "url": "/health/1",
-    "heading": "Bar Chart of No Money for Healthcare by Region & SS/DS",
+    "heading": "Percentage of Population Reporting They Cannot Afford Healthcare",
     "colors": [
       { value: "#0075CA", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -207,7 +207,7 @@ define ->
     "label": "Percentage of individuals\nreporting not having enough money for health care (%)"
   }, {
     "url": "/health/2",
-    "heading": "Bar Chart of Health Insurance by Region & SS/DS",
+    "heading": "Percentage of Adult Population with Heath Insurance",
     "colors": [
       { value: "#0075CA", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -232,7 +232,7 @@ define ->
     "label": "Percentage of individuals\nover age 18 with health insurance (%)"
   }, {
     "url": "/health/3",
-    "heading": "Rates of HIV Infection by Region & SS/DS",
+    "heading": " Current HIV Diagnoses by Region, Rates per 100k",
     "colors": [
       { value: "#0075CA", label: "MSM* population" },
       { value: "#D1D1D4", label: "All population" }
