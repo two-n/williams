@@ -1,6 +1,6 @@
 define ["d3", "underscore", "./clean", "./map", "./bar-chart"], (d3, _, clean, map, barChart) ->
   (props) ->
-    clean.call @, ["#vectorMap"], =>
+    clean.call @, ["#vectorMap", ".unscaledRegionOverlay"], =>
       size = props.size
 
       index = _.indexBy d3.csv.parse(props.data), ""

@@ -9,6 +9,7 @@ define ["d3"], (d3) ->
       ".y-axis"
       ".label"
       "#vectorMap"
+      ".unscaledRegionOverlay"
       ".calloutSurface"
       ".timeAxis"
       ".quote"

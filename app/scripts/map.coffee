@@ -349,7 +349,7 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
   currentTime = 2014
 
   map = (props) ->
-    clean.call @, ["#vectorMap", ".timeAxis", ".calloutSurface"], =>
+    clean.call @, ["#vectorMap", ".unscaledRegionOverlay", ".timeAxis", ".calloutSurface"], =>
       size = [@property("offsetWidth"), @property("offsetHeight")]
 
       ethnicity = props.ethnicity
@@ -522,7 +522,7 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
       regionLabelBrown
         .attr
           "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
-          "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding + 18 
+          "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding + 18
           "fill": d3.rgb(props.bubbleColor).darker()
         .text((d) -> d)
         .transition().delay((d,i) -> 1000 + 250*(5-i))
