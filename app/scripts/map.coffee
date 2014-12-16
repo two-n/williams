@@ -339,7 +339,6 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
     toRet.stroke = "#FF0055"
     [toRet]
 
-
   timeScale = d3.scale.linear()
       .domain([1977, 2014])
       .range([0, 200])
@@ -611,7 +610,7 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
           g.selectAll(".state")
             .attr
               "id" : (d) -> d.id
-              "class" : modes[mode].stateClass
+              "class" : modes["protection"].stateClass
         )
       timeAxis.attr
         "display": if mode is "protection" then "inherit" else "none"
