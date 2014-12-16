@@ -5,8 +5,7 @@ require.config
     "underscore": "vendor/underscore/underscore"
     "hammer": "vendor/hammerjs/hammer.min"
 
-
-define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover", "./composite", "./clean"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover, composite, clean) ->
+require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover", "./composite", "./clean"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover, composite, clean) ->
   # colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
   colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#ECD000", "#00C775", "#0075CA", "#9843A0"]
   currentProps = null

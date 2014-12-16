@@ -11,7 +11,6 @@ module.exports = (grunt) ->
     "hammerjs/hammer.min.js"
   ]
 
-
   require("load-grunt-tasks")(grunt)
 
   grunt.initConfig
@@ -43,6 +42,10 @@ module.exports = (grunt) ->
 
     clean:
       build: ".tmp"
+      post: [
+        ".tmp/*.js", "!.tmp/main.js"
+        ".tmp/vendor/*", "!.tmp/vendor/modernizr", "!.tmp/vendor/requirejs"
+      ]
 
     connect:
       livereload:
@@ -125,9 +128,23 @@ module.exports = (grunt) ->
           host: "twoninc@two-n.com"
           dest: "/home/twoninc/prototypes.two-n.com/williams/#{ grunt.option("target") ? "" }"
 
+    requirejs:
+      build:
+        options:
+          baseUrl: '.tmp'
+          out: ".tmp/main.js"
+          name: 'main'
+          # optimize: 'none'
+          # include: "vendor/requirejs/require"
+          paths:
+            "d3": "vendor/d3/d3.min"
+            "topojson": "vendor/topojson/topojson"
+            "underscore": "vendor/underscore/underscore"
+            "hammer": "vendor/hammerjs/hammer.min"
+
 
   grunt.registerTask "development", [
-    "clean"
+    "clean:build"
     "copy:bower"
     "copy:vendor"
     "copy:data"
@@ -143,7 +160,7 @@ module.exports = (grunt) ->
   grunt.registerTask "default", ["development"]
 
   grunt.registerTask "production", [
-    "clean"
+    "clean:build"
     "copy:bower"
     "copy:vendor"
     "copy:data"
@@ -152,5 +169,7 @@ module.exports = (grunt) ->
     "sass:build"
     "autoprefixer:build"
     "coffee:production"
+    "requirejs:build"
+    "clean:post"
   ]
   grunt.registerTask "deploy", ["production", "rsync"]
