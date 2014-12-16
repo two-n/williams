@@ -90,11 +90,21 @@ define ["d3", "./clean", './callout'], (d3, clean, callout) ->
 
       formatCalloutData = (row) ->
         toRet = {}
-        toRet.name = "LGBT,#{row["LGBT"]}"
-        if props.bars.length > 1
-          toRet.subSpanText = [{label: "Non-LGBT", value: row["Non-LGBT"] , bold: false}]
+        if row["LGBT"]?
+          toRet.name = "LGBT,#{row["LGBT"]}"
+          if props.bars.length > 1
+            toRet.subSpanText = [{label: "Non-LGBT", value: row["Non-LGBT"] , bold: false}]
+          else
+            toRet.subSpanText = []
         else
-          toRet.subSpanText = []
+          toRet.name = "MSM* population,#{Math.round(row["MSM* population"])}"
+          if props.bars.length > 1
+            toRet.subSpanText = [{label: "All population", value: Math.round(row["All population"]) , bold: false}]
+          else
+            toRet.subSpanText = []
+          #   names = ["LGBT", "Non-LGBT"]
+          # else
+          #   names = ["MSM* population","All population"]
         toRet.stroke = "#A6A6AC"
         [toRet]
 
