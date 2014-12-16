@@ -7,14 +7,9 @@ define ["d3", "underscore", "./map", "./bar-chart"], (d3, _, map, barChart) ->
 
     bars_height = size[1] * 0.3
 
-
-    # Place map g
-    # Place barChart g and .attr "transform", "translate(0, #{ bar_top })"
-
-
     map.call d3.select(".chart"),
-      # size: [size[0], size[1] - bars_height]
-      size: size
+      size: [size[0], size[1] - bars_height]
+      # size: size
       split: true
       mode: "bubble"
       scaling: "composite"

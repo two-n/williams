@@ -5,7 +5,7 @@ define ->
     "type": "cover"
   }, {
     "url": "/introduction/1",
-    "heading": "Graph of Opinions on Marriage/Employment/Sin",
+    "heading": "Public Opinions are shifting,\nbut LGBT workers are still vulnerable."
     "colors": [
       { value: "#FF0055", label: "Not Wrong at All" },
       { value: "#A6A5AC", label: "Always Wrong" },
@@ -25,7 +25,7 @@ define ->
     "label": "\"What about sexual relations\nbetween two adults of the same sex?\""
   }, {
     "url": "/introduction/2",
-    "heading": "Timeline Map of Employment Protection Policies",
+    "heading": "Public Opinions are shifting,\nbut LGBT workers are still vulnerable."
     "colors": [
       { value: "#FF0055", label: "SOGI protection*", alpha: 1},
       { value: "#FF7D96", label: "SO protection*", alpha: 1 },
@@ -34,9 +34,10 @@ define ->
     "type": "map"
     "split": false
     "mode": "protection"
+    "label": "Timeline Map of Employment Protection Policies",
   }, {
     "url": "/introduction/3",
-    "heading": "Timeline Map of Employment Protection Policies",
+    "heading": "Public Opinions are shifting,\nbut LGBT workers are still vulnerable."
     "colors": [
       { value: "#FF0055", label: "SOGI protection*", alpha: 1 },
       { value: "#FF7D96", label: "SO protection*", alpha: 1},
@@ -45,9 +46,10 @@ define ->
     "type": "map"
     "split": true
     "mode": "protection"
+    "label": "Timeline Map of Employment Protection Policies",
   }, {
     "url": "/ethnicity/1",
-    "heading": "Percentage of LGBT Population per Region",
+    "heading": "Midwestern, Mountain and Southern states are home\nfor a majority of LGBT people."
     "type": "map",
     "split": true,
     "mode": "bubble",
@@ -61,10 +63,11 @@ define ->
       "Midwest": 20,
       "South": 35,
       "Northeast": 19
-    }
+    },
+    "label": "Percentage of LGBT Population per Region",
   }, {
     "url": "/ethnicity/2",
-    "heading": "Ethnicity Distribution by Region",
+    "heading": "Midwestern, Mountain and Southern states are home\nfor a majority of LGBT people."
     "colors": [
       { label: "LGBT Ethnicity\nDistribution", value: ["#FF9C00", "#FFAE48", "#FCBF75", "#F5D6B3"] },
       { label: "Non-LGBT Ethnicity\nDistribution", value: ["#B4B3B9", "#C5C5C9", "#D1D1D4", "#E2E2E3"] }
@@ -88,14 +91,16 @@ define ->
       Mountain,66%,77%,4%,3%,26%,17%,n/d,n/d,2%,1%
       Pacific,55%,61%,7%,6%,30%,26%,n/d,n/d,4%,5%
     """
+    "label": "Ethnicity Distribution by Region",
   }, {
     "url": "/ethnicity/3",
-    "heading": "Ethnicity Distribution by County"
+    "heading": "Midwestern, Mountain and Southern states are home\nfor a majority of LGBT people."
     "type": "map"
     "mode": "ethnicity"
+    "label": "Ethnicity Distribution by County"
   }, {
     "url": "/education/1",
-    "heading": "Percentage of LGBT Population with College Degrees",
+    "heading": "College completion is lowest\namong LGBT people in the Midwest"
     "colors": [
       { value: "#fadc52", label: "LGBT" }
     ],
@@ -114,10 +119,11 @@ define ->
       Mountain,34%,35%
       Pacific,39%,35%
     """,
-    "label": "Percentage of individuals\nover age 25 with a college degree (%)"
+    # "label": "Percentage of individuals\nover age 25 with a college degree (%)"
+    "label": "Percentage of LGBT Population\nwith College Degrees",
   }, {
     "url": "/education/2",
-    "heading": "Percentage of Population with College Degrees",
+    "heading": "College completion is lowest\namong LGBT people in the Midwest"
     "colors": [
       { value: "#fadc52", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -137,10 +143,11 @@ define ->
       Mountain,34%,35%
       Pacific,39%,35%
     """,
-    "label": "Percentage of individuals\nover age 25 with a college degree (%)"
+    # "label": "Percentage of individuals\nover age 25 with a college degree (%)"
+    "label": "Percentage of Population\nwith College Degrees",
   }, {
     "url": "/economic-insecurity/1",
-    "heading": "Percentage of Population Earning less than $24,000 Annually",
+    "heading": "“It is not just that LGBT people in the Midwest\nand South are poorer because people in\nthose regions tend to be poorer overall…”\n\n-Dr. Gary J. Gates",
     "colors": [
       { value: "#00C775", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -158,10 +165,11 @@ define ->
       Mountain,33%,22%,1.4776068344
       Pacific,30%,24%,1.2374978272
     """,
-    "label": "Percentage of individuals\nwith household income below $24,000 (%)"
+    # "label": "Percentage of individuals\nwith household income below $24,000 (%)"
+    "label": "Percentage of Population\nEarning less than $24,000 Annually",
   }, {
     "url": "/economic-insecurity/2",
-    "heading": "Percentage of Population Reporting Food Insecurity",
+    "heading": "“It is not just that LGBT people in the Midwest\nand South are poorer because people in\nthose regions tend to be poorer overall…”\n\n-Dr. Gary J. Gates",
     "colors": [
       { value: "#00C775", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -181,10 +189,11 @@ define ->
       Mountain,31%,17%,1.86
       Pacific,28%,18%,1.57
     """,
-    "label": "Percentage of individuals\nreporting not having enough money for food (%)"
+    # "label": "Percentage of individuals\nreporting not having enough money for food (%)"
+    "label": "Percentage of Population\nReporting Food Insecurity",
   }, {
     "url": "/health/1",
-    "heading": "Percentage of Population Reporting They Cannot Afford Healthcare",
+    "heading": "Healthcare and HIV",
     "colors": [
       { value: "#0075CA", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -204,10 +213,11 @@ define ->
       Mountain,27,17,1.57
       Pacific,25,17,1.41
     """,
-    "label": "Percentage of individuals\nreporting not having enough money for health care (%)"
+    # "label": "Percentage of individuals\nreporting not having enough money for health care (%)"
+    "label": "Percentage of Population\nReporting They Cannot Afford Healthcare",
   }, {
     "url": "/health/2",
-    "heading": "Percentage of Adult Population with Heath Insurance",
+    "heading": "Healthcare and HIV",
     "colors": [
       { value: "#0075CA", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
@@ -229,10 +239,11 @@ define ->
       Mountain,81%,86%,0.93
       Pacific,84%,87%,0.97
     """,
-    "label": "Percentage of individuals\nover age 18 with health insurance (%)"
+    # "label": "Percentage of individuals\nover age 18 with health insurance (%)"
+    "label": "Percentage of Adult Population\nwith Health Insurance",
   }, {
     "url": "/health/3",
-    "heading": " Current HIV Diagnoses by Region, Rates per 100k",
+    "heading": "Healthcare and HIV",
     "colors": [
       { value: "#0075CA", label: "MSM* population" },
       { value: "#D1D1D4", label: "All population" }
@@ -248,10 +259,8 @@ define ->
       Northeast,47.2310998196,21.6339402335
       Pacific,56.0973474114,16.214802417
     """,
-    "label": "HIV diagnoses by region, rates per 100k\n4 year average"
-  }, {
-    "url": "/health/4",
-    "heading": "Rates of HIV Occurrence by Region & SS/DS"
+    # "label": "HIV diagnoses by region, rates per 100k\n4 year average"
+    "label": "Current HIV Diagnoses by Region,\nRates per 100k",
   }, {
     "url": "/conclusion/1",
     "type": "conclusion",

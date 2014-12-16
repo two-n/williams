@@ -291,11 +291,12 @@ $visualization-margin-left: 60px;
     padding-top: 5px;
     height: 200px;
     h2 {
+      $line-height: 16px;
       margin-top: 0;
       color: nth($colors, 4);
       font-weight: 600;
       font-size: 13px;
-      line-height: 16px;
+      line-height: $line-height;
       letter-spacing: .03em;
       &.cover {
         color: nth($colors, 10);
@@ -303,6 +304,9 @@ $visualization-margin-left: 60px;
         font-weight: 400;
         line-height: 21px;
         letter-spacing: .01em;
+      }
+      .line {
+        height: $line-height;
       }
     }
     @include font-1;

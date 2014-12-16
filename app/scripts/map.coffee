@@ -394,7 +394,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     else if props.scaling is "composite"
       verticalPadding = 105
       horizonalPadding = props.size[0] * 0.1
-      scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
+      scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1)/600
       scale *= 0.9
 >>>>>>> Composite map
     else
