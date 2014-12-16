@@ -28,6 +28,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     if not ~path.slice(1).indexOf("\/")
       path += "/1"
     render _.findWhere graphics, url: path
+    ga 'send', 'pageview', path
 
   render = (props) ->
     if not props? then return
@@ -95,12 +96,13 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       arrow_svg_sel = arrow_sel.append("svg")
         .attr("width", 80)
         .attr("height", 25)
-        .on "click", ->
-          route "/#{ d3.select(@).datum() }"
-          d3.event.preventDefault()
+        # .on "click", ->
+        #   route "/#{ d3.select(@).datum() }"
+        #   d3.event.preventDefault()
         .each ->
           Hammer(@, {preventDefault: true}).on "tap", =>
             route "/#{ d3.select(@).datum() }"
+            ga 'send', 'event', 'next', 'click', "/#{ d3.select(@).datum() }"
       arrow_svg_sel.append("path")
         .attr("transform", "translate(40, 0)")
         .attr("d", "M -34 0 L 0 21 L 34 0")
@@ -326,6 +328,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     .style("height", nav_separation * chapters.size())
     .style("margin-top", -nav_separation * chapters.size() / 2 + "px")
 
+  # I believe this doesn't do anything
   chapters.select("a").on "click", ->
     if not d3.event.metaKey and not d3.event.shiftKey
       route @attributes.href.value.slice(1)
@@ -335,10 +338,12 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     element = nav.append("g")
       .datum chapter
       .attr "transform", "translate(15, #{ 7 + i*nav_separation })"
-      .on "click", (d) ->
-        route "/#{d}"
+      # .on "click", (d) ->
+      #   route "/#{d}"
       .each (d) ->
-        Hammer(@, {preventDefault: true}).on "tap", => route "/#{d}"
+        Hammer(@, {preventDefault: true}).on "tap", =>
+          ga 'send', 'event', 'chapter', 'click', "/#{d}"
+          route "/#{d}"
     element.append("circle")
       .style "fill", "transparent"
       .attr "r", 8
@@ -351,6 +356,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     d3.select(@).selectAll("h1 a, .show-me")
       .each ->
         Hammer(@, {preventDefault: true}).on "tap", (event) =>
+          ga 'send', 'event', 'show-me', 'click', @attributes.href.value.slice(1)
           if not event.srcEvent.metaKey and not event.srcEvent.shiftKey
             route @attributes.href.value.slice(1)
 
