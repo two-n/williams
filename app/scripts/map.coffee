@@ -1,19 +1,10 @@
 define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/census_data.json"], (d3, topojson, callout, _vectorMap, data) ->
-# define ["d3", "topojson", "./callout", "assets/census_data.json"], (d3, topojson, callout, data) ->
 
-  ready = false
-  vectorMap = null
-  countyGeometries = null
-  countyGeometries = null
-  stateGeometries = null
-  nationGeometries = null
-  # d3.json "assets/counties.topo.json", (_vectorMap) ->
   vectorMap = _vectorMap
   countyGeometries = topojson.feature(vectorMap, vectorMap.objects.counties).features
   countyGeometries.forEach (d) -> d.entry = _.find(data, (entry) -> entry.id is +d.id )
   stateGeometries = topojson.feature(vectorMap, vectorMap.objects.states).features
   nationGeometries = topojson.feature(vectorMap, vectorMap.objects.nation).features
-
   path = d3.geo.path().projection(null)
   scale = 1
 
@@ -366,37 +357,23 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     split = props.split
     mode = props.mode
 
-<<<<<<< HEAD
-=======
     # g =  @.selectAll("g#vectorMap")
     # if g.empty()
     #   g = @.append("g").attr("id" : "vectorMap")
 
->>>>>>> Changes
     # horizonalPadding = 0.1 * props.size[0]
-    # props.size[0] -= horizonalPadding
+    # props.size[0] = props.size[0] - horizonalPadding
 
     if props.scaling is "cover"
       verticalPadding = 90
       horizonalPadding = props.size[0] * 0.075
       scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
       scale *= 0.95
-<<<<<<< HEAD
-<<<<<<< HEAD
-    # else if props.scaling is "conclusion"
-    #   verticalPadding = 180
-    #   horizonalPadding = props.size[0] * 0.075
-    #   scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1.5)/600
-    #   scale *= 1.075
-=======
->>>>>>> Changes
-=======
     else if props.scaling is "composite"
       verticalPadding = 105
-      horizonalPadding = props.size[0] * 0.1
+      horizonalPadding = props.size[0] * 0.075
       scale = Math.min (props.size[0] - horizonalPadding * 1)/960, (props.size[1] - verticalPadding * 1)/600
       scale *= 0.9
->>>>>>> Composite map
     else
       verticalPadding = 180
       horizonalPadding = props.size[0] * 0.1
@@ -418,8 +395,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       coords
 
     # county definitions
-    countyPaths = g.selectAll("path.county")
-      .data(if mode is "ethnicity" then countyGeometries else [])
+    countyPaths = g.selectAll("path.county").data(countyGeometries)
     countyPaths.enter()
       .append("path")
       .attr
@@ -432,11 +408,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           g.selectAll("path.overlayCounty").data([]).exit().remove()
         , 500)
     countyPaths
-<<<<<<< HEAD
       .on "mouseenter", (d) ->
-=======
-      .on "mouseenter", (d) =>
->>>>>>> Changes
         if bubbleTimeout?
           clearTimeout(bubbleTimeout)
         callout.call calloutSurface, calloutTransform(path.centroid(d)), formatCountyCalloutData( _.find(data, (entry) -> entry.id is +d.id ), ethnicity)
@@ -451,7 +423,6 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       .attr
         "class" : modes[mode].countyClass
         "fill-opacity" : (d,i) -> myScale[ethnicity](d.entry?[ethnicity])
-    countyPaths.exit().remove()
 
     #backdrop construction
     nationBackdrop = d3.select("path.nationBackdrop")
@@ -475,8 +446,8 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         "display" : if mode isnt "ethnicity" then "none" else "inherit"
 
     #state definitions
-    g = @.selectAll("g").data([null])
-    g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
+    # g = @.selectAll("g").data([null])
+    # g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
     regions = g.selectAll(".region").data(_.keys(regionByName))
     regions.enter().append("g")
       .attr
@@ -603,30 +574,6 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           "opacity": 1
     regionLabelGray.exit().remove()
 
-<<<<<<< HEAD
-=======
-
-    #percentage
-    regionPercent = unscaledRegionOverlay.selectAll(".regionPercent").data(regionBubbleData)
-    regionPercent.enter().append("text")
-        .attr
-          "class": "regionPercent"
-          "opacity": 0
-    regionPercent
-      .attr
-        "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
-        "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding
-      .text (d) =>
-        if props.solidCircle?
-          props.percentageByRegion[d][props.solidCircle]
-        else
-          "#{props.percentageByRegion[d]}\%"
-      .transition().delay((d,i) -> 1000 + 250*(5-i))
-        .attr
-          "opacity": 1
-    regionPercent.exit().remove()
->>>>>>> Changes
-
     regionLine = unscaledRegionOverlay.selectAll(".regionLine").data(regionLabelData)
     regionLine.enter().append("line")
         .attr
@@ -646,27 +593,9 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     regionLine.exit().remove()
 
 
-<<<<<<< HEAD
     #percentage
     regionPercent = unscaledRegionOverlay.selectAll(".regionPercent").data(regionBubbleData)
     regionPercent.enter().append("text")
-        .attr
-<<<<<<< HEAD
-          "class": "regionPercent"
-          "opacity": 0
-    regionPercent
-=======
-    #timescale
-    timeScale.range ([0,props.size[0] * 0.5])
-    timeAxis = calloutSurface.select(".timeAxis")
-    handle = calloutSurface.select(".handle")
-    if timeAxis.empty()
-      timeAxis = calloutSurface.append("g")
-          .attr
-            "class": "regionPercent"
-            "opacity": 0
-      regionPercent
->>>>>>> Changes
         .attr
           "class": "regionPercent"
           "opacity": 0
@@ -691,47 +620,11 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     handle = calloutSurface.select(".handle")
     if timeAxis.empty()
       timeAxis = calloutSurface.append("g")
-=======
-          "x": (d) => projection(regionByName[d].centroid)[0] * scale + horizonalPadding
-          "y": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding
-        .text (d) =>
-          if props.solidCircle?
-            props.percentageByRegion[d][props.solidCircle]
-          else
-            "#{props.percentageByRegion[d]}\%"
-        .transition().delay((d,i) -> 1000 + 250*(5-i))
-          .attr
-            "opacity": 1
-      regionPercent.exit().remove()
-
-
-      #timescale
-      timeScale.range ([0,props.size[0] * 0.5])
-      timeAxis = calloutSurface.select(".timeAxis")
-      handle = calloutSurface.select(".handle")
-      if timeAxis.empty()
-        timeAxis = calloutSurface.append("g")
-            .attr
-              "class": "timeAxis"
-        timeAxis.append("g")
-          .attr
-            "class": "visibleAxis"
-        slider = timeAxis.append("g")
-            .attr
-              "class": "slider"
-        slider.selectAll(".extent,.resize")
-            .remove()
-        slider.select(".background")
-            .attr("height", 30)
-        sliderInstruction = timeAxis.append("text")
-          .attr
-            "class": "sliderInstruction"
-          .text "Drag to explore timeline."
-        handle = timeAxis.append("g")
->>>>>>> Added instructional line to map slider.
           .attr
             "class": "timeAxis"
-
+      timeAxis.append("g")
+        .attr
+          "class": "visibleAxis"
       slider = timeAxis.append("g")
           .attr
             "class": "slider"
@@ -739,49 +632,10 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           .remove()
       slider.select(".background")
           .attr("height", 30)
-      handle = timeAxis.append("g")
-          .attr
-<<<<<<< HEAD
-            "class": "timeAxis"
-=======
-            "class": "sliderLabel"
-            "transform": "translate(0," + -9 + ")"
-            "text-anchor": "middle"
-          .text(currentTime)
-        brush.on("brush", () =>
-          value = timeScale.invert(d3.mouse(slider.node())[0])
-          currentTime =  Math.round(value)
-          brush.extent([value, value])
-          handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
-          label.text(currentTime)
-          g.selectAll(".state")
-            .attr
-              "id" : (d) -> d.id
-              "class" : modes["protection"].stateClass
-          timeAxis.select(".sliderInstruction")
-            .transition().duration(1000)
-              .attr
-                "opacity": 0
-        )
-      handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
->>>>>>> Added instructional line to map slider.
-      timeAxis.attr
-        "display": if mode is "protection" then "inherit" else "none"
-        "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
-      timeAxis.select(".visibleAxis").call(d3.svg.axis()
-        .scale(timeScale)
-        .orient("bottom")
-        .tickValues([1977,2014])
-        .tickFormat(d3.format(".0f"))
-      )
-<<<<<<< HEAD
-      slider = timeAxis.append("g")
-          .attr
-            "class": "slider"
-      slider.selectAll(".extent,.resize")
-          .remove()
-      slider.select(".background")
-          .attr("height", 30)
+      sliderInstruction = timeAxis.append("text")
+        .attr
+          "class": "sliderInstruction"
+        .text "Drag to explore timeline."
       handle = timeAxis.append("g")
         .attr
           "class": "handle"
@@ -808,23 +662,24 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           .attr
             "id" : (d) -> d.id
             "class" : modes["protection"].stateClass
+        timeAxis.select(".sliderInstruction")
+          .transition().duration(1000)
+            .attr
+              "opacity": 0
       )
     handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
     timeAxis.attr
       "display": if mode is "protection" then "inherit" else "none"
       "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
-    .call(d3.svg.axis()
+    timeAxis.select(".visibleAxis").call(d3.svg.axis()
       .scale(timeScale)
       .orient("bottom")
       .tickValues([1977,2014])
       .tickFormat(d3.format(".0f"))
     )
-=======
-      timeAxis.select(".sliderInstruction")
-        .attr
-          "transform": "translate(#{timeScale(2014) + 20}," + 2 + ")"
->>>>>>> Added instructional line to map slider.
-
+    timeAxis.select(".sliderInstruction")
+      .attr
+        "transform": "translate(#{timeScale(2014) + 20}," + 2 + ")"
 
   map.getColorsForEthnicity = (ethnicity) ->
     shades = [0.1,0.4,0.6,0.8]
@@ -835,6 +690,6 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[5]}+", alpha: 1}
     return colors.reverse()
 
-  map.deps = ["#vectorMap", ".unscaledRegionOverlay", ".timeAxis", ".calloutSurface"]
+  map.deps = ["#vectorMap", ".timeAxis", ".calloutSurface"]
 
   map
