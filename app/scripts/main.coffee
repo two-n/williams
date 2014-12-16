@@ -6,7 +6,7 @@ require.config
     "hammer": "vendor/hammerjs/hammer.min"
 
 
-define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies) ->
+define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./bar-chart", "./timeline", "./pies", "./conclusion", "./cover"], (d3, _, Hammer, graphics, map, dropdown, barChart, timeline, pies, conclusion, cover) ->
   # colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#FFDF00", "#00C775", "#0075CA", "#9843A0"]
   colors = ["#EDEDEE", "#D1D1D4", "#A6A6AC", "#797980", "#38383C", "#FF0055", "#FF9C00", "#ECD000", "#00C775", "#0075CA", "#9843A0"]
   currentProps = null
@@ -17,6 +17,11 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
     ethnicity: "black"
 
   prevChapter = null
+
+
+  d3.selectAll(".cover.chapter, .conclusion.chapter")
+    .style "height", window.innerHeight - 80 - 30 + "px"
+
 
   route = (path) ->
     if state.path is path then return
@@ -101,10 +106,14 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
 
     arrow_sel.select("path").transition().duration(450)
       .attr("stroke", currentColor)
-      .attr("fill", currentColor)
 
     # header
-    d3.select(".visualization .header h2").text props.heading
+    heading_sel = d3.select(".visualization .header h2")
+      .classed "cover", currentChapter is "cover"
+      .selectAll(".line").data (props.heading ? "").split("\n")
+    heading_sel.enter().append("div").classed("line", true)
+    heading_sel.text (d) -> d or " "
+    heading_sel.exit().remove()
 
     # legendSel = d3.select(".visualization .header .legend").selectAll(".color")
     # if not legendSel.empty()
@@ -213,6 +222,11 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
             _.extend ethnicity: state.hoverEthnicity,
               { size }
               _.pick props, "pies", "slices", "outer-slices", "data", "colors"
+      when "conclusion"
+        conclusion.call d3.select(".chart"), _.extend { size }, _.pick props, "quote", "attribution"
+      when "cover"
+        cover.call d3.select(".chart")
+
 
     prevChapter = currentChapter
 
@@ -294,9 +308,6 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
         Hammer(@, {preventDefault: true}).on "tap", =>
           route @attributes.href.value.slice(1)
 
-
-  d3.selectAll(".cover.chapter, .conclusion.chapter")
-    .style "height", window.innerHeight - 80 - 30 + "px"
 
   currentChapter = null
   d3.select(".story")

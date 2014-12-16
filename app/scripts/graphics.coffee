@@ -1,7 +1,7 @@
 define ->
   [{
     "url": "/cover/1",
-    "heading": "A Data Portrait...",
+    "heading": "A Data Portrait of LGBT People\nin the Midwest, Mountain, and Southern States",
   }, {
     "url": "/introduction/1",
     "heading": "Graph of Opinions on Marriage/Employment/Sin",
@@ -248,5 +248,8 @@ define ->
     "url": "/health/4",
     "heading": "Rates of HIV Occurrence by Region & SS/DS"
   }, {
-    "url": "/conclusion/1"
+    "url": "/conclusion/1",
+    "type": "conclusion",
+    "quote": "In states where legal climates are less\nsupportive of LGBT people, social stigma\ntoward them is also higher.\n\nSocial and legal climates are generally\nintertwined such that supportive laws and\nsocial acceptance run hand in hand.",
+    "attribution": "–Andrew Flores,\nWilliams Public Opinion\nProject Director"
   }]

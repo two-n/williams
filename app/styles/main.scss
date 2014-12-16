@@ -244,15 +244,15 @@ $header-background-color: rgba($background-color, 0.95);
     padding-top: 10px;
     padding-bottom: 23px;
     cursor: pointer;
-    fill-opacity: 0;
+    fill: none;
+    stroke-opacity: 0.5;
+    transition: stroke-opacity 150ms;
     &:hover {
-      fill-opacity: 0.1;
-      transition: fill-opacity 150ms;
+      stroke-opacity: 1;
     }
     z-index: 10;
 
     background: $header-background-color;
-    // box-shadow: $header-background-color 0 0 7px 7px;
   }
 
 
@@ -280,6 +280,13 @@ $header-background-color: rgba($background-color, 0.95);
       font-size: 13px;
       line-height: 16px;
       letter-spacing: .03em;
+      &.cover {
+        color: nth($colors, 10);
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 21px;
+        letter-spacing: .01em;
+      }
     }
     @include font-1;
     font-size: 17px;
@@ -710,5 +717,37 @@ $_d: 600ms;
       letter-spacing: -.01em;
       font-weight: normal;
     }
+  }
+}
+
+
+.quote {
+  tspan {
+    @include font-2;
+    fill: nth($colors, 4);
+    opacity: 0.8;
+    font-size: 18px;
+    font-style: italic;
+    text-anchor: middle;
+    letter-spacing: .03em;
+  }
+}
+.view-report-btn {
+  cursor: pointer;
+  rect {
+    fill: nth($colors, 11);
+    transition: fill 100ms;
+  }
+  &:hover rect {
+    fill: lighten(nth($colors, 11), 5%);
+  }
+  text {
+    @include font-1;
+    text-anchor: middle;
+    text-transform: uppercase;
+    fill: white;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .03em;
   }
 }

@@ -11,6 +11,8 @@ define ["d3"], (d3) ->
       "#vectorMap"
       ".calloutSurface"
       ".timeAxis"
+      ".quote"
+      ".view-report-btn"
     ]
 
     waste = @selectAll(selectors)
@@ -70,6 +72,10 @@ define ["d3"], (d3) ->
       .transition().duration(duration)
       .attr "opacity", 0
 
+    waste.filter(".quote, .view-report-btn")
+      .attr "opacity", 1
+      .transition().duration(duration)
+      .attr "opacity", 0
 
 
     waste.classed("exiting", true).call (exiting) ->
