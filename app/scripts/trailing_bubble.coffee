@@ -111,7 +111,10 @@ define ['d3'], (d3) ->
       bbox = gText.node().getBBox()
 
       width = bbox.width + 19
-      totalHeight = bbox.height + 9
+      if subSpanText.length > 0
+        totalHeight = bbox.height + 9
+      else
+        totalHeight = bbox.height + 6
 
       breakLine = body.selectAll("line.break")
       if breakLine.empty()

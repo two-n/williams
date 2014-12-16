@@ -13,7 +13,6 @@ define ["d3", "./trailing_bubble"], (d3, TrailingBubble) ->
     if not coords?
       cords = trailing.point()
 
-    console.log this.node().getBBox()
     if coords[0] < this.node().getBBox().width/2
       vector = [0.25,-0.5]
     else
