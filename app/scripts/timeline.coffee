@@ -204,11 +204,12 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           year = _.min years, (year) => Math.abs(year - xScale.invert(d3.mouse(@)[0]))
           timeline.call(context, props, null)
 
-
-      vectorsRight = [[0.01,-0.5],[0.25,-0.5],[0.25,-0.5],[0.15,0.5],[0.25,-0.5]]
-      vectorsLeft = [[-0.01,-0.5],[-0.25,-0.5],[-0.25,-0.5],[-0.15,0.5],[-0.25,-0.5]]
-      distances = [7,18,18,28,18]
+      vectorsLeft = [[0.01,-0.5],[0.25,-0.5],[0.25,-0.5],[0.15,0.5],[0.25,-0.5]]
+      vectorsRight = [[-0.01,-0.5],[-0.25,0.5],[-0.25,-0.5],[-0.15,0.5],[-0.25,-0.5]]
+      distancesLeft = [7,28,18,28,18]
+      distancesRight = [7,28,18,28,18]
       bubbleData = if focusedLines.length > 0 then ["Public Optinions"].concat focusedLines else []
+      bubbleData.forEach (d,i) -> console.log d,i
       overlaySurface = @
       bubble = @.selectAll('g.trailing-bubble').data(bubbleData)
       bubble.enter()
@@ -221,7 +222,7 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
             "opacity": 1
       bubble
         .each (d, i) ->
-          left = xScale(focusedYear) > overlaySurface.node().getBBox().width/2
+          screenRight = xScale(focusedYear) > overlaySurface.node().getBBox().width/2
 
           if i > 0
             x = xScale(focusedYear)
@@ -229,13 +230,13 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
           else
             x = xScale(focusedYear)
             y = yScale(index["Always Wrong"][focusedYear]) - 50
-            if left then x -= 8 else x += 8
+            if screenRight then x -= 8 else x += 8
           point = [x,y]
 
-          if left
-            vector = vectorsLeft[i]
-          else
+          if screenRight
             vector = vectorsRight[i]
+          else
+            vector = vectorsLeft[i]
 
           if i > 0
             text = "#{d}, #{index[d][focusedYear]}%"
@@ -244,7 +245,7 @@ define ["d3", "underscore", "hammer", "./clean", "./trailing_bubble"], (d3, _, H
 
           trailing
             .point(point)
-            .vector(vector, distances[i])
+            .vector(vector, if screenRight then distancesRight[i] else distancesLeft[i])
             .text(text)
             .stroke "#FF0055"
           if i is 0
