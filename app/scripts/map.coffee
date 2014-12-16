@@ -655,7 +655,9 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         timeAxis = calloutSurface.append("g")
             .attr
               "class": "timeAxis"
-
+        timeAxis.append("g")
+          .attr
+            "class": "visibleAxis"
         slider = timeAxis.append("g")
             .attr
               "class": "slider"
@@ -666,7 +668,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         sliderInstruction = timeAxis.append("text")
           .attr
             "class": "sliderInstruction"
-          .text "Drag to explore protection timeline."
+          .text "Drag to explore timeline."
         handle = timeAxis.append("g")
 >>>>>>> Added instructional line to map slider.
           .attr
@@ -708,7 +710,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       timeAxis.attr
         "display": if mode is "protection" then "inherit" else "none"
         "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
-      .call(d3.svg.axis()
+      timeAxis.select(".visibleAxis").call(d3.svg.axis()
         .scale(timeScale)
         .orient("bottom")
         .tickValues([1977,2014])
