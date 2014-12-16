@@ -553,6 +553,9 @@ $_d: 600ms;
     letter-spacing: .03em;
     @include font-2;
   }
+  .regionLine{
+    stroke: nth($colors, 4);
+  }
 }
 
 

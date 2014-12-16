@@ -571,9 +571,32 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     regionLabelGray.exit().remove()
 
 
+    regionLine = unscaledRegionOverlay.selectAll(".regionLine").data(regionLabelData)
+    regionLine.enter().append("line")
+        .attr
+          "class": "regionLine"
+          "opacity": 0
+    regionLine
+      .attr
+        "x1": (d) => projection(regionByName[d].splitLabelCentroid)[0] * scale + horizonalPadding
+        "y1": (d) => projection(regionByName[d].splitLabelCentroid)[1] * scale + verticalPadding
+        "x2": (d) => projection(regionByName[d].splitLabelCentroid)[0] * scale + horizonalPadding
+        "y2": (d) => projection(regionByName[d].centroid)[1] * scale + verticalPadding
+        "stroke-dasharray": "0,20,200"
+      .transition().delay((d,i) -> 1000 + 250*(5-i))
+        .attr
+          "opacity": 1
+
+    regionLine.exit().remove()
+
+
     #percentage
     regionPercent = unscaledRegionOverlay.selectAll(".regionPercent").data(regionBubbleData)
     regionPercent.enter().append("text")
+        .attr
+          "class": "regionPercent"
+          "opacity": 0
+    regionPercent
         .attr
           "class": "regionPercent"
           "opacity": 0
