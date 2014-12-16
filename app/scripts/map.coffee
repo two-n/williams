@@ -547,7 +547,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
             class: 'circle-dashed-label'
             fill: 'gray'
             stroke: 'none'
-            dy: ".2em"
+            dy: ".07em"
             opacity: 0
             "font-family": "'Libre Baskerville', serif"
             "font-size": "22px"
