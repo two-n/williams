@@ -439,6 +439,9 @@ $_d: 600ms;
     letter-spacing: .05em;
     @include font-1;
     text-transform: uppercase;
+    &.gray {
+      fill: nth($colors,4);
+    }
   }
   .regionPercent {
     text-anchor: middle;

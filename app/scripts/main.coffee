@@ -180,7 +180,6 @@ define ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./ba
     #dropdown
     sel = d3.select(".dropdown")
     if props.mode is "ethnicity"
-      console.log "ethnicity", sel.empty()
       if sel.empty()
         d3.select(".header").append("div")
           .attr "class" : "dropdownLabel"

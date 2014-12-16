@@ -56,16 +56,19 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
     "Mountain": {
       states: ["Arizona", "Colorado", "Idaho", "Montana", "Nevada", "New Mexico", "Utah", "Wyoming"]
       centroid: [-111,40]
+      splitLabelCentroid: [-111,51]
       offset: [-7.987967225259922, 1.193425583016392]
     }
     "Midwest": {
       states: ["Illinois", "Indiana", "Iowa", "Kansas", "Michigan", "Minnesota", "Missouri", "Nebraska", "North Dakota", "Ohio", "South Dakota", "Wisconsin"]
       centroid: [-92,43]
+      splitLabelCentroid: [-92,51.76]
       offset: [17.14660810580267, -5.690153784351679]
     }
     "South": {
       states: ["Alabama", "Arkansas", "Delaware", "Florida", "Georgia", "Kentucky", "Louisiana", "Maryland", "Mississippi", "North Carolina", "Oklahoma", "South Carolina", "Tennessee", "Texas", "Virginia", "District of Columbia", "West Virginia"]
       centroid: [-89,32]
+      splitLabelCentroid: [-89,25]
       offset: [16.69364734000476, 20.69134832167154]
     }
     "Northeast": {
@@ -468,8 +471,12 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
         regionOverlay = g.append("g").classed("regionOverlay",true)
 
       regionBubbleData = []
+      regionLabelData = []
       if mode is "bubble"
         regionBubbleData = _.keys(regionByName)
+      if mode is "protection" and split
+        regionLabelData = _.keys(regionByName)
+        regionLabelData = regionLabelData.filter (d) -> regionByName[d].splitLabelCentroid?
 
       #bubble
       regionBubble = regionOverlay.selectAll(".regionBubble").data(regionBubbleData)
@@ -509,6 +516,23 @@ define ["d3", "topojson", "./callout", "./clean", "assets/counties.topo.json", "
           .attr
             "opacity": 1
       regionLabel.exit().remove()
+
+      #alternate, non-bubble name
+      regionLabel = regionOverlay.selectAll(".regionLabel").data(regionLabelData)
+      regionLabel.enter().append("text")
+          .attr
+            "class": "regionLabel gray"
+            "opacity": 0
+      regionLabel
+        .attr
+          "x": (d) => projection(regionByName[d].splitLabelCentroid)[0]
+          "y": (d) => projection(regionByName[d].splitLabelCentroid)[1]
+        .text((d) -> d)
+        .transition().delay((d,i) -> 1000 + 250*(5-i))
+          .attr
+            "opacity": 1
+      regionLabel.exit().remove()
+
 
       #percentage
       regionPercent = regionOverlay.selectAll(".regionPercent").data(regionBubbleData)
