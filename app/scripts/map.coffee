@@ -482,8 +482,8 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     if mode isnt "ethnicity"
       g.selectAll(".region")
         .transition()
-        .delay((d,i) -> 250*(5-i))
-        .duration(1000)
+        .delay((d,i) -> 750*Math.sqrt((5-i)/5))
+        .duration(500)
         .attr("transform", (d) =>
           if split
             x = regionByName[d].offset[0]
