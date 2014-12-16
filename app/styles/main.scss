@@ -593,6 +593,13 @@ $_d: 600ms;
     stroke-width: 1px;
     cursor: pointer;
   }
+
+  .sliderInstruction {
+    stroke: none;
+    fill: nth($colors, 4);
+    @include font-1;
+    font-size: 12px;
+  }
 }
 
 //dropdown
