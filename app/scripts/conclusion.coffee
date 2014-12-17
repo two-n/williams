@@ -15,7 +15,7 @@ define ["d3", "underscore", "./map"], (d3, _, map) ->
     quote_sel
       .attr("transform", "translate(#{ props.size[0]/2 }, #{ top })")
     tspan_sel = quote_sel.selectAll(".line")
-      .data "#{ props.quote }\n\n#{ props.attribution }".split("\n")
+      .data props.quote.split("\n")
     tspan_sel.enter().append("tspan").attr("class", "line")
     tspan_sel
       .text (d) -> d or " "

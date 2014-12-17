@@ -16,7 +16,6 @@ define ["d3", "./callout"], (d3, callout) ->
 
     innerWidth = width - margin.left - margin.right
     innerHeight = height - margin.top - margin.bottom
-    console.log height, margin.top, innerHeight
 
     xScale = d3.scale.linear()
       .domain(props.bounds ? [0, max]).nice()
@@ -227,7 +226,7 @@ define ["d3", "./callout"], (d3, callout) ->
     label_sel.transition().duration(600).ease("cubic-out")
       .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
       .attr "text-anchor", "middle"
-      .attr "y", 23
+      .attr "y", 27
       .attr "fill-opacity": 1
 
     tspan_sel = label_sel.selectAll("tspan").data props.label.split("\n"), Math.random

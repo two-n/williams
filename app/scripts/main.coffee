@@ -209,6 +209,9 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
 
       constructLegend()
 
+    # attribution
+    d3.select(".attribution").text props.attribution ? ""
+
     # nav
     if currentChapter isnt prevChapter
       d3.select(".nav")
@@ -220,6 +223,14 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
           .attr "r", 6
         .transition().duration(600).ease("cubic-out")
           .attr "r", 4
+
+    # logos
+    logos_sel = d3.select(".logos")
+    logos_sel.select(".credit-suisse-logo")
+      .classed "visible", props.type in ["cover", "conclusion"]
+    logos_sel.select(".williams-logo")
+      .classed "visible", props.type in ["cover", "conclusion"]
+
 
     # chart
     chart_sel = d3.select(".chart")
@@ -256,7 +267,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
         when "composite"
           composite.call chart_sel, _.extend {},
             { size }
-            _.pick props, "bars", "rows", "data", "label", "colors"
+            _.pick props, "bars", "rows", "data", "label", "colors", "bounds"
         when "timeline"
           timeline.call chart_sel, _.extend {},
             { size }
@@ -309,6 +320,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
         .selectAll(".chapter")
         .each (d, i) ->
           return if found
+          console.log d, currentChapter
           cumulative += @offsetHeight / 2
           if cumulative > pageYOffset
             clearTimeout(window.switchChaptersTimeoutId) if window.switchChaptersTimeoutId?
@@ -365,21 +377,22 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       d3.event.preventDefault()
 
   chapters.each (chapter, i) ->
-    element = nav.append("g")
-      .datum chapter
-      .attr "transform", "translate(15, #{ 7 + i*nav_separation })"
-      # .on "click", (d) ->
-      #   route "/#{d}"
-      .each (d) ->
-        Hammer(@, {preventDefault: true}).on "tap", =>
-          ga 'send', 'event', 'chapter', 'click', "/#{d}"
-          route "/#{d}"
-    element.append("circle")
-      .style "fill", "transparent"
-      .attr "r", 8
-    element.append("circle").classed("visible", true)
-      .style "fill", d3.select(@).attr("data-color")
-      .attr "r", 4
+    if i > 0
+      element = nav.append("g")
+        .datum chapter
+        .attr "transform", "translate(15, #{ 7 + i*nav_separation })"
+        # .on "click", (d) ->
+        #   route "/#{d}"
+        .each (d) ->
+          Hammer(@, {preventDefault: true}).on "tap", =>
+            ga 'send', 'event', 'chapter', 'click', "/#{d}"
+            route "/#{d}"
+      element.append("circle")
+        .style "fill", "transparent"
+        .attr "r", 8
+      element.append("circle").classed("visible", true)
+        .style "fill", d3.select(@).attr("data-color")
+        .attr "r", 4
 
     d3.select(@).select("h1 a").attr "href", "#/#{chapter}"
     d3.select(@).selectAll(".show-me").attr "href", (d, i) -> "#/#{chapter}/#{i+1}"

@@ -305,7 +305,7 @@ $visualization-margin-left: 60px;
         line-height: 21px;
         letter-spacing: .01em;
       }
-      .line {
+      &:not(.cover) .line {
         height: $line-height;
       }
     }
@@ -412,7 +412,7 @@ $visualization-margin-left: 60px;
   position: absolute;
   left: 0;
   bottom: 34px;
-  width: 280px;
+  width: 320px;
 
   @include font-1;
   font-weight: normal;
@@ -443,12 +443,11 @@ $visualization-margin-left: 60px;
     display: inline-block;
     margin-top: -3px;
     margin-left: 3px;
-    cursor: pointer;
 
     opacity: 0.33;
     transition: opacity 150ms;
     &:hover {
-      opacity: 1;
+      opacity: 0.67;
     }
   }
 }
@@ -882,5 +881,65 @@ $_d: 600ms;
     font-size: 14px;
     font-weight: 700;
     letter-spacing: .03em;
+  }
+}
+
+
+.logos {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 74px;
+  z-index: 40;
+
+  & > div:not(.visible) {
+    display: none;
+    opacity: 0;
+  }
+
+  .credit-suisse-logo {
+    display: inline-block;
+    padding-right: 21px;
+    @include font-1;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 58px;
+    letter-spacing: .03em;
+    color: nth($colors, 3);
+    vertical-align: top;
+    transition: opacity 150ms;
+    a {
+      display: inline-block;
+      background: url(assets/credit_suisse.png) -20px -11px;
+      width: 144px;
+      height: 77px;
+
+      opacity: 0.33;
+      transition: opacity 150ms;
+      &:hover {
+        opacity: .6;
+      }
+    }
+  }
+
+  .williams-logo {
+    display: inline-block;
+    padding-right: 32px;
+    margin-top: -3px;
+    transition: opacity 150ms;
+    a {
+      display: inline-block;
+      // background: url(assets/williams_logo.png) -18px -14px;
+      background: url(assets/williams-institute_new.png) -18px;
+      background-size: 159px;  // 637px / 4
+      width: 123px;
+      height: 57px;
+
+      opacity: 0.5;
+      transition: opacity 150ms;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
   }
 }

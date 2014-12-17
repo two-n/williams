@@ -5,7 +5,7 @@ define ->
     "type": "cover"
   }, {
     "url": "/introduction/1",
-    "heading": "Public Opinions are shifting,\nbut LGBT workers are still vulnerable."
+    "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
     "colors": [
       { value: "#FF0055", label: "Not Wrong at All" },
       { value: "#A6A5AC", label: "Always Wrong" },
@@ -23,9 +23,10 @@ define ->
       N,1448,1412,1426,1453,1397,1771,1412,1484,1750,937,980,872,926,1012,1884,1784,1753,1697,884,868,1908,1269,1223,1239
     """,
     "label": "\"What about sexual relations\nbetween two adults of the same sex?\""
+    "attribution": "Source: General Social Survey (GSS) 197-2012"
   }, {
     "url": "/introduction/2",
-    "heading": "Public Opinions are shifting,\nbut LGBT workers are still vulnerable."
+    "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
     "colors": [
       { value: "#FF0055", label: "SOGI protection*", alpha: 1},
       { value: "#FF7D96", label: "SO protection*", alpha: 1 },
@@ -35,9 +36,10 @@ define ->
     "split": false
     "mode": "protection"
     "label": "Timeline Map of Employment Protection Policies",
+    "attribution": "Source: Williams Institute"
   }, {
     "url": "/introduction/3",
-    "heading": "Public Opinions are shifting,\nbut LGBT workers are still vulnerable."
+    "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
     "colors": [
       { value: "#FF0055", label: "SOGI protection*", alpha: 1 },
       { value: "#FF7D96", label: "SO protection*", alpha: 1},
@@ -47,15 +49,34 @@ define ->
     "split": true
     "mode": "protection"
     "label": "Timeline Map of Employment Protection Policies",
+    "attribution": "Source: Williams Institute"
   }, {
-    "url": "/ethnicity/1",
-    "heading": "Midwestern, Mountain and Southern states are home\nfor a majority of LGBT people."
+    "url": "/introduction/4",
+    "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
     "type": "map",
     "split": true,
     "mode": "bubble",
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },
-      { value: "#FF9C00", label: "LGBT population" }
+      { value: "#FF0055", label: "LGBT population" }
+    ],
+    "percentageByRegion": {
+      "Northeast": 71,
+      "Midwest": 59,
+      "South": 55,
+      "Mountain": 56,
+      "Pacific": 68
+    },
+    "attribution": "Source: Williams Institute"
+  }, {
+    "url": "/ethnicity/1",
+    "heading": "Midwestern, Mountain and Southern states\nare home for a majority of LGBT people."
+    "type": "map",
+    "split": true,
+    "mode": "bubble",
+    "colors": [
+      { value: "#FFFFFF", label: "US map by region" },
+      { value: "#FF9C00", label: "Accepting social climate" }
     ],
     "percentageByRegion": {
       "Pacific": 17,
@@ -65,9 +86,10 @@ define ->
       "Northeast": 19
     },
     "label": "Percentage of LGBT Population per Region",
+    "attribution": "Source: Gallup daily tracking poll"
   }, {
     "url": "/ethnicity/2",
-    "heading": "Midwestern, Mountain and Southern states are home\nfor a majority of LGBT people."
+    "heading": "Midwestern, Mountain and Southern states\nare home for a majority of LGBT people."
     "colors": [
       { label: "LGBT Ethnicity\nDistribution", value: ["#FF9C00", "#FFAE48", "#FCBF75", "#F5D6B3"] },
       { label: "Non-LGBT Ethnicity\nDistribution", value: ["#B4B3B9", "#C5C5C9", "#D1D1D4", "#E2E2E3"] }
@@ -94,18 +116,20 @@ define ->
     "label": "Ethnicity Distribution by Region",
   }, {
     "url": "/ethnicity/3",
-    "heading": "Midwestern, Mountain and Southern states are home\nfor a majority of LGBT people."
+    "heading": "Midwestern, Mountain and Southern states\nare home for a majority of LGBT people."
     "type": "map"
     "mode": "ethnicity"
     "label": "Ethnicity Distribution by County"
+    "attribution": "Source: Census 2010"
   }, {
     "url": "/education/1",
-    "heading": "College completion is lowest\namong LGBT people in the Midwest"
+    "heading": "College completion is lowest among\nLGBT people in the Midwest"
     "colors": [
       { value: "#fadc52", label: "LGBT" }
     ],
     "type": "composite",
     # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    "bounds": [0, 40],
     "bars": ["LGBT"],
     "data": """
       ,LGBT,Non-LGBT
@@ -121,14 +145,16 @@ define ->
     """,
     # "label": "Percentage of individuals\nover age 25 with a college degree (%)"
     "label": "Percentage of LGBT Population\nwith College Degrees",
+    "attribution": "Source: Gallup daily tracking poll"
   }, {
     "url": "/education/2",
-    "heading": "College completion is lowest\namong LGBT people in the Midwest"
+    "heading": "College completion is lowest among\nLGBT people in the Midwest"
     "colors": [
       { value: "#fadc52", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
     "type": "composite",
+    "bounds": [0, 40],
     # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "data": """
@@ -145,6 +171,7 @@ define ->
     """,
     # "label": "Percentage of individuals\nover age 25 with a college degree (%)"
     "label": "Percentage of Population\nwith College Degrees",
+    "attribution": "Source: Gallup daily tracking poll"
   }, {
     "url": "/economic-insecurity/1",
     "heading": "“It is not just that LGBT people in the Midwest\nand South are poorer because people in\nthose regions tend to be poorer overall…”\n\n-Dr. Gary J. Gates",
@@ -153,6 +180,7 @@ define ->
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
     "type": "composite",
+    "bounds": [0, 40],
     "bars": ["LGBT", "Non-LGBT"],
     "data": """
       ,LGBT,Non-LGBT,"Odds Ratio of Reporting a Household Income Below $24,000 (LGBT:Non-LGBT)"
@@ -167,6 +195,7 @@ define ->
     """,
     # "label": "Percentage of individuals\nwith household income below $24,000 (%)"
     "label": "Percentage of Population\nEarning less than $24,000 Annually",
+    "attribution": "Source: Gallup daily tracking poll"
   }, {
     "url": "/economic-insecurity/2",
     "heading": "“It is not just that LGBT people in the Midwest\nand South are poorer because people in\nthose regions tend to be poorer overall…”\n\n-Dr. Gary J. Gates",
@@ -175,6 +204,7 @@ define ->
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
     "type": "composite",
+    "bounds": [0, 40],
     # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "data": """
@@ -191,6 +221,7 @@ define ->
     """,
     # "label": "Percentage of individuals\nreporting not having enough money for food (%)"
     "label": "Percentage of Population\nReporting Food Insecurity",
+    "attribution": "Source: Gallup daily tracking poll"
   }, {
     "url": "/health/1",
     "heading": "Healthcare and HIV",
@@ -198,8 +229,10 @@ define ->
       { value: "#0075CA", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
-    "type": "bar-chart",
-    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    # "type": "bar-chart",
+    "type": "composite",
+    "bounds": [0, 30],
+    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "benchmark": "All Individuals ",
     "data": """
@@ -215,6 +248,7 @@ define ->
     """,
     # "label": "Percentage of individuals\nreporting not having enough money for health care (%)"
     "label": "Percentage of Population\nReporting They Cannot Afford Healthcare",
+    "attribution": "Source: Gallup daily tracking poll"
   }, {
     "url": "/health/2",
     "heading": "Healthcare and HIV",
@@ -222,8 +256,9 @@ define ->
       { value: "#0075CA", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
-    "type": "bar-chart",
-    "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    # "type": "bar-chart",
+    "type": "composite",
+    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "benchmark": "All Individuals ",
     "benchmark-orientation": ["end", "start"],
@@ -241,6 +276,7 @@ define ->
     """,
     # "label": "Percentage of individuals\nover age 18 with health insurance (%)"
     "label": "Percentage of Adult Population\nwith Health Insurance",
+    "attribution": "Source: Gallup daily tracking poll"
   }, {
     "url": "/health/3",
     "heading": "Healthcare and HIV",
@@ -249,6 +285,7 @@ define ->
       { value: "#D1D1D4", label: "All population" }
     ],
     "type": "bar-chart",
+    "bounds": [0, 60],
     "rows": ["Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["MSM* population", "All population"]
     "data": """
@@ -261,9 +298,9 @@ define ->
     """,
     # "label": "HIV diagnoses by region, rates per 100k\n4 year average"
     "label": "Current HIV Diagnoses by Region,\nRates per 100k",
+    "attribution": "Source: CDC"
   }, {
     "url": "/conclusion/1",
     "type": "conclusion",
-    "quote": "In states where legal climates are less\nsupportive of LGBT people, social stigma\ntoward them is also higher.\n\nSocial and legal climates are generally\nintertwined such that supportive laws and\nsocial acceptance run hand in hand.",
-    "attribution": "–Andrew Flores,\nWilliams Public Opinion\nProject Director"
+    "quote": "In states where legal climates are less\nsupportive of LGBT people, social stigma\ntoward them is also higher.\n\nSocial and legal climates are generally\nintertwined such that supportive laws and\nsocial acceptance run hand in hand.\n\n–Andrew Flores,\nWilliams Public Opinion\nProject Director"
   }]
