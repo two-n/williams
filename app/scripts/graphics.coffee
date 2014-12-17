@@ -55,6 +55,7 @@ define ->
     "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
     "type": "map",
     "split": true,
+    "showProtection": true,
     "mode": "bubble",
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },

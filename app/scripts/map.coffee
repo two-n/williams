@@ -280,12 +280,14 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
 
   bubbleTimeout = null
 
-  isSOProtected = (id) ->
+  isSOProtected = (id, _currentTime) ->
+    _currentTime = _currentTime or currentTime
     if not sogiDates[index[id].fullName]? then return false
     if sogiDates[index[id].fullName].SO?
-      if sogiDates[index[id].fullName].SO <= currentTime
+      if sogiDates[index[id].fullName].SO <= _currentTime
         return true
     false
+
 
   isSOGIProtected = (id) ->
     if not sogiDates[index[id].fullName]? then return false
@@ -293,6 +295,13 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       if sogiDates[index[id].fullName].SOGI <= currentTime
         return true
     false
+
+  #destroy non-states and sort states by SO protection
+  stateGeometries = stateGeometries.filter (state) -> index[state.id]?
+  stateGeometries.sort (a,b) ->
+    aStatus = isSOProtected(a.id, 2014)
+    bStatus = isSOProtected(b.id, 2014)
+    aStatus - bStatus
 
   modes = {
     protection : {
@@ -424,27 +433,6 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         "class" : modes[mode].countyClass
         "fill-opacity" : (d,i) -> myScale[ethnicity](d.entry?[ethnicity])
 
-    #backdrop construction
-    nationBackdrop = d3.select("path.nationBackdrop")
-    if nationBackdrop.empty()
-      nationBackdrop = g.append("path").datum(topojson.mesh(vectorMap, vectorMap.objects.states, (a, b) -> return a is b))
-        .attr
-          "d" : path
-          "class" : "nationBackdrop"
-    nationBackdrop
-      .attr
-        "display" : if mode isnt "ethnicity" then "none" else "inherit"
-
-    stateBackdrop = d3.select("path.stateBackdrop")
-    if stateBackdrop.empty()
-      stateBackdrop = g.append("path").datum(topojson.mesh(vectorMap, vectorMap.objects.states, (a, b) -> return a isnt b))
-        .attr
-          "d" : path
-          "class" : "stateBackdrop"
-    stateBackdrop
-      .attr
-        "display" : if mode isnt "ethnicity" then "none" else "inherit"
-
     #state definitions
     # g = @.selectAll("g").data([null])
     # g.enter().append("g").attr("id" : "vectorMap").attr("transform","translate(100,0)")
@@ -464,8 +452,10 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         "id" : (d) -> d.id
         "class" : (d, i) ->
           d3.functor(modes[mode].stateClass)(d, i) + (if props.fill? then " #{ props.fill }-fill" else "")
-        # "stroke": modes[mode].stroke
         "vector-effect": "non-scaling-stroke"
+      .style
+        "stroke": (d) ->
+          if props.showProtection and isSOProtected(d.id,2014) then "black"
       .on "mouseenter", (d) =>
         if mode in ["bubble", "silhouette"] then return
         if bubbleTimeout?

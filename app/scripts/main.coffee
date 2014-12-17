@@ -263,6 +263,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
           map.call chart_sel, _.extend {},
             size: size
             ethnicity: state.ethnicity
+            showProtection: props.showProtection
             split: props.split
             mode: props.mode
             bubbleColor: props.colors?[1].value
