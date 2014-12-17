@@ -244,7 +244,7 @@ $header-background-color: rgba($background-color, 0.95);
     text-align: center;
     padding-top: 10px;
     padding-bottom: 23px;
-    background: $header-background-color;
+    background: rgba($background-color, 0.9);
     z-index: 10;
     &.cover {
       z-index: -1;
@@ -349,15 +349,18 @@ $visualization-margin-left: 60px;
       width: 97px;
       padding: 2px 6px 6px;;
       font-size: 10px;
-      line-height: 10px;
+      line-height: 12px;
       font-weight: bold;
       letter-spacing: .03em;
 
-      &.timeline, &.pies {
+      &.pies {
+        width: 210px;
+      }
+      &.timeline {
         width: 182px;
       }
       &.map {
-        width: 147px;
+        width: 157px;
       }
       &.msm {
         width: 136px;
@@ -382,7 +385,8 @@ $visualization-margin-left: 60px;
         margin: 3px 0 6px;
       }
       .label {
-        margin-left: 9px;
+        margin-left: 20px;
+        margin-top: -1px;
       }
     }
 
@@ -449,10 +453,13 @@ $visualization-margin-left: 60px;
 }
 
 .credit-two-n {
-  position: absolute;
-  left: 0;
-  bottom: 28px;
+  position: fixed;
+  left: 40px;
+  bottom: 0;
   width: 280px;
+  height: 68px;
+  padding-top: 15px;
+  background: rgba($header-background-color, 0.9);
 
   @include font-1;
   font-weight: normal;
@@ -936,10 +943,10 @@ $_d: 600ms;
       width: 144px;
       height: 77px;
 
-      opacity: 0.33;
+      opacity: 0.35;
       transition: opacity 150ms;
       &:hover {
-        opacity: .6;
+        opacity: .55;
       }
     }
   }
@@ -951,16 +958,15 @@ $_d: 600ms;
     transition: opacity 150ms;
     a {
       display: inline-block;
-      // background: url(assets/williams_logo.png) -18px -14px;
       background: url(assets/williams-institute_new.png) -18px;
       background-size: 159px;  // 637px / 4
       width: 123px;
       height: 57px;
 
-      opacity: 0.5;
+      opacity: 0.45;
       transition: opacity 150ms;
       &:hover {
-        opacity: 0.8;
+        opacity: 0.75;
       }
     }
   }

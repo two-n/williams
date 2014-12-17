@@ -346,9 +346,9 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     toRet.name = index[d.id].fullName
     toRet.subSpanText = []
     if isSOProtected(d.id)
-      toRet.subSpanText.push {label: "SO Protection", value: "Y", bold: "false", bold: false}
+      toRet.subSpanText.push {label: "Sexual Orientation Protection", value: "Y", bold: "false", bold: false}
     if isSOGIProtected(d.id)
-      toRet.subSpanText.push {label: "GI Protection", value: "Y", bold: "false", bold: false}
+      toRet.subSpanText.push {label: "Gender Identity Protection", value: "Y", bold: "false", bold: false}
     toRet.stroke = "#FF0055"
     [toRet]
 

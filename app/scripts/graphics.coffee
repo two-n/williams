@@ -28,8 +28,8 @@ define ->
     "url": "/introduction/2",
     "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
     "colors": [
-      { value: "#FF0055", label: "SOGI protection*", alpha: 1},
-      { value: "#FF7D96", label: "SO protection*", alpha: 1 },
+      { value: "#FF0055", label: "Sexual Orientation and Gender Identity protection", alpha: 1},
+      { value: "#FF7D96", label: "Sexual Orientation protection", alpha: 1 },
       { value: "#FFFFFF", label: "No protection", alpha: 1 }
     ],
     "type": "map"
@@ -41,8 +41,8 @@ define ->
     "url": "/introduction/3",
     "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
     "colors": [
-      { value: "#FF0055", label: "SOGI protection*", alpha: 1 },
-      { value: "#FF7D96", label: "SO protection*", alpha: 1},
+      { value: "#FF0055", label: "Sexual Orientation and Gender Identity protection", alpha: 1},
+      { value: "#FF7D96", label: "Sexual Orientation protection", alpha: 1 },
       { value: "#FFFFFF", label: "No protection", alpha: 1 }
     ],
     "type": "map"
@@ -92,8 +92,8 @@ define ->
     "url": "/ethnicity/2",
     "heading": "Midwestern, Mountain and Southern states\nare home for a majority of LGBT people."
     "colors": [
-      { label: "LGBT Ethnicity\nDistribution", value: ["#FF9C00", "#FFAE48", "#FCBF75", "#F5D6B3"] },
-      { label: "Non-LGBT Ethnicity\nDistribution", value: ["#B4B3B9", "#C5C5C9", "#D1D1D4", "#E2E2E3"] }
+      { label: "LGBT Race & Ethnicity Distribution", value: ["#FF9C00", "#FFAE48", "#FCBF75", "#F5D6B3"] },
+      { label: "Non-LGBT Race & Ethnicity Distribution", value: ["#B4B3B9", "#C5C5C9", "#D1D1D4", "#E2E2E3"] }
     ],
     "type": "pies",
     "pies": ["Pacific", "Mountain", "Midwest", "South", "Northeast"],
@@ -303,5 +303,5 @@ define ->
   }, {
     "url": "/conclusion/1",
     "type": "conclusion",
-    "quote": "In states where legal climates are less\nsupportive of LGBT people, social stigma\ntoward them is also higher.\n\nSocial and legal climates are generally\nintertwined such that supportive laws and\nsocial acceptance run hand in hand.\n\n–Andrew Flores,\nWilliams Public Opinion\nProject Director"
+    "quote": "In states where legal climates are less\nsupportive of LGBT people, social stigma\ntoward them is also higher.\n\nSocial and legal climates are generally\nintertwined such that supportive laws and\nsocial acceptance run hand in hand.\n\n–Andrew R. Flores,\nWilliams Institute,\nPublic Opinion Project Director"
   }]

@@ -37,7 +37,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     currentChapter = props.url.match(/\/([^\/]+)\//)[1]
 
     d3.selectAll(".cover.chapter, .conclusion.chapter")
-      .style "height", window.innerHeight - 30 + "px"
+      .style "min-height", window.innerHeight - 30 + "px"
 
     # story
     story_sel = d3.select(".story")
