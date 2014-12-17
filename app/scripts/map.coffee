@@ -484,12 +484,8 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         )
     else
       g.selectAll(".region")
+        .transition().duration(0)
         .attr("transform", (d) =>
-          if split
-            x = regionByName[d].offset[0]
-            y = regionByName[d].offset[1]
-            "translate(#{x},#{y})"
-          else
             "translate(0,0)"
         )
 
