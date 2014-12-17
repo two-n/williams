@@ -668,6 +668,20 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     regionPercent.exit().remove()
 
 
+    interactivityInstruction = calloutSurface.select(".interactivityInstruction")
+    if interactivityInstruction.empty()
+      interactivityInstruction = calloutSurface.append("text")
+        .attr
+          "class": "interactivityInstruction"
+        .text "Hover to explore"
+    interactivityInstruction
+      .attr
+        "transform": "translate(#{props.size[0] * 0.45},#{props.size[1] * 0.14})"
+        "display": if mode is "protection" or mode is "ethnicity" then "inherit" else "none"
+
+    console.log mode, interactivityInstruction.attr "display"
+
+
     #timescale
     timeScale.range ([0,props.size[0] * 0.5])
     timeAxis = calloutSurface.select(".timeAxis")
@@ -744,6 +758,6 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[5]}+", alpha: 1}
     return colors.reverse()
 
-  map.deps = ["#vectorMap", ".timeAxis", ".calloutSurface"]
+  map.deps = ["#vectorMap", ".timeAxis", ".calloutSurface", ".interactivityInstruction"]
 
   map

@@ -584,6 +584,12 @@ $_d: 600ms;
   }
 }
 
+.interactivityInstruction {
+  stroke: none;
+  fill: nth($colors, 6);
+  @include font-2;
+  font-size: 12px;
+}
 
 .timeAxis {
   fill: none;
@@ -615,8 +621,8 @@ $_d: 600ms;
 
   .sliderInstruction {
     stroke: none;
-    fill: nth($colors, 4);
-    @include font-1;
+    fill: nth($colors, 6);
+    @include font-2;
     font-size: 12px;
   }
 }

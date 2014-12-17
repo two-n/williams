@@ -10,6 +10,7 @@ define ["d3"], (d3) ->
       ".label"
       "#vectorMap"
       ".unscaledRegionOverlay"
+      ".interactivityInstruction"
       ".calloutSurface"
       ".timeAxis"
       ".quote"
