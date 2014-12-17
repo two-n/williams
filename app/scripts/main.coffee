@@ -162,6 +162,12 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     constructLegend = () ->
       colors = map.getColorsForEthnicity(state.ethnicity)
 
+      protectedSel = d3.select(".visualization .header .countySecondaryChartLegend").selectAll(".protected")
+        .data([null]).enter().append("div").attr("class","protected")
+      protectedSel.append("div").attr("class","value")
+      protectedSel.append("div").attr("class","label")
+        .text "Protected states"
+
       legendSel = d3.select(".visualization .header .legend").selectAll(".color")
         .data(colors)
       legendSel.enter().append("div").attr("class", "color")
@@ -199,6 +205,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     else
       sel.remove()
       d3.select(".header").select("div.dropdownLabel").remove()
+      d3.select(".visualization .header .countySecondaryChartLegend").selectAll(".protected").remove()
 
     sel.call dropdown().on "select", (d) =>
       container_sel = d3.select(".chart-container")

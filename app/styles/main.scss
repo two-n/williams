@@ -312,9 +312,35 @@ $visualization-margin-left: 60px;
     @include font-1;
     font-size: 17px;
 
-    .chartNotation {
+    .countySecondaryChartNotation {
       float: right;
 
+      .countySecondaryChartLegend {
+        text-transform: uppercase;
+        color: nth($colors, 3);
+        width: 97px;
+        padding: 2px 6px 6px;;
+        font-size: 10px;
+        line-height: 10px;
+        font-weight: bold;
+        letter-spacing: .03em;
+      }
+
+      .protected {
+        .value {
+          display: inline-block;
+          width: 11px;
+          height: 11px;
+          margin-bottom: 2px;
+          background: none;
+          border: 1px nth($colors, 5) solid;
+        }
+      }
+
+    }
+
+    .chartNotation {
+      float: right;
     }
 
     .legend {
