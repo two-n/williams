@@ -58,7 +58,7 @@ define ->
     "mode": "bubble",
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },
-      { value: "#FF0055", label: "LGBT population" }
+      { value: "#FF0055", label: "Accepting social climate" }
     ],
     "percentageByRegion": {
       "Northeast": 71,
@@ -76,7 +76,7 @@ define ->
     "mode": "bubble",
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },
-      { value: "#FF9C00", label: "Accepting social climate" }
+      { value: "#FF9C00", label: "LGBT population" }
     ],
     "percentageByRegion": {
       "Pacific": 17,
@@ -240,11 +240,11 @@ define ->
       All Individuals ,26,18,1.4515104577
       21 Protective States,23,16,1.45
       29 Non-Protective States,28,19,1.47
-      Northeast,22,15,1.5
-      Midwest,26,17,1.57
-      South,28,20,1.38
-      Mountain,27,17,1.57
-      Pacific,25,17,1.41
+      Northeast,22%,15%,1.5
+      Midwest,26%,17%,1.57
+      South,28%,20%,1.38
+      Mountain,27%,17%,1.57
+      Pacific,25%,17%,1.41
     """,
     # "label": "Percentage of individuals\nreporting not having enough money for health care (%)"
     "label": "Percentage of Population\nReporting They Cannot Afford Healthcare",
