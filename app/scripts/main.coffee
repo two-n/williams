@@ -146,12 +146,12 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     share_url = encodeURIComponent(url)
     body_text = "While the nation seems on the verge of full marriage equality, most states still have not adopted non-discrimination laws protecting LGBT people.  This interactive explores the increased disparities that LGBT people face who live in the 29 states without state sexual orientation non-discrimination laws."
     d3.select(".visualization .header .twitter")
-      .attr("class", "twitter" + if i then " icon-t#{ i }" else "")
+      .attr("class", "twitter" + if i then " icon-tt#{ i }" else "")
       .attr "href",
         "http://twitter.com/share?text=#{ share_text }&url=#{ share_url }"
 
     d3.select(".visualization .header .fb")
-      .attr("class", "fb" + if i then " icon-f#{ i }" else "")
+      .attr("class", "fb" + if i then " icon-ff#{ i }" else "")
       .attr "href",
         "http://www.facebook.com/sharer.php?u=#{ share_url }&t=#{ share_text }"
 
