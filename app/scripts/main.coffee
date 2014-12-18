@@ -142,19 +142,21 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     # share buttons
     i = d3.selectAll(".chapter").data().indexOf(currentChapter)
     share_text = encodeURIComponent(document.title)
-    share_url = encodeURIComponent(document.URL)
+    url = if props.type is "conclusion" then document.URL.split("#")[0] else document.URL
+    share_url = encodeURIComponent(url)
     body_text = "While the nation seems on the verge of full marriage equality, most states still have not adopted non-discrimination laws protecting LGBT people.  This interactive explores the increased disparities that LGBT people face who live in the 29 states without state sexual orientation non-discrimination laws."
     d3.select(".visualization .header .twitter")
-      .style "background",
-        if i then "url(assets/icons/t#{ i }.png)" else "none"
+      .attr("class", "twitter" + if i then " icon-t#{ i }" else "")
       .attr "href",
         "http://twitter.com/share?text=#{ share_text }&url=#{ share_url }"
 
     d3.select(".visualization .header .fb")
+      .attr("class", "fb" + if i then " icon-f#{ i }" else "")
       .attr "href",
         "http://www.facebook.com/sharer.php?u=#{ share_url }&t=#{ share_text }"
 
     d3.select(".visualization .header .email")
+      .attr("class", "email" + if i then " icon-ee#{ i }" else "")
       .attr "href",
         "mailto:?subject=#{ share_text }&amp;body=#{ share_text }\n#{ share_url }\n\n#{ body_text }"
 

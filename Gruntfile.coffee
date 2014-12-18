@@ -74,6 +74,15 @@ module.exports = (grunt) ->
           ext: ".js"
         ]
 
+    sprite:
+      all:
+        src: "app/img/*.png",
+        dest: ".tmp/assets/sprite.png",
+        destCss: ".tmp/sprite.css"
+        algorithm: "top-down"
+        algorithmOpts:
+          sort: false
+
     sass:
       options:
         sourcemap: false
@@ -123,12 +132,6 @@ module.exports = (grunt) ->
         src: ".htaccess"
         dest: ".tmp/"
 
-    # sprite:
-    #   all:
-    #     src: "app/assets/icons/*.png",
-    #     dest: "destination/of/spritesheet.png",
-    #     destCss: "destination/of/sprites.css"
-
     rsync:
       options:
         args: ["-avz"]
@@ -162,6 +165,7 @@ module.exports = (grunt) ->
     "copy:assets"
     "copy:index"
     "copy:source"
+    "sprite"
     "sass:build"
     "autoprefixer:build"
     "coffee:build"
@@ -178,6 +182,7 @@ module.exports = (grunt) ->
     "copy:assets"
     "copy:index"
     "copy:htaccess"
+    "sprite"
     "sass:build"
     "autoprefixer:build"
     "coffee:production"
