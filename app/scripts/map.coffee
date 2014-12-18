@@ -9,7 +9,8 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
   scale = 1
 
   projection = d3.geo.albersUsa().scale(1280).translate([960/2,600/2])
-  circleScale = d3.scale.sqrt().domain([0,100]).range([0,200])
+  circleScale = d3.scale.linear().domain([0,50]).range([0,200])
+
 
   # tempData = null
   # d3.csv("./assets/census_race.csv",
@@ -366,12 +367,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     split = props.split
     mode = props.mode
 
-    # g =  @.selectAll("g#vectorMap")
-    # if g.empty()
-    #   g = @.append("g").attr("id" : "vectorMap")
-
-    # horizonalPadding = 0.1 * props.size[0]
-    # props.size[0] = props.size[0] - horizonalPadding
+    circleScale.domain([0, props.bubbleTopBound ? 50])
 
     if props.scaling is "cover"
       verticalPadding = 90
@@ -522,7 +518,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           .attr
             class: 'circle-dashed'
             d: "M0 0 A0 0 0 1 0 0 0"
-            stroke: 'gray'
+            # stroke: 'gray'
             fill: 'none'
             opacity: 0
             'stroke-dasharray': '5 7'
@@ -531,13 +527,14 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           .append('text')
           .attr
             class: 'circle-dashed-label'
-            fill: 'gray'
+            # fill: 'gray'
             stroke: 'none'
             dy: ".07em"
             opacity: 0
             "font-family": "'Libre Baskerville', serif"
             "font-size": "22px"
             "text-anchor": 'middle'
+
     regionBubble
       .attr
         "transform": (d) ->
@@ -545,20 +542,21 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
           "translate(#{centerPt})"
       .each (d, i) ->
         # The solid circle
+        solidValue =
+          if props.solidCircle?
+            parseFloat(props.percentageByRegion[d][props.solidCircle])
+          else
+            props.percentageByRegion[d]
         d3.select(@).select('.circle-solid')
           .transition().delay((d) -> 0.0 + 98*(5-i))
           .attr
             "fill": props.bubbleColor
           .attr
-            "r": circleScale(
-              if props.solidCircle?
-                parseFloat(props.percentageByRegion[d][props.solidCircle])
-              else
-                props.percentageByRegion[d]
-            )
+            "r": circleScale(solidValue)
 
         dashedValue = parseFloat(props.percentageByRegion[d][props.dashedCircle])
         d3.select(@).select('.circle-dashed')
+          .classed "light", d3.hcl(props.bubbleColor).l < 60 and solidValue > dashedValue
           .transition().delay((d) -> 0.0 + 98*(5-i))
             .attr
               opacity: if isNaN(dashedValue) then 0 else 1
@@ -583,6 +581,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
                 "M#{x0} #{y0} A#{r} #{r} 0 1 0 #{x1} #{y1}"
 
         d3.select(@).select('.circle-dashed-label')
+          .classed "light", d3.hcl(props.bubbleColor).l < 60 and solidValue > dashedValue
           .transition().delay((d) -> 0.0 + 98*(5-i))
             .attr
               opacity: if isNaN(dashedValue) then 0 else 1

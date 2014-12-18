@@ -459,7 +459,7 @@ $visualization-margin-left: 60px;
   width: 280px;
   height: 68px;
   padding-top: 15px;
-  background: rgba($header-background-color, 0.9);
+  background: rgba($header-background-color, 0.95);
 
   @include font-1;
   font-weight: normal;
@@ -468,6 +468,11 @@ $visualization-margin-left: 60px;
   letter-spacing: .03em;
   color: nth($colors, 3);
   vertical-align: top;
+
+  &:not(.visible) {
+    display: none;
+    opacity: 0;
+  }
 
   .two-n-logo {
     background: url(assets/2n_logo.png) -11px -11px;
@@ -969,5 +974,21 @@ $_d: 600ms;
         opacity: 0.75;
       }
     }
+  }
+}
+
+
+.circle-dashed {
+  stroke: #666;
+  transition: stroke 450ms;
+  &.light {
+    stroke: #d8d8d8;
+  }
+}
+.circle-dashed-label {
+  fill: #666;
+  transition: fill 450ms;
+  &.light {
+    fill: #d8d8d8;
   }
 }

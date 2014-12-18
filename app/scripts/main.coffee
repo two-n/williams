@@ -239,7 +239,8 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       .classed "visible", props.type in ["cover", "conclusion"]
     logos_sel.select(".williams-logo")
       .classed "visible", props.type in ["cover", "conclusion"]
-
+    d3.select(".credit-two-n")
+      .classed "visible", props.type is "conclusion"
 
     # chart
     chart_sel = d3.select(".chart")
@@ -269,6 +270,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
             split: props.split
             mode: props.mode
             bubbleColor: props.colors?[1].value
+            bubbleTopBound: props.bubbleTopBound
             _.pick props, "percentageByRegion", "colors"
         when "bar-chart"
           barChart.call chart_sel, _.extend {},
@@ -277,7 +279,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
         when "composite"
           composite.call chart_sel, _.extend {},
             { size }
-            _.pick props, "bars", "rows", "data", "label", "colors", "bounds"
+            _.pick props, "bars", "rows", "data", "label", "colors", "bounds", "bubbleTopBound"
         when "timeline"
           timeline.call chart_sel, _.extend {},
             { size }

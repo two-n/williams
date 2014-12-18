@@ -9,7 +9,6 @@ define ["d3", "underscore", "./map", "./bar-chart"], (d3, _, map, barChart) ->
 
     map.call d3.select(".chart"),
       size: [size[0], size[1] - bars_height]
-      # size: size
       split: true
       mode: "bubble"
       scaling: "composite"
@@ -17,6 +16,7 @@ define ["d3", "underscore", "./map", "./bar-chart"], (d3, _, map, barChart) ->
       bubbleColor: props.colors[0].value
       solidCircle: "LGBT"
       dashedCircle: "Non-LGBT"
+      bubbleTopBound: props.bubbleTopBound
 
     barChart.call d3.select(".chart"), _.extend {},
       size: [size[0], size[1]]

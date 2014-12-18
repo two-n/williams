@@ -56,6 +56,7 @@ define ->
     "type": "map",
     "split": true,
     "showProtection": true,
+    "bubbleTopBound": 100,
     "mode": "bubble",
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },
@@ -75,6 +76,7 @@ define ->
     "type": "map",
     "split": true,
     "mode": "bubble",
+    "bubbleTopBound": 35,
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },
       { value: "#FF9C00", label: "LGBT population" }
@@ -230,7 +232,6 @@ define ->
       { value: "#0075CA", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
-    # "type": "bar-chart",
     "type": "composite",
     "bounds": [0, 30],
     # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
@@ -257,8 +258,8 @@ define ->
       { value: "#0075CA", label: "LGBT" },
       { value: "#D1D1D4", label: "Non-LGBT" }
     ],
-    # "type": "bar-chart",
     "type": "composite",
+    "bubbleTopBound": 150,
     # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "benchmark": "All Individuals ",
