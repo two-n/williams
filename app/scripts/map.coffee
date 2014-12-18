@@ -664,18 +664,18 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     regionPercent.exit().remove()
 
 
-    interactivityInstruction = calloutSurface.select(".interactivityInstruction")
-    if interactivityInstruction.empty()
-      interactivityInstruction = calloutSurface.append("text")
-        .attr
-          "class": "interactivityInstruction"
-        .text "Hover to explore"
-    interactivityInstruction
-      .attr
-        "transform": "translate(#{props.size[0] * 0.45},#{props.size[1] * 0.14})"
-        "display": if mode is "protection" or mode is "ethnicity" then "inherit" else "none"
+    # interactivityInstruction = calloutSurface.select(".interactivityInstruction")
+    # if interactivityInstruction.empty()
+    #   interactivityInstruction = calloutSurface.append("text")
+    #     .attr
+    #       "class": "interactivityInstruction"
+    #     .text "Hover to explore"
+    # interactivityInstruction
+    #   .attr
+    #     "transform": "translate(#{props.size[0] * 0.45},#{props.size[1] * 0.14})"
+    #     "display": if mode is "protection" or mode is "ethnicity" then "inherit" else "none"
 
-    console.log mode, interactivityInstruction.attr "display"
+    # console.log mode, interactivityInstruction.attr "display"
 
 
     #timescale

@@ -201,11 +201,13 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
           .text "Select group"
         sel = d3.select(".visualization .header").append("div")
           .classed("dropdown", true)
-        constructLegend()
+      constructLegend()
     else
       sel.remove()
       d3.select(".header").select("div.dropdownLabel").remove()
       d3.select(".visualization .header .countySecondaryChartLegend").selectAll(".protected").remove()
+
+    
 
     sel.call dropdown().on "select", (d) =>
       container_sel = d3.select(".chart-container")
