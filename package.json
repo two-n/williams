@@ -12,6 +12,7 @@
     "grunt-contrib-sass": "~0.7.3",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-rsync": "^0.6.2",
-    "load-grunt-tasks": "^0.4.0"
+    "load-grunt-tasks": "^0.4.0",
+    "grunt-spritesmith": "^3.1.1"
   }
 }

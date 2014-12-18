@@ -20,16 +20,21 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
   currentByChapter = {}
 
   route = (path) ->
-    if state.path is path then return
-    state.path = path
-
-    # TODO see http://stackoverflow.com/a/23924886 -- test iOS Chrome
-    window.location.replace("#" + path)
+    raw_path = path
 
     path or= "/cover"
     match = path.match(/\/([^\/]+)\/?([^\/]+)?/)
     currentByChapter[match[1]] = index = match[2] ? currentByChapter[match[1]] ? 1
     if not ~path.slice(1).indexOf("\/") then path += "/" + index
+
+    if state.path is path then return
+    state.path = path
+
+    url_path = if index > 1 then path else raw_path
+
+    # TODO see http://stackoverflow.com/a/23924886 -- test iOS Chrome
+    window.location.replace("#" + url_path)
+
     render _.findWhere graphics, url: path
     ga 'send', 'pageview', path
 
@@ -42,6 +47,10 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
 
     d3.selectAll(".cover.chapter, .conclusion.chapter")
       .style "min-height", window.innerHeight - 30 + "px"
+
+    document.title = "The LGBT Divide" +
+      (if props.label? then ": " + props.label.replace("\n", " ") else "") +
+      " | Williams Institute"
 
     # story
     story_sel = d3.select(".story")
@@ -130,13 +139,24 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     heading_sel.text (d) -> d or " "
     heading_sel.exit().remove()
 
+    # share buttons
     i = d3.selectAll(".chapter").data().indexOf(currentChapter)
-    d3.select(".visualization .header .tweet")
+    share_text = encodeURIComponent(document.title)
+    share_url = encodeURIComponent(document.URL)
+    body_text = "While the nation seems on the verge of full marriage equality, most states still have not adopted non-discrimination laws protecting LGBT people.  This interactive explores the increased disparities that LGBT people face who live in the 29 states without state sexual orientation non-discrimination laws."
+    d3.select(".visualization .header .twitter")
       .style "background",
         if i then "url(assets/icons/t#{ i }.png)" else "none"
       .attr "href",
-        "http://twitter.com/share?text=#{encodeURIComponent(document.title)}&url=#{encodeURIComponent(document.URL)}"
+        "http://twitter.com/share?text=#{ share_text }&url=#{ share_url }"
 
+    d3.select(".visualization .header .fb")
+      .attr "href",
+        "http://www.facebook.com/sharer.php?u=#{ share_url }&t=#{ share_text }"
+
+    d3.select(".visualization .header .email")
+      .attr "href",
+        "mailto:?subject=#{ share_text }&amp;body=#{ share_text }\n#{ share_url }\n\n#{ body_text }"
 
     # legendSel = d3.select(".visualization .header .legend").selectAll(".color")
     # if not legendSel.empty()
@@ -236,6 +256,16 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
           .attr "r", 6
         .transition().duration(600).ease("cubic-out")
           .attr "r", 4
+
+    if props.url is "/introduction/4"
+      protectedSel = d3.select(".visualization .header .countySecondaryChartLegend").selectAll(".protected")
+        .data([null]).enter().append("div").attr("class","protected")
+      protectedSel.append("div").attr("class","value")
+      protectedSel.append("div").attr("class","label")
+        .text "Protected states"
+    else if props.url is "/ethnicity/3" then
+    else
+      d3.select(".visualization .header .countySecondaryChartLegend").selectAll(".protected").remove()
 
     # logos
     logos_sel = d3.select(".logos")

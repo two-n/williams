@@ -2,7 +2,8 @@ define ->
   [{
     "url": "/cover/1",
     "heading": "A Data Portrait of LGBT People\nin the Midwest, Mountain, and Southern States",
-    "type": "cover"
+    "type": "cover",
+    "label": "A Data Portrait of LGBT People\nin the Midwest, Mountain, and Southern States"
   }, {
     "url": "/introduction/1",
     "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
@@ -285,7 +286,7 @@ define ->
     "url": "/health/3",
     "heading": "Healthcare and HIV",
     "colors": [
-      { value: "#0075CA", label: "MSM* population" },
+      { value: "#0075CA", label: "MSM population" },
       { value: "#D1D1D4", label: "All population" }
     ],
     "type": "bar-chart",

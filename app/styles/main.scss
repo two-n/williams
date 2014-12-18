@@ -319,21 +319,28 @@ $visualization-margin-left: 60px;
         text-transform: uppercase;
         color: nth($colors, 3);
         width: 97px;
-        padding: 2px 6px 6px;;
+        padding: 2px 6px 6px;
         font-size: 10px;
-        line-height: 10px;
+        line-height: 12px;
         font-weight: bold;
         letter-spacing: .03em;
       }
 
       .protected {
+        margin-top: 4px;
         .value {
+          float: left;
           display: inline-block;
           width: 11px;
           height: 11px;
           margin-bottom: 2px;
           background: none;
           border: 1px nth($colors, 5) solid;
+        }
+        .label {
+          margin-left: 18px;
+          position: relative;
+          top: -2px;
         }
       }
 
@@ -395,19 +402,21 @@ $visualization-margin-left: 60px;
       height: 40px;
       float: right;
       text-align: right;
-
-      .tweet {
-        transition: background 600ms, opacity 100ms;
+      a {
         display: inline-block;
-        width: 22px;
-        height: 22px;
+        transition: background 600ms, opacity 100ms;
+        z-index: 100;
+        position: relative;
+        cursor: pointer;
         opacity: 1;
         &:hover {
           opacity: 0.67;
         }
-        z-index: 100;
-        position: relative;
-        cursor: pointer;
+      }
+
+      .twitter {
+        width: 22px;
+        height: 22px;
       }
     }
   }
@@ -467,20 +476,24 @@ $visualization-margin-left: 60px;
   line-height: 16px;
   letter-spacing: .03em;
   color: nth($colors, 3);
-  vertical-align: top;
 
   &:not(.visible) {
     display: none;
     opacity: 0;
   }
 
+  span {
+    float: left;
+  }
+
   .two-n-logo {
+    float: left;
     background: url(assets/2n_logo.png) -11px -11px;
     width: 25px;
     height: 25px;
     display: inline-block;
     margin-top: -3px;
-    margin-left: 3px;
+    margin-left: 6px;
 
     opacity: 0.33;
     transition: opacity 150ms;
@@ -933,6 +946,7 @@ $_d: 600ms;
 
 
 .logos {
+  @include clear;
   position: fixed;
   bottom: 0;
   right: 0;
@@ -945,7 +959,9 @@ $_d: 600ms;
   }
 
   .credit-suisse-logo {
+    @include clear;
     display: inline-block;
+    float: left;
     padding-right: 21px;
     @include font-1;
     font-weight: normal;
@@ -953,9 +969,13 @@ $_d: 600ms;
     line-height: 58px;
     letter-spacing: .03em;
     color: nth($colors, 3);
-    vertical-align: top;
     transition: opacity 150ms;
+    span {
+      float: left;
+    }
     a {
+      float: left;
+      margin-left: 4px;
       display: inline-block;
       background: url(assets/credit_suisse.png) -20px -11px;
       width: 144px;
@@ -972,8 +992,9 @@ $_d: 600ms;
   .williams-logo {
     display: inline-block;
     padding-right: 32px;
-    margin-top: -3px;
+    margin-top: -2px;
     transition: opacity 150ms;
+    float: left;
     a {
       display: inline-block;
       background: url(assets/williams-institute_new.png) -18px;

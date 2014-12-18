@@ -123,6 +123,12 @@ module.exports = (grunt) ->
         src: ".htaccess"
         dest: ".tmp/"
 
+    # sprite:
+    #   all:
+    #     src: "app/assets/icons/*.png",
+    #     dest: "destination/of/spritesheet.png",
+    #     destCss: "destination/of/sprites.css"
+
     rsync:
       options:
         args: ["-avz"]

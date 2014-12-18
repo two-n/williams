@@ -741,7 +741,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     handle.attr("transform", "translate(#{timeScale(currentTime)}," + 0 + ")")
     timeAxis.attr
       "display": if mode is "protection" then "inherit" else "none"
-      "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.95})"
+      "transform": "translate(#{props.size[0] * 0.25},#{props.size[1] * 0.9})"
     timeAxis.select(".visibleAxis").call(d3.svg.axis()
       .scale(timeScale)
       .orient("bottom")
