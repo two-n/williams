@@ -1,6 +1,7 @@
 define ["d3"], (d3) ->
   (deps = [], callback) ->
     selectors = [
+      ".hook"
       ".rows"
       ".lines"
       ".pies"
@@ -20,6 +21,11 @@ define ["d3"], (d3) ->
     waste = @selectAll(selectors)
     waste = waste.filter(":not(#{ dep })") for dep in deps
     duration = 600
+
+    waste.filter(".hook")
+      .attr "fill-opacity": 1
+      .transition().duration(duration).ease("cubic-out")
+      .attr "fill-opacity": 0
 
     waste.filter("#vectorMap")
       .attr

@@ -35,7 +35,7 @@ define ->
     "type": "map"
     "split": false
     "mode": "protection"
-    "label": "Timeline Map of Employment Protection Policies",
+    "label": "States with Employment Non-discrimination Laws",
     "attribution": "Source: Williams Institute"
   }, {
     "url": "/introduction/3",
@@ -48,7 +48,8 @@ define ->
     "type": "map"
     "split": true
     "mode": "protection"
-    "label": "Timeline Map of Employment Protection Policies",
+    "label": "States with Employment Non-discrimination Laws",
+    # "label": "Timeline Map of Employment Protection Policies",
     "attribution": "Source: Williams Institute"
   }, {
     "url": "/introduction/4",
@@ -69,6 +70,7 @@ define ->
       "Mountain": 56,
       "Pacific": 68
     },
+    "label": "States with Employment Non-discrimination Laws",
     "attribution": "Source: Williams Institute"
   }, {
     "url": "/ethnicity/1",
@@ -88,7 +90,7 @@ define ->
       "South": 35,
       "Northeast": 19
     },
-    "label": "Percentage of LGBT Population per Region",
+    "label": "% of All LGBT Individuals in Each Region",
     "attribution": "Source: Gallup daily tracking poll"
   }, {
     "url": "/ethnicity/2",
@@ -287,6 +289,7 @@ define ->
       { value: "#D1D1D4", label: "All population" }
     ],
     "type": "bar-chart",
+    "isPercentage": false
     "bounds": [0, 60],
     "rows": ["Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["MSM* population", "All population"]

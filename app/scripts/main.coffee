@@ -17,6 +17,8 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
 
   prevChapter = null
 
+  currentByChapter = {}
+
   route = (path) ->
     if state.path is path then return
     state.path = path
@@ -25,8 +27,9 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     window.location.replace("#" + path)
 
     path or= "/cover"
-    if not ~path.slice(1).indexOf("\/")
-      path += "/1"
+    match = path.match(/\/([^\/]+)\/?([^\/]+)?/)
+    currentByChapter[match[1]] = index = match[2] ? currentByChapter[match[1]] ? 1
+    if not ~path.slice(1).indexOf("\/") then path += "/" + index
     render _.findWhere graphics, url: path
     ga 'send', 'pageview', path
 
@@ -34,7 +37,8 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     if not props? then return
     currentProps = props
 
-    currentChapter = props.url.match(/\/([^\/]+)\//)[1]
+    match = props.url.match(/\/([^\/]+)/)
+    currentChapter = match[1]
 
     d3.selectAll(".cover.chapter, .conclusion.chapter")
       .style "min-height", window.innerHeight - 30 + "px"
@@ -207,7 +211,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       d3.select(".header").select("div.dropdownLabel").remove()
       d3.select(".visualization .header .countySecondaryChartLegend").selectAll(".protected").remove()
 
-    
+
 
     sel.call dropdown().on "select", (d) =>
       container_sel = d3.select(".chart-container")
@@ -271,11 +275,11 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
             mode: props.mode
             bubbleColor: props.colors?[1].value
             bubbleTopBound: props.bubbleTopBound
-            _.pick props, "percentageByRegion", "colors"
+            _.pick props, "percentageByRegion", "colors", "label"
         when "bar-chart"
           barChart.call chart_sel, _.extend {},
             { size }
-            _.pick props, "bars", "rows", "data", "label", "colors", "benchmark", "benchmark-orientation", "bounds"
+            _.pick props, "bars", "rows", "data", "label", "colors", "benchmark", "benchmark-orientation", "bounds", "isPercentage"
         when "composite"
           composite.call chart_sel, _.extend {},
             { size }
@@ -292,13 +296,12 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
             .call chart_sel,
               _.extend ethnicity: state.hoverEthnicity,
                 { size }
-                _.pick props, "pies", "slices", "outer-slices", "data", "colors"
+                _.pick props, "pies", "slices", "outer-slices", "data", "colors", "label"
         when "conclusion"
           conclusion.call chart_sel,
             _.extend { size }, _.pick props, "quote", "attribution"
         when "cover"
           cover.call chart_sel, { size }
-
 
     prevChapter = currentChapter
 
@@ -332,7 +335,6 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
         .selectAll(".chapter")
         .each (d, i) ->
           return if found
-          console.log d, currentChapter
           cumulative += @offsetHeight / 2
           if cumulative > pageYOffset
             clearTimeout(window.switchChaptersTimeoutId) if window.switchChaptersTimeoutId?

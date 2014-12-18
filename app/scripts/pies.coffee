@@ -3,7 +3,7 @@ define ["d3", "hammer"], (d3, Hammer) ->
   dispatch = d3.dispatch "hover"
 
   pies = (props) ->
-    [width, height] = props.size
+    size = [width, height] = props.size
 
     index = _.indexBy d3.csv.parse(props.data), ""
     pies = props.pies.map (d) -> index[d]
@@ -195,6 +195,29 @@ define ["d3", "hammer"], (d3, Hammer) ->
 
     sel.exit().remove()
 
-  pies.deps = [".pies"]
+
+    ### Label ###
+    label_sel = @select(".label")
+    if label_sel.empty()
+      label_sel = @append("text").attr("class", "label")
+        .attr "fill-opacity": 0
+        .attr "transform", "translate(#{ size[0]/2 }, #{ size[1] - 60 })"
+    label_sel.transition().duration(600).ease("cubic-out")
+      .attr "transform", "translate(#{ size[0]/2 }, #{ size[1] - 60 })"
+      .attr "text-anchor", "middle"
+      .attr "y", 27
+      .attr "fill-opacity": 1
+    label_sel.transition("opacity").duration(150).ease("cubic-out")
+      .attr "opacity", if props.ethnicity? then 0 else 1
+    tspan_sel = label_sel.selectAll("tspan").data props.label?.split("\n") ? []
+    tspan_sel.enter().append("tspan")
+      .attr "dy", 15
+      .attr "x", 0
+    tspan_sel.text(String)
+    tspan_sel.exit().remove()
+    ######
+
+
+  pies.deps = [".pies", ".label"]
 
   d3.rebind pies, dispatch, "on"

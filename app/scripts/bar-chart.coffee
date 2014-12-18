@@ -30,7 +30,7 @@ define ["d3", "./callout"], (d3, callout) ->
       .orient("bottom")
       .ticks(4)
       # .tickValues(xScale.domain())
-      .tickFormat (d) -> if d > 0 then d + "%" else d
+      .tickFormat (d) -> if d > 0 and (props.isPercentage ? true) then d + "%" else d
       .tickPadding(8)
 
     barHeight = Math.floor yScale.rangeBand() / 3
@@ -217,24 +217,24 @@ define ["d3", "./callout"], (d3, callout) ->
         "fill-opacity": 1
         "stroke-opacity": 1
 
+    ### Label ###
     label_sel = @select(".label")
     if label_sel.empty()
       label_sel = @append("text").attr("class", "label")
         .attr "fill-opacity": 0
         .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
-    # label_sel.remove()
     label_sel.transition().duration(600).ease("cubic-out")
       .attr "transform", "translate(#{ margin.left + innerWidth/2 }, #{ margin.top + innerHeight })"
       .attr "text-anchor", "middle"
       .attr "y", 27
       .attr "fill-opacity": 1
-
-    tspan_sel = label_sel.selectAll("tspan").data props.label.split("\n"), Math.random
+    tspan_sel = label_sel.selectAll("tspan").data props.label?.split("\n") ? []
     tspan_sel.enter().append("tspan")
-      .text String
       .attr "dy", 15
       .attr "x", 0
+    tspan_sel.text(String)
     tspan_sel.exit().remove()
+    ######
 
   barChart.deps = [".rows", ".x-axis", ".benchmarks", ".label"]
 

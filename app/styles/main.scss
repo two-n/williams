@@ -531,6 +531,7 @@ $_d: 600ms;
 
   .state{
     fill: #FFF;
+    transition: fill 150ms;
     // stroke: nth($colors, 1);
     &.no {
       fill: #FFFFFF;
@@ -558,8 +559,10 @@ $_d: 600ms;
       stroke-width: 1px;
     }
     &.dark-fill {
-      fill: #D4D4D7;
-      stroke: #D4D4D7;
+      // fill: #D4D4D7;
+      // stroke: #D4D4D7;
+      fill: #E6E6E7;
+      stroke: #E6E6E7;
       stroke-width: 1px;
     }
   }
@@ -648,7 +651,7 @@ $_d: 600ms;
   color: nth($colors, 4);
   padding-left: 0px;
   padding-bottom: 4px;
-  padding-top: 90px;
+  padding-top: 60px;
 }
 
 .dropdown {
@@ -682,14 +685,15 @@ $_d: 600ms;
     z-index: 2;
     border-right: 1px solid nth($colors, 3);
     border-bottom: 1px solid nth($colors, 3);
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     transform: rotate(225deg);
+    transition: transform 100ms;
   }
   &.collapsed::after {
     color: inherit;
     transform: rotate(45deg);
-    top: 3px;
+    top: 4px;
   }
 
   .item {
@@ -916,6 +920,15 @@ $_d: 600ms;
     font-weight: 700;
     letter-spacing: .03em;
   }
+}
+
+
+.hook {
+  @include font-1;
+  fill: nth($colors, 4);
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 0.01em;
 }
 
 

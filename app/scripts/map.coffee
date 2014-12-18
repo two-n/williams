@@ -529,7 +529,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
             class: 'circle-dashed-label'
             # fill: 'gray'
             stroke: 'none'
-            dy: ".07em"
+            dy: ".25em"
             opacity: 0
             "font-family": "'Libre Baskerville', serif"
             "font-size": "22px"
@@ -588,7 +588,12 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
               y: if isNaN(dashedValue) then 0 else circleScale dashedValue
             .text if isNaN(dashedValue) then '' else dashedValue + '%'
 
-    regionBubble.exit().remove()
+    exit_transition = regionBubble.exit()
+      .transition().duration(600).ease("cubic-out")
+    exit_transition.select(".circle-solid").attr("opacity", 0)
+    exit_transition.select(".circle-dashed").attr("opacity", 0)
+    exit_transition.select(".circle-dashed-label").attr("opacity", 0)
+    exit_transition.remove()
 
     #name
     regionLabelBrown = unscaledRegionOverlay.selectAll(".regionLabel.brown").data(regionBubbleData)
@@ -744,12 +749,33 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       .attr
         "transform": "translate(#{timeScale(2014) + 20}," + 2 + ")"
 
+
+    ### Label ###
+    label_sel = @select(".label")
+    if label_sel.empty()
+      label_sel = @append("text").attr("class", "label")
+        .attr "fill-opacity": 0
+        .attr "transform", "translate(#{ props.size[0]/2 }, #{ props.size[1] - 60 })"
+    label_sel.transition().duration(600).ease("cubic-out")
+      .attr "transform", "translate(#{ props.size[0]/2 }, #{ props.size[1] - 60 })"
+      .attr "text-anchor", "middle"
+      .attr "y", 27
+      .attr "fill-opacity": 1
+    tspan_sel = label_sel.selectAll("tspan").data props.label?.split("\n") ? []
+    tspan_sel.enter().append("tspan")
+      .attr "dy", 15
+      .attr "x", 0
+    tspan_sel.text(String)
+    tspan_sel.exit().remove()
+    ######
+
+
   map.getColorsForEthnicity = (ethnicity) ->
     shades = [0.1,0.4,0.6,0.8]
     colors = []
     domain = myScale[ethnicity].domain()
     [1..4].forEach (i) ->
-      colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[i]} - #{myScale[ethnicity].domain()[i+1]}", alpha: shades[i-1] }
+      colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[i]} – #{myScale[ethnicity].domain()[i+1]}", alpha: shades[i-1] }
     colors.push { value: "#ED8F28", label: "#{myScale[ethnicity].domain()[5]}+", alpha: 1}
     return colors.reverse()
 
