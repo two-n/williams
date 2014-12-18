@@ -661,7 +661,10 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         if props.solidCircle?
           props.percentageByRegion[d][props.solidCircle]
         else
-          "#{props.percentageByRegion[d]}\%"
+          if props.isPercentage ? true
+            "#{props.percentageByRegion[d]}\%"
+          else
+            props.percentageByRegion[d]
       .transition().delay((d,i) -> 0.0 + 98*(5-i))
         .attr
           "opacity": 1

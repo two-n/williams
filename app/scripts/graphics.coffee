@@ -58,10 +58,11 @@ define ->
     "split": true,
     "showProtection": true,
     "bubbleTopBound": 100,
+    "isPercentage": false,
     "mode": "bubble",
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },
-      { value: "#FF0055", label: "Accepting social climate" }
+      { value: "#FF0055", label: "Accepting social climate index" }
     ],
     "percentageByRegion": {
       "Northeast": 71,
@@ -78,7 +79,6 @@ define ->
     "type": "map",
     "split": true,
     "mode": "bubble",
-    "bubbleTopBound": 35,
     "colors": [
       { value: "#FFFFFF", label: "US map by region" },
       { value: "#FF9C00", label: "LGBT population" }

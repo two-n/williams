@@ -275,6 +275,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
             mode: props.mode
             bubbleColor: props.colors?[1].value
             bubbleTopBound: props.bubbleTopBound
+            isPercentage: props.isPercentage
             _.pick props, "percentageByRegion", "colors", "label"
         when "bar-chart"
           barChart.call chart_sel, _.extend {},
