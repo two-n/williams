@@ -165,6 +165,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     #   legendSel.remove()
 
     # legend
+    d3.select(".visualization .header .legend .title").remove()
     sel = d3.select(".visualization .header .legend")
       # .attr "class", "legend #{ props.type } #{ if ~props.colors?[0]?.indexOf?("msm") then "msm" else "" }"
       .attr "class", "legend #{ props.type }"
@@ -189,11 +190,19 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
       colors = map.getColorsForEthnicity(state.ethnicity)
 
       protectedSel = d3.select(".visualization .header .countySecondaryChartLegend").selectAll(".protected")
-        .data([null]).enter().append("div").attr("class","protected")
-      protectedSel.append("div").attr("class","value")
-      protectedSel.append("div").attr("class","label")
+        .data([null])
+      enterSel = protectedSel.enter().append("div").attr("class","protected")
+      protectedSel.classed("ethnicity", true)
+      enterSel.append("div").attr("class","value")
+      enterSel.append("div").attr("class","label")
         .text "Protected states"
 
+      titleSel = d3.select(".visualization .header .legend .title")
+      if titleSel.empty()
+        d3.select(".visualization .header .legend")
+          .insert("div", ":first-child").attr("class", "title")
+          .html "Same-sex couples<br/>per 1k Households"
+          .style "margin-bottom", "6px"
       legendSel = d3.select(".visualization .header .legend").selectAll(".color")
         .data(colors)
       legendSel.enter().append("div").attr("class", "color")
@@ -262,6 +271,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     if props.url is "/introduction/4"
       protectedSel = d3.select(".visualization .header .countySecondaryChartLegend").selectAll(".protected")
         .data([null]).enter().append("div").attr("class","protected")
+      protectedSel.classed("ethnicity", false)
       protectedSel.append("div").attr("class","value")
       protectedSel.append("div").attr("class","label")
         .text "Protected states"

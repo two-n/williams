@@ -324,6 +324,10 @@ $visualization-margin-left: 60px;
 
       .protected {
         margin-top: 4px;
+        transition: margin-top 450ms;
+        &.ethnicity {
+          margin-top: 30px;
+        }
         .value {
           float: left;
           display: inline-block;

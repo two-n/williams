@@ -24,7 +24,7 @@ define ->
       N,1448,1412,1426,1453,1397,1771,1412,1484,1750,937,980,872,926,1012,1884,1784,1753,1697,884,868,1908,1269,1223,1239
     """,
     "label": "\"What about sexual relations\nbetween two adults of the same sex?\""
-    "attribution": "Source: General Social Survey (GSS) 197-2012"
+    "attribution": "Source: General Social Survey (GSS) 1973-2012"
   }, {
     "url": "/introduction/2",
     "heading": "Public opinions are shifting,\nbut LGBT workers are still vulnerable."
@@ -72,7 +72,7 @@ define ->
       "Mountain": 56,
       "Pacific": 68
     },
-    "label": "States with Employment Non-discrimination Laws",
+    "label": "LGBT Social Climate Index by Region",
     "attribution": "Source: Williams Institute"
   }, {
     "url": "/ethnicity/1",
@@ -119,13 +119,13 @@ define ->
       Mountain,66%,77%,4%,3%,26%,17%,n/d,n/d,2%,1%
       Pacific,55%,61%,7%,6%,30%,26%,n/d,n/d,4%,5%
     """
-    "label": "Ethnicity Distribution by Region",
+    "label": "Race & Ethnicity Distribution by Region",
   }, {
     "url": "/ethnicity/3",
     "heading": "Midwestern, Mountain and Southern states\nare home for a majority of LGBT people."
     "type": "map"
     "mode": "ethnicity"
-    "label": "Ethnicity Distribution by County"
+    "label": "Density of Same-sex Couples\nof Each Race or Ethnicity, by County"
     "attribution": "Source: Census 2010"
   }, {
     "url": "/education/1",
@@ -303,7 +303,7 @@ define ->
       Pacific,56.0973474114,16.214802417
     """,
     # "label": "HIV diagnoses by region, rates per 100k\n4 year average"
-    "label": "Current HIV Diagnoses by Region,\nRates per 100k",
+    "label": "HIV New Infections by Region,\nRates per 100k (2008-2011)",
     "attribution": "Source: CDC"
   }, {
     "url": "/conclusion/1",
