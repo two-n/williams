@@ -128,6 +128,25 @@ define ->
     "label": "Density of Same-sex Couples\nof Each Race or Ethnicity, by County"
     "attribution": "Source: Census 2010"
   }, {
+    "url": "/ethnicity/4",
+    "heading": "Midwestern, Mountain and Southern states\nare home for a majority of LGBT people."
+    "type": "map",
+    "split": true,
+    "mode": "bubble",
+    "colors": [
+      { value: "#FFFFFF", label: "US map by region" },
+      { value: "#FF9C00", label: "LGBT population" }
+    ],
+    "percentageByRegion": {
+      "Pacific": 18,
+      "Mountain": 21,
+      "Midwest": 21,
+      "South": 20,
+      "Northeast": 17
+    },
+    "label": "% of Same-sex Couples Raising Children, by region",
+    "attribution": "Source: American Community Survey (ACS)"
+  }, {
     "url": "/education/1",
     "heading": "College completion is lowest among\nLGBT people in the Midwest"
     "colors": [
