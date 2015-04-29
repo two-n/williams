@@ -144,7 +144,7 @@ require ["d3", "underscore", "hammer", "./graphics", "./map", "./dropdown", "./b
     share_text = encodeURIComponent(document.title)
     url = if props.type is "conclusion" then document.URL.split("#")[0] else document.URL
     share_url = encodeURIComponent(url)
-    body_text = "While the nation seems on the verge of full marriage equality, most states still have not adopted non-discrimination laws protecting LGBT people.  This interactive explores the increased disparities that LGBT people face who live in the 29 states without state sexual orientation non-discrimination laws."
+    body_text = "While the nation seems on the verge of full marriage equality, most states still have not adopted non-discrimination laws protecting LGBT people.  This interactive explores the increased disparities that LGBT people face who live in the states without state sexual orientation non-discrimination laws."
     d3.select(".visualization .header .twitter")
       .attr("class", "twitter" + if i then " icon-tt#{ i }" else "")
       .attr "href",

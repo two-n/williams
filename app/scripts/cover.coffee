@@ -14,7 +14,7 @@ define ["d3", "underscore", "./map"], (d3, _, map) ->
       non-discrimination laws protecting LGBT people.
 
       This interactive explores the increased disparities that
-      LGBT people face who live in the 29 states without state
+      LGBT people face who live in the states without state
       sexual orientation non-discrimination laws.  More than
       60% of LGBT Americans live in the South, Midwest and
       Mountain states, where they face a more challenging

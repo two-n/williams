@@ -11,6 +11,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
   projection = d3.geo.albersUsa().scale(1280).translate([960/2,600/2])
   circleScale = d3.scale.linear().domain([0,50]).range([0,200])
 
+  mostRecentYear = 2015
 
   # tempData = null
   # d3.csv("./assets/census_race.csv",
@@ -201,7 +202,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
       SO: 1991
       SOGI:  2011
     }
-    "Delawar":{
+    "Delaware":{
       SO: 2009
       SOGI:  2013
     }
@@ -277,6 +278,10 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
        SO: 1991
        SOGI:  2006
     }
+    "Utah": {
+       SO: 2015
+       SOGI:  2015
+    }
   }
 
   bubbleTimeout = null
@@ -300,8 +305,8 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
   #destroy non-states and sort states by SO protection
   stateGeometries = stateGeometries.filter (state) -> index[state.id]?
   stateGeometries.sort (a,b) ->
-    aStatus = isSOProtected(a.id, 2014)
-    bStatus = isSOProtected(b.id, 2014)
+    aStatus = isSOProtected(a.id, mostRecentYear)
+    bStatus = isSOProtected(b.id, mostRecentYear)
     aStatus - bStatus
 
   modes = {
@@ -354,13 +359,13 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     [toRet]
 
   timeScale = d3.scale.linear()
-      .domain([1977, 2014])
+      .domain([1977, mostRecentYear])
       .range([0, 200])
       .clamp(true)
   brush = d3.svg.brush()
       .x(timeScale)
       .extent([0, 0])
-  currentTime = 2014
+  currentTime = mostRecentYear
 
   map = (props) ->
     ethnicity = props.ethnicity ? "black"
@@ -451,7 +456,7 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
         "vector-effect": "non-scaling-stroke"
       .style
         "stroke": (d) ->
-          if props.showProtection and isSOProtected(d.id,2014) then "black"
+          if props.showProtection and isSOProtected(d.id,mostRecentYear) then "black"
       .on "mouseenter", (d) =>
         if mode in ["bubble", "silhouette"] then return
         if bubbleTimeout?
@@ -745,12 +750,12 @@ define ["d3", "topojson", "./callout", "assets/counties.topo.json", "assets/cens
     timeAxis.select(".visibleAxis").call(d3.svg.axis()
       .scale(timeScale)
       .orient("bottom")
-      .tickValues([1977,2014])
+      .tickValues([1977,mostRecentYear])
       .tickFormat(d3.format(".0f"))
     )
     timeAxis.select(".sliderInstruction")
       .attr
-        "transform": "translate(#{timeScale(2014) + 20}," + 2 + ")"
+        "transform": "translate(#{timeScale(mostRecentYear) + 20}," + 2 + ")"
 
 
     ### Label ###
