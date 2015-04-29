@@ -110,8 +110,8 @@ define ->
       ,White LGBT,White Non-LGBT,African-American LGBT,African-American Non-LGBT,Latino/a2 LGBT,Latino/a2 Non-LGBT,American Indian/Alaska Native LGBT,American Indian/Alaska Native Non-LGBT,Asian/Pacific Islander LGBT,Asian/Pacific Islander Non-LGBT
       Individuals,,,,,,,,,,
       All Individuals in the US,63%,72%,15%,12%,18%,13%,n/d,n/d,2%,1%
-      21 Protective States,61%,69%,12%,9%,23%,17%,n/d,n/d,3%,3%
-      29 Non-Protective States,65%,74%,18%,13%,14%,10%,n/d,n/d,1%,1%
+      Protective States,61%,69%,12%,9%,23%,17%,n/d,n/d,3%,3%
+      Non-Protective States,65%,74%,18%,13%,14%,10%,n/d,n/d,1%,1%
       ,,,,,,,,,,
       Northeast,65%,74%,15%,11%,16%,12%,n/d,n/d,2%,2%
       Midwest,74%,82%,13%,10%,10%,6%,n/d,n/d,1%,1%
@@ -134,14 +134,14 @@ define ->
       { value: "#fadc52", label: "LGBT" }
     ],
     "type": "composite",
-    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    # "rows": ["Protective States", "Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bounds": [0, 40],
     "bars": ["LGBT"],
     "data": """
       ,LGBT,Non-LGBT
       All Individuals in the US,34%,34%
-      21 Protective States,39%,38%
-      29 Non-Protective States,31%,31%
+      Protective States,39%,38%
+      Non-Protective States,31%,31%
       ,,
       Northeast,39%,
       Midwest,29%,
@@ -161,13 +161,13 @@ define ->
     ],
     "type": "composite",
     "bounds": [0, 40],
-    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    # "rows": ["Protective States", "Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "data": """
       ,LGBT,Non-LGBT
       All Individuals in the US,34%,34%
-      21 Protective States,39%,38%
-      29 Non-Protective States,31%,31%
+      Protective States,39%,38%
+      Non-Protective States,31%,31%
       ,,
       Northeast,39%,39%
       Midwest,29%,32%
@@ -191,8 +191,8 @@ define ->
     "data": """
       ,LGBT,Non-LGBT,"Odds Ratio of Reporting a Household Income Below $24,000 (LGBT:Non-LGBT)"
       All Individuals,32%,24%,1.3155737705
-      21 Protective States,29%,22%,1.2981120697
-      29 Non-Protective States,35%,26%,1.3463865742
+      Protective States,29%,22%,1.2981120697
+      Non-Protective States,35%,26%,1.3463865742
       Northeast,29%,22%,1.3236786143
       Midwest,35%,24%,1.4878838431
       South,33%,27%,1.2437152726
@@ -211,13 +211,13 @@ define ->
     ],
     "type": "composite",
     "bounds": [0, 40],
-    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    # "rows": ["Protective States", "Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Not Having Enough Money for Food (LGBT:Non-LGBT)
       All Individuals ,28%,18%,1.6
-      21 Protective States,26%,16%,1.59
-      29 Non-Protective States,30%,19%,1.63
+      Protective States,26%,16%,1.59
+      Non-Protective States,30%,19%,1.63
       ,,,
       Northeast,26%,16%,1.58
       Midwest,30%,16%,1.82
@@ -237,14 +237,14 @@ define ->
     ],
     "type": "composite",
     "bounds": [0, 30],
-    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    # "rows": ["Protective States", "Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "benchmark": "All Individuals ",
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Not Having Enough Money for Health Care (LGBT: Non-LGBT)
       All Individuals ,26,18,1.4515104577
-      21 Protective States,23,16,1.45
-      29 Non-Protective States,28,19,1.47
+      Protective States,23,16,1.45
+      Non-Protective States,28,19,1.47
       Northeast,22%,15%,1.5
       Midwest,26%,17%,1.57
       South,28%,20%,1.38
@@ -263,7 +263,7 @@ define ->
     ],
     "type": "composite",
     "bubbleTopBound": 150,
-    # "rows": ["21 Protective States", "29 Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
+    # "rows": ["Protective States", "Non-Protective States", null, "Northeast", "Midwest", "South", "Mountain", "Pacific"],
     "bars": ["LGBT", "Non-LGBT"],
     "benchmark": "All Individuals ",
     "benchmark-orientation": ["end", "start"],
@@ -271,8 +271,8 @@ define ->
     "data": """
       ,LGBT,Non-LGBT,Odds Ratio of Having Health Insurance (LGBT:Non-LGBT)
       All Individuals ,82%,87%,0.95
-      21 Protective States,89%,89%,1
-      29 Non-Protective States,78%,85%,0.91
+      Protective States,89%,89%,1
+      Non-Protective States,78%,85%,0.91
       Northeast,90%,90%,1
       Midwest,87%,89%,0.97
       South,76%,84%,0.91

@@ -22,7 +22,7 @@ define ["d3", "underscore", "./map", "./bar-chart"], (d3, _, map, barChart) ->
       size: [size[0], size[1]]
       margin:
         top: size[1] - bars_height
-      rows: props.rows ? ["21 Protective States", "29 Non-Protective States"]
+      rows: props.rows ? ["Protective States", "Non-Protective States"]
       bars: props.bars ? ["LGBT", "Non-LGBT"]
       _.pick props, "data", "label", "colors", "bounds"
 

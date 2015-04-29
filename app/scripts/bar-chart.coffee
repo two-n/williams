@@ -5,6 +5,8 @@ define ["d3", "./callout"], (d3, callout) ->
 
     [width, height] = props.size
 
+    console.log props.rows
+
     rows = props.rows.map (d) -> index[d]
     max = d3.max(rows, (d) -> d3.max(props.bars.map (bar) -> parseFloat(d?[bar])))
 
